@@ -54,26 +54,14 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 	private JPanel contentPane;
 	private JTable table;
 	private JTextField fieldMatricule;
-	private JTextField fielTel;
-	private JTextField fieldMobile;
-	private JTextField fieldEmail;
-	private JTextField fieldWebSIte;
 	private JTextField fieldLastName;
 	private JTextField fieldName;
-	private JTextField fieldNameBanque;
-	private JTextField fieldNameAgence;
-	private JTextField fieldRib;
+	private JTextField fieldTva;
 	private JTextField fieldRue;
-	private JTextField fieldNumRue;
-	private JTextField fieldCode;
-	private JTextField fieldGouvernat;
-	private JComboBox comboVille,comboPays;
-	JEditorPane editorPaneDescription;
+	private JComboBox comboVille;
 	private JButton addFournisseurtbtn,modifyFournisseurBtn,deleteDeleteBtn;
 	private JTextField fieldIdClient;
 	private JTextField fieldIdSocial;
-	private JTextField fieldIdAdress;
-	private JTextField fieldIdBanque;
 
 	/**
 	 * Launch the application.
@@ -104,7 +92,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JPanel topPanel = new JPanel();
-		topPanel.setBackground(new Color(46, 139, 87));
+		topPanel.setBackground(new Color(204, 0, 102));
 		contentPane.add(topPanel, BorderLayout.NORTH);
 		
 		JLabel lblFournisseurManagement = new JLabel("Product Management");
@@ -125,9 +113,9 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		vuePanel.add(scrollPane);
 		DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("nom");
-        model.addColumn("prenom");
-        model.addColumn("matricule");
+        model.addColumn("ref");
+        model.addColumn("designation");
+        model.addColumn("");
         model.addColumn("mobile");
         model.addColumn("email");
         model.addColumn("tel");
@@ -283,12 +271,12 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
-		JLabel labelMatricule = new JLabel("Matricule :");
-		GridBagConstraints gbc_labelMatricule = new GridBagConstraints();
-		gbc_labelMatricule.insets = new Insets(0, 0, 5, 5);
-		gbc_labelMatricule.gridx = 1;
-		gbc_labelMatricule.gridy = 1;
-		panel.add(labelMatricule, gbc_labelMatricule);
+		JLabel labelRef = new JLabel("Ref  :");
+		GridBagConstraints gbc_labelRef = new GridBagConstraints();
+		gbc_labelRef.insets = new Insets(0, 0, 5, 5);
+		gbc_labelRef.gridx = 1;
+		gbc_labelRef.gridy = 1;
+		panel.add(labelRef, gbc_labelRef);
 		
 		fieldMatricule = new JTextField();
 		GridBagConstraints gbc_fieldMatricule = new GridBagConstraints();
@@ -300,13 +288,13 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		panel.add(fieldMatricule, gbc_fieldMatricule);
 		fieldMatricule.setColumns(10);
 		
-		JLabel labelName = new JLabel("Nom : ");
-		GridBagConstraints gbc_labelName = new GridBagConstraints();
-		gbc_labelName.anchor = GridBagConstraints.WEST;
-		gbc_labelName.insets = new Insets(0, 0, 5, 5);
-		gbc_labelName.gridx = 6;
-		gbc_labelName.gridy = 1;
-		panel.add(labelName, gbc_labelName);
+		JLabel labelDesignation = new JLabel("Designation :");
+		GridBagConstraints gbc_labelDesignation = new GridBagConstraints();
+		gbc_labelDesignation.anchor = GridBagConstraints.WEST;
+		gbc_labelDesignation.insets = new Insets(0, 0, 5, 5);
+		gbc_labelDesignation.gridx = 6;
+		gbc_labelDesignation.gridy = 1;
+		panel.add(labelDesignation, gbc_labelDesignation);
 		
 		fieldLastName = new JTextField();
 		GridBagConstraints gbc_fieldLastName = new GridBagConstraints();
@@ -317,126 +305,12 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		panel.add(fieldLastName, gbc_fieldLastName);
 		fieldLastName.setColumns(10);
 		
-		JLabel labelTel = new JLabel("Tel : ");
-		GridBagConstraints gbc_labelTel = new GridBagConstraints();
-		gbc_labelTel.insets = new Insets(0, 0, 5, 5);
-		gbc_labelTel.gridx = 1;
-		gbc_labelTel.gridy = 2;
-		panel.add(labelTel, gbc_labelTel);
-		
-		fielTel = new JTextField();
-		GridBagConstraints gbc_fielTel = new GridBagConstraints();
-		gbc_fielTel.gridwidth = 3;
-		gbc_fielTel.insets = new Insets(0, 0, 5, 5);
-		gbc_fielTel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fielTel.gridx = 2;
-		gbc_fielTel.gridy = 2;
-		panel.add(fielTel, gbc_fielTel);
-		fielTel.setColumns(10);
-		
-		JLabel labelLastName = new JLabel("Prenom : ");
-		GridBagConstraints gbc_labelLastName = new GridBagConstraints();
-		gbc_labelLastName.anchor = GridBagConstraints.WEST;
-		gbc_labelLastName.insets = new Insets(0, 0, 5, 5);
-		gbc_labelLastName.gridx = 6;
-		gbc_labelLastName.gridy = 2;
-		panel.add(labelLastName, gbc_labelLastName);
-		
-		fieldName = new JTextField();
-		GridBagConstraints gbc_fieldName = new GridBagConstraints();
-		gbc_fieldName.fill = GridBagConstraints.BOTH;
-		gbc_fieldName.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldName.gridx = 7;
-		gbc_fieldName.gridy = 2;
-		panel.add(fieldName, gbc_fieldName);
-		fieldName.setColumns(10);
-		
-		JLabel labelMobile = new JLabel("Mobile :");
-		GridBagConstraints gbc_labelMobile = new GridBagConstraints();
-		gbc_labelMobile.insets = new Insets(0, 0, 5, 5);
-		gbc_labelMobile.gridx = 1;
-		gbc_labelMobile.gridy = 3;
-		panel.add(labelMobile, gbc_labelMobile);
-		
-		fieldMobile = new JTextField();
-		GridBagConstraints gbc_fieldMobile = new GridBagConstraints();
-		gbc_fieldMobile.gridwidth = 3;
-		gbc_fieldMobile.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldMobile.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldMobile.gridx = 2;
-		gbc_fieldMobile.gridy = 3;
-		panel.add(fieldMobile, gbc_fieldMobile);
-		fieldMobile.setColumns(10);
-		
-		JLabel labelSexe = new JLabel("Sexe : ");
-		GridBagConstraints gbc_labelSexe = new GridBagConstraints();
-		gbc_labelSexe.anchor = GridBagConstraints.WEST;
-		gbc_labelSexe.insets = new Insets(0, 0, 5, 5);
-		gbc_labelSexe.gridx = 6;
-		gbc_labelSexe.gridy = 3;
-		panel.add(labelSexe, gbc_labelSexe);
-		
-		JRadioButton radioFemme = new JRadioButton("femme");
-		GridBagConstraints gbc_radioFemme = new GridBagConstraints();
-		gbc_radioFemme.insets = new Insets(0, 0, 5, 5);
-		gbc_radioFemme.gridx = 7;
-		gbc_radioFemme.gridy = 3;
-		panel.add(radioFemme, gbc_radioFemme);
-		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("homme");
-		GridBagConstraints gbc_rdbtnNewRadioButton_1 = new GridBagConstraints();
-		gbc_rdbtnNewRadioButton_1.insets = new Insets(0, 0, 5, 5);
-		gbc_rdbtnNewRadioButton_1.gridx = 9;
-		gbc_rdbtnNewRadioButton_1.gridy = 3;
-		panel.add(rdbtnNewRadioButton_1, gbc_rdbtnNewRadioButton_1);
-		
-		JLabel labelEmail = new JLabel("Email :");
-		GridBagConstraints gbc_labelEmail = new GridBagConstraints();
-		gbc_labelEmail.insets = new Insets(0, 0, 5, 5);
-		gbc_labelEmail.gridx = 1;
-		gbc_labelEmail.gridy = 4;
-		panel.add(labelEmail, gbc_labelEmail);
-		
-		fieldEmail = new JTextField();
-		GridBagConstraints gbc_fieldEmail = new GridBagConstraints();
-		gbc_fieldEmail.gridwidth = 3;
-		gbc_fieldEmail.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldEmail.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldEmail.gridx = 2;
-		gbc_fieldEmail.gridy = 4;
-		panel.add(fieldEmail, gbc_fieldEmail);
-		fieldEmail.setColumns(10);
-		
-		JLabel labelWebSite = new JLabel("WebSite :");
-		GridBagConstraints gbc_labelWebSite = new GridBagConstraints();
-		gbc_labelWebSite.insets = new Insets(0, 0, 5, 5);
-		gbc_labelWebSite.gridx = 1;
-		gbc_labelWebSite.gridy = 5;
-		panel.add(labelWebSite, gbc_labelWebSite);
-		
-		fieldWebSIte = new JTextField();
-		GridBagConstraints gbc_fieldWebSIte = new GridBagConstraints();
-		gbc_fieldWebSIte.gridwidth = 3;
-		gbc_fieldWebSIte.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldWebSIte.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldWebSIte.gridx = 2;
-		gbc_fieldWebSIte.gridy = 5;
-		panel.add(fieldWebSIte, gbc_fieldWebSIte);
-		fieldWebSIte.setColumns(10);
-		
-		JLabel LabelCompte = new JLabel("CompteBancaire");
-		GridBagConstraints gbc_LabelCompte = new GridBagConstraints();
-		gbc_LabelCompte.insets = new Insets(0, 0, 5, 5);
-		gbc_LabelCompte.gridx = 6;
-		gbc_LabelCompte.gridy = 5;
-		panel.add(LabelCompte, gbc_LabelCompte);
-		
-		JLabel labelType = new JLabel("Type :");
-		GridBagConstraints gbc_labelType = new GridBagConstraints();
-		gbc_labelType.insets = new Insets(0, 0, 5, 5);
-		gbc_labelType.gridx = 1;
-		gbc_labelType.gridy = 6;
-		panel.add(labelType, gbc_labelType);
+		JLabel labelUnit = new JLabel("Unit :");
+		GridBagConstraints gbc_labelUnit = new GridBagConstraints();
+		gbc_labelUnit.insets = new Insets(0, 0, 5, 5);
+		gbc_labelUnit.gridx = 1;
+		gbc_labelUnit.gridy = 3;
+		panel.add(labelUnit, gbc_labelUnit);
 		
 		JComboBox comboBoxType = new JComboBox();
 		comboBoxType.setModel(new DefaultComboBoxModel(new String[] {"PYHSIUE", "MORALE"}));
@@ -445,127 +319,33 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		gbc_comboBoxType.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxType.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBoxType.gridx = 2;
-		gbc_comboBoxType.gridy = 6;
+		gbc_comboBoxType.gridy = 3;
 		panel.add(comboBoxType, gbc_comboBoxType);
 		
-		JLabel labelNomBanque = new JLabel("Nom banque :");
-		GridBagConstraints gbc_labelNomBanque = new GridBagConstraints();
-		gbc_labelNomBanque.anchor = GridBagConstraints.EAST;
-		gbc_labelNomBanque.insets = new Insets(0, 0, 5, 5);
-		gbc_labelNomBanque.gridx = 6;
-		gbc_labelNomBanque.gridy = 6;
-		panel.add(labelNomBanque, gbc_labelNomBanque);
+		JLabel labelMinStock = new JLabel("Min Stock : ");
+		GridBagConstraints gbc_labelMinStock = new GridBagConstraints();
+		gbc_labelMinStock.anchor = GridBagConstraints.WEST;
+		gbc_labelMinStock.insets = new Insets(0, 0, 5, 5);
+		gbc_labelMinStock.gridx = 6;
+		gbc_labelMinStock.gridy = 3;
+		panel.add(labelMinStock, gbc_labelMinStock);
 		
-		fieldNameBanque = new JTextField();
-		GridBagConstraints gbc_fieldNameBanque = new GridBagConstraints();
-		gbc_fieldNameBanque.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldNameBanque.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldNameBanque.gridx = 7;
-		gbc_fieldNameBanque.gridy = 6;
-		panel.add(fieldNameBanque, gbc_fieldNameBanque);
-		fieldNameBanque.setColumns(10);
+		fieldName = new JTextField();
+		GridBagConstraints gbc_fieldName = new GridBagConstraints();
+		gbc_fieldName.fill = GridBagConstraints.BOTH;
+		gbc_fieldName.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldName.gridx = 7;
+		gbc_fieldName.gridy = 3;
+		panel.add(fieldName, gbc_fieldName);
+		fieldName.setColumns(10);
 		
-		JLabel labelDescription = new JLabel("Description : ");
-		GridBagConstraints gbc_labelDescription = new GridBagConstraints();
-		gbc_labelDescription.anchor = GridBagConstraints.NORTH;
-		gbc_labelDescription.insets = new Insets(0, 0, 5, 5);
-		gbc_labelDescription.gridx = 1;
-		gbc_labelDescription.gridy = 7;
-		panel.add(labelDescription, gbc_labelDescription);
-		
-		editorPaneDescription = new JEditorPane();
-		GridBagConstraints gbc_editorPaneDescription = new GridBagConstraints();
-		gbc_editorPaneDescription.gridheight = 2;
-		gbc_editorPaneDescription.gridwidth = 3;
-		gbc_editorPaneDescription.insets = new Insets(0, 0, 5, 5);
-		gbc_editorPaneDescription.fill = GridBagConstraints.BOTH;
-		gbc_editorPaneDescription.gridx = 2;
-		gbc_editorPaneDescription.gridy = 7;
-		panel.add(editorPaneDescription, gbc_editorPaneDescription);
-		
-		JLabel labelNomAgence = new JLabel("Nom agance :");
-		GridBagConstraints gbc_labelNomAgence = new GridBagConstraints();
-		gbc_labelNomAgence.anchor = GridBagConstraints.EAST;
-		gbc_labelNomAgence.insets = new Insets(0, 0, 5, 5);
-		gbc_labelNomAgence.gridx = 6;
-		gbc_labelNomAgence.gridy = 7;
-		panel.add(labelNomAgence, gbc_labelNomAgence);
-		
-		fieldNameAgence = new JTextField();
-		GridBagConstraints gbc_fieldNameAgence = new GridBagConstraints();
-		gbc_fieldNameAgence.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldNameAgence.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldNameAgence.gridx = 7;
-		gbc_fieldNameAgence.gridy = 7;
-		panel.add(fieldNameAgence, gbc_fieldNameAgence);
-		fieldNameAgence.setColumns(10);
-		
-		JLabel labelRib = new JLabel("RIB : ");
-		GridBagConstraints gbc_labelRib = new GridBagConstraints();
-		gbc_labelRib.anchor = GridBagConstraints.EAST;
-		gbc_labelRib.insets = new Insets(0, 0, 5, 5);
-		gbc_labelRib.gridx = 6;
-		gbc_labelRib.gridy = 8;
-		panel.add(labelRib, gbc_labelRib);
-		
-		fieldRib = new JTextField();
-		GridBagConstraints gbc_fieldRib = new GridBagConstraints();
-		gbc_fieldRib.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldRib.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldRib.gridx = 7;
-		gbc_fieldRib.gridy = 8;
-		panel.add(fieldRib, gbc_fieldRib);
-		fieldRib.setColumns(10);
-		
-		JLabel lebelAdress = new JLabel("Addresse");
-		GridBagConstraints gbc_lebelAdress = new GridBagConstraints();
-		gbc_lebelAdress.insets = new Insets(0, 0, 5, 5);
-		gbc_lebelAdress.gridx = 1;
-		gbc_lebelAdress.gridy = 9;
-		panel.add(lebelAdress, gbc_lebelAdress);
-		
-		JLabel LabelRue = new JLabel("Rue : ");
-		GridBagConstraints gbc_LabelRue = new GridBagConstraints();
-		gbc_LabelRue.insets = new Insets(0, 0, 5, 5);
-		gbc_LabelRue.anchor = GridBagConstraints.EAST;
-		gbc_LabelRue.gridx = 1;
-		gbc_LabelRue.gridy = 10;
-		panel.add(LabelRue, gbc_LabelRue);
-		
-		fieldRue = new JTextField();
-		GridBagConstraints gbc_fieldRue = new GridBagConstraints();
-		gbc_fieldRue.gridwidth = 3;
-		gbc_fieldRue.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldRue.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldRue.gridx = 2;
-		gbc_fieldRue.gridy = 10;
-		panel.add(fieldRue, gbc_fieldRue);
-		fieldRue.setColumns(10);
-		
-		JLabel labelNumRue = new JLabel("numero rue :");
-		GridBagConstraints gbc_labelNumRue = new GridBagConstraints();
-		gbc_labelNumRue.anchor = GridBagConstraints.EAST;
-		gbc_labelNumRue.insets = new Insets(0, 0, 5, 5);
-		gbc_labelNumRue.gridx = 6;
-		gbc_labelNumRue.gridy = 10;
-		panel.add(labelNumRue, gbc_labelNumRue);
-		
-		fieldNumRue = new JTextField();
-		GridBagConstraints gbc_fieldNumRue = new GridBagConstraints();
-		gbc_fieldNumRue.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldNumRue.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldNumRue.gridx = 7;
-		gbc_fieldNumRue.gridy = 10;
-		panel.add(fieldNumRue, gbc_fieldNumRue);
-		fieldNumRue.setColumns(10);
-		
-		JLabel labelVille = new JLabel("Ville : ");
-		GridBagConstraints gbc_labelVille = new GridBagConstraints();
-		gbc_labelVille.anchor = GridBagConstraints.EAST;
-		gbc_labelVille.insets = new Insets(0, 0, 5, 5);
-		gbc_labelVille.gridx = 1;
-		gbc_labelVille.gridy = 11;
-		panel.add(labelVille, gbc_labelVille);
+		JLabel labelFournisseur = new JLabel("Fournisseur  : ");
+		GridBagConstraints gbc_labelFournisseur = new GridBagConstraints();
+		gbc_labelFournisseur.anchor = GridBagConstraints.EAST;
+		gbc_labelFournisseur.insets = new Insets(0, 0, 5, 5);
+		gbc_labelFournisseur.gridx = 1;
+		gbc_labelFournisseur.gridy = 5;
+		panel.add(labelFournisseur, gbc_labelFournisseur);
 		
 		comboVille = new JComboBox();
 		comboVille.setModel(new DefaultComboBoxModel(new String[] {"Monastir"}));
@@ -574,81 +354,60 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		gbc_comboVille.insets = new Insets(0, 0, 5, 5);
 		gbc_comboVille.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboVille.gridx = 2;
-		gbc_comboVille.gridy = 11;
+		gbc_comboVille.gridy = 5;
 		panel.add(comboVille, gbc_comboVille);
 		
-		JLabel labelCodePostal = new JLabel("Code postal :");
-		GridBagConstraints gbc_labelCodePostal = new GridBagConstraints();
-		gbc_labelCodePostal.anchor = GridBagConstraints.EAST;
-		gbc_labelCodePostal.insets = new Insets(0, 0, 5, 5);
-		gbc_labelCodePostal.gridx = 6;
-		gbc_labelCodePostal.gridy = 11;
-		panel.add(labelCodePostal, gbc_labelCodePostal);
+		JLabel labelFamille = new JLabel("Family : ");
+		GridBagConstraints gbc_labelFamille = new GridBagConstraints();
+		gbc_labelFamille.anchor = GridBagConstraints.WEST;
+		gbc_labelFamille.insets = new Insets(0, 0, 5, 5);
+		gbc_labelFamille.gridx = 6;
+		gbc_labelFamille.gridy = 5;
+		panel.add(labelFamille, gbc_labelFamille);
 		
-		fieldCode = new JTextField();
-		GridBagConstraints gbc_fieldCode = new GridBagConstraints();
-		gbc_fieldCode.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldCode.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldCode.gridx = 7;
-		gbc_fieldCode.gridy = 11;
-		panel.add(fieldCode, gbc_fieldCode);
-		fieldCode.setColumns(10);
+		JComboBox comboBox = new JComboBox();
+		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBox.gridx = 7;
+		gbc_comboBox.gridy = 5;
+		panel.add(comboBox, gbc_comboBox);
 		
-		JLabel labelGouvernat = new JLabel("Gouvernat : ");
-		GridBagConstraints gbc_labelGouvernat = new GridBagConstraints();
-		gbc_labelGouvernat.anchor = GridBagConstraints.EAST;
-		gbc_labelGouvernat.insets = new Insets(0, 0, 5, 5);
-		gbc_labelGouvernat.gridx = 1;
-		gbc_labelGouvernat.gridy = 12;
-		panel.add(labelGouvernat, gbc_labelGouvernat);
+		JLabel labelPrice = new JLabel("Price  : ");
+		GridBagConstraints gbc_labelPrice = new GridBagConstraints();
+		gbc_labelPrice.anchor = GridBagConstraints.EAST;
+		gbc_labelPrice.insets = new Insets(0, 0, 5, 5);
+		gbc_labelPrice.gridx = 1;
+		gbc_labelPrice.gridy = 7;
+		panel.add(labelPrice, gbc_labelPrice);
 		
-		fieldGouvernat = new JTextField();
-		GridBagConstraints gbc_fieldGouvernat = new GridBagConstraints();
-		gbc_fieldGouvernat.gridwidth = 3;
-		gbc_fieldGouvernat.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldGouvernat.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldGouvernat.gridx = 2;
-		gbc_fieldGouvernat.gridy = 12;
-		panel.add(fieldGouvernat, gbc_fieldGouvernat);
-		fieldGouvernat.setColumns(10);
+		fieldRue = new JTextField();
+		GridBagConstraints gbc_fieldRue = new GridBagConstraints();
+		gbc_fieldRue.gridwidth = 3;
+		gbc_fieldRue.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldRue.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldRue.gridx = 2;
+		gbc_fieldRue.gridy = 7;
+		panel.add(fieldRue, gbc_fieldRue);
+		fieldRue.setColumns(10);
 		
-		fieldIdBanque = new JTextField();
-		GridBagConstraints gbc_fieldIdBanque = new GridBagConstraints();
-		gbc_fieldIdBanque.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldIdBanque.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldIdBanque.gridx = 6;
-		gbc_fieldIdBanque.gridy = 12;
-		panel.add(fieldIdBanque, gbc_fieldIdBanque);
-		fieldIdBanque.setColumns(10);
-		fieldIdBanque.setVisible(false);
+		JLabel labelTva = new JLabel("TVA  :");
+		GridBagConstraints gbc_labelTva = new GridBagConstraints();
+		gbc_labelTva.anchor = GridBagConstraints.WEST;
+		gbc_labelTva.insets = new Insets(0, 0, 5, 5);
+		gbc_labelTva.gridx = 6;
+		gbc_labelTva.gridy = 7;
+		panel.add(labelTva, gbc_labelTva);
 		
-		fieldIdAdress = new JTextField();
-		GridBagConstraints gbc_fieldIdAdress = new GridBagConstraints();
-		gbc_fieldIdAdress.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldIdAdress.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldIdAdress.gridx = 7;
-		gbc_fieldIdAdress.gridy = 12;
-		panel.add(fieldIdAdress, gbc_fieldIdAdress);
-		fieldIdAdress.setColumns(10);
-		fieldIdAdress.setVisible(false);
-		
-		JLabel labelPays = new JLabel("Pays :");
-		GridBagConstraints gbc_labelPays = new GridBagConstraints();
-		gbc_labelPays.anchor = GridBagConstraints.EAST;
-		gbc_labelPays.insets = new Insets(0, 0, 5, 5);
-		gbc_labelPays.gridx = 1;
-		gbc_labelPays.gridy = 13;
-		panel.add(labelPays, gbc_labelPays);
-		
-		comboPays = new JComboBox();
-		comboPays.setModel(new DefaultComboBoxModel(new String[] {"Tunisie"}));
-		GridBagConstraints gbc_comboPays = new GridBagConstraints();
-		gbc_comboPays.gridwidth = 3;
-		gbc_comboPays.insets = new Insets(0, 0, 5, 5);
-		gbc_comboPays.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboPays.gridx = 2;
-		gbc_comboPays.gridy = 13;
-		panel.add(comboPays, gbc_comboPays);
+		fieldTva = new JTextField();
+		fieldTva.setEnabled(false);
+		GridBagConstraints gbc_fieldTva = new GridBagConstraints();
+		gbc_fieldTva.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldTva.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldTva.gridx = 7;
+		gbc_fieldTva.gridy = 7;
+		panel.add(fieldTva, gbc_fieldTva);
+		fieldTva.setColumns(10);
 		
 		fieldIdSocial = new JTextField();
 		GridBagConstraints gbc_fieldIdSocial = new GridBagConstraints();
@@ -695,7 +454,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 			// --------------------------CompteBancaire info 
 			
 			compte.setNameBanque(fieldNameBanque.getText());
-			compte.setAgence(fieldNameAgence.getText());
+			compte.setAgence(fieldTva.getText());
 			compte.setNumRib(Integer.parseInt(fieldRib.getText()));
 			
 			/// --------------------------------------------------
@@ -752,7 +511,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 			
 			compte.setId(Integer.parseInt(fieldIdBanque.getText()));
 			compte.setNameBanque(fieldNameBanque.getText());
-			compte.setAgence(fieldNameAgence.getText());
+			compte.setAgence(fieldTva.getText());
 			compte.setNumRib(Integer.parseInt(fieldRib.getText()));
 			
 			/// --------------------------------------------------
@@ -827,7 +586,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
         fieldCode.setText((String) val[11]);
         fieldRib.setText((String) val[13]);
         fieldNameBanque.setText((String) val[14]);
-        fieldNameAgence.setText((String) val[15]);
+        fieldTva.setText((String) val[15]);
         
         fieldWebSIte.setText((String) val[17]);
         editorPaneDescription.setText((String) val[18]);
