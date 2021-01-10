@@ -9,6 +9,12 @@ public class ProduitFamille {
 		this.nom = nom;
 		this.type = type;
 	}
+	
+	public ProduitFamille() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getId() {
 		return id;
 	}

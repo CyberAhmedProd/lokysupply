@@ -1,6 +1,6 @@
 package models;
 
 public enum TypeEntreprise {
-	PYHSIUE,
+	PHYSIQUE,
 	MORALE
 }

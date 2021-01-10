@@ -24,6 +24,7 @@ import models.Client;
 import models.CompteBancaire;
 import models.RaisonSocial;
 import models.TypeEntreprise;
+import models.Ville;
 import services.ClientServiceImpl;
 
 import javax.swing.AbstractListModel;
@@ -46,6 +47,7 @@ import javax.swing.JEditorPane;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JCheckBox;
 
 public class ClientUi extends JFrame implements ActionListener,MouseListener {
 
@@ -65,13 +67,12 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 	private JTextField fieldNumRue;
 	private JTextField fieldCode;
 	private JTextField fieldGouvernat;
-	private JComboBox comboVille,comboPays;
+	private JComboBox comboVille,comboPays,comboBoxType;
 	JEditorPane editorPaneDescription;
 	private JButton addClientbtn,modifyClientBtn,deleteClientBtn;
-	private JTextField fieldIdClient;
-	private JTextField fieldIdSocial;
-	private JTextField fieldIdAdress;
-	private JTextField fieldIdBanque;
+	private JTextField fieldIdClient,fieldIdBanque,fieldIdAdress,fieldIdSocial;
+
+	JCheckBox checkBoxTva;
 
 	/**
 	 * Launch the application.
@@ -93,7 +94,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 	 * Create the frame.
 	 */
 	public ClientUi() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1036, 639);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 240));
@@ -151,6 +152,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
         model.addColumn("id banque");
         model.addColumn("id soc");
         model.addColumn("id Adress");
+        model.addColumn("ajustti");
       
         ClientServiceImpl clientServ = new ClientServiceImpl();
         for(int i =0 ; i<clientServ.getAll().size(); i++) {
@@ -177,7 +179,8 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
         			 Integer.toString(clientServ.getAll().get(i).getId()),
         			 Integer.toString(clientServ.getAll().get(i).getCompteBancaires().get(0).getId()),
         			 Integer.toString(clientServ.getAll().get(i).getRaisonSocial().getId()),
-        			 Integer.toString(clientServ.getAll().get(i).getAdresse().getId())
+        			 Integer.toString(clientServ.getAll().get(i).getAdresse().getId()),
+        			 Boolean.toString(clientServ.getAll().get(i).isTva_assuj())
         			 
         			 });
         }
@@ -405,6 +408,21 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 		panel.add(fieldEmail, gbc_fieldEmail);
 		fieldEmail.setColumns(10);
 		
+		JLabel labelCheckBox = new JLabel("TVA :");
+		GridBagConstraints gbc_labelCheckBox = new GridBagConstraints();
+		gbc_labelCheckBox.anchor = GridBagConstraints.WEST;
+		gbc_labelCheckBox.insets = new Insets(0, 0, 5, 5);
+		gbc_labelCheckBox.gridx = 6;
+		gbc_labelCheckBox.gridy = 4;
+		panel.add(labelCheckBox, gbc_labelCheckBox);
+		
+		checkBoxTva = new JCheckBox("tva_ajustti");
+		GridBagConstraints gbc_checkBoxTva = new GridBagConstraints();
+		gbc_checkBoxTva.insets = new Insets(0, 0, 5, 5);
+		gbc_checkBoxTva.gridx = 7;
+		gbc_checkBoxTva.gridy = 4;
+		panel.add(checkBoxTva, gbc_checkBoxTva);
+		
 		JLabel labelWebSite = new JLabel("WebSite :");
 		GridBagConstraints gbc_labelWebSite = new GridBagConstraints();
 		gbc_labelWebSite.insets = new Insets(0, 0, 5, 5);
@@ -436,8 +454,8 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 		gbc_labelType.gridy = 6;
 		panel.add(labelType, gbc_labelType);
 		
-		JComboBox comboBoxType = new JComboBox();
-		comboBoxType.setModel(new DefaultComboBoxModel(new String[] {"PYHSIUE", "MORALE"}));
+		comboBoxType = new JComboBox();
+		comboBoxType.setModel(new DefaultComboBoxModel(TypeEntreprise.values()));
 		GridBagConstraints gbc_comboBoxType = new GridBagConstraints();
 		gbc_comboBoxType.gridwidth = 3;
 		gbc_comboBoxType.insets = new Insets(0, 0, 5, 5);
@@ -566,7 +584,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 		panel.add(labelVille, gbc_labelVille);
 		
 		comboVille = new JComboBox();
-		comboVille.setModel(new DefaultComboBoxModel(new String[] {"Monastir"}));
+		comboVille.setModel(new DefaultComboBoxModel(Ville.values()));
 		GridBagConstraints gbc_comboVille = new GridBagConstraints();
 		gbc_comboVille.gridwidth = 3;
 		gbc_comboVille.insets = new Insets(0, 0, 5, 5);
@@ -705,8 +723,8 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 			
 			//
 			client.setMatricule(fieldMatricule.getText());
-			if(comboVille.getSelectedItem().toString()=="PYHSIUE") {
-				client.setType(TypeEntreprise.PYHSIUE);
+			if(String.valueOf(comboBoxType.getSelectedItem().toString())== TypeEntreprise.PHYSIQUE.toString()) {
+				client.setType(TypeEntreprise.PHYSIQUE);
 			}
 			else {
 				client.setType(TypeEntreprise.MORALE);
@@ -720,6 +738,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 			client.setAdresse(address);
 			client.setCompteBancaires(listCompte);
 			client.setRaisonSocial(social);
+			client.setTva_assuj(checkBoxTva.isSelected());
 			
 			
 			
@@ -729,6 +748,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 		}
 		
 		if(e.getSource().equals(modifyClientBtn)){
+			
 			ClientServiceImpl clientImpl = new ClientServiceImpl();
 			Client client = new Client();
 			Adress address = new Adress();
@@ -763,8 +783,8 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 			
 			//
 			client.setMatricule(fieldMatricule.getText());
-			if(comboVille.getSelectedItem().toString()=="PHYSIQUE") {
-				client.setType(TypeEntreprise.PYHSIUE);
+			if(comboBoxType.getSelectedItem().toString()==TypeEntreprise.PHYSIQUE.toString()) {
+				client.setType(TypeEntreprise.PHYSIQUE);
 			}
 			else {
 				client.setType(TypeEntreprise.MORALE);
@@ -779,6 +799,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
 			client.setCompteBancaires(listCompte);
 			client.setRaisonSocial(social);
 			client.setId(Integer.parseInt(fieldIdClient.getText()));
+			client.setTva_assuj(checkBoxTva.isSelected());
 			clientImpl.update(client);
 		}
 		if(e.getSource().equals(deleteClientBtn)) {
@@ -834,6 +855,13 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener {
         fieldIdBanque.setText((String) val[20]);
         fieldIdSocial.setText((String) val[21]);
         fieldIdAdress.setText((String) val[22]);
+        if(((String) val[23]) == "true") {
+        	checkBoxTva.setSelected(true);
+        }
+        else
+        {
+        	checkBoxTva.setSelected(false);
+        }
        
 	}
 

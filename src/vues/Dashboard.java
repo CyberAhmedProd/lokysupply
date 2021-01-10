@@ -72,8 +72,9 @@ public class Dashboard extends JFrame implements MouseListener{
         clientPanel = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
+        produitPanel = new javax.swing.JPanel();
+        produitPanel.addMouseListener(this);
+        labelProduit = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -407,33 +408,33 @@ public class Dashboard extends JFrame implements MouseListener{
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        produitPanel.setBackground(new java.awt.Color(255, 255, 255));
+        produitPanel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jLabel7.setBackground(new java.awt.Color(52, 152, 219));
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Manage");
-        jLabel7.setOpaque(true);
+        labelProduit.setBackground(new java.awt.Color(52, 152, 219));
+        labelProduit.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelProduit.setForeground(new java.awt.Color(255, 255, 255));
+        labelProduit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelProduit.setText("Produit");
+        labelProduit.setOpaque(true);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/note.png"))); // NOI18N
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout gl_produitPanel = new javax.swing.GroupLayout(produitPanel);
+        produitPanel.setLayout(gl_produitPanel);
+        gl_produitPanel.setHorizontalGroup(
+            gl_produitPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(labelProduit, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+            .addGroup(gl_produitPanel.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+        gl_produitPanel.setVerticalGroup(
+            gl_produitPanel.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gl_produitPanel.createSequentialGroup()
+                .addComponent(labelProduit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addContainerGap())
@@ -547,7 +548,7 @@ public class Dashboard extends JFrame implements MouseListener{
                 .addGap(50, 50, 50)
                 .addGroup(pnlTimelineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlTimelineLayout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(produitPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(50, 50, 50)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -559,7 +560,7 @@ public class Dashboard extends JFrame implements MouseListener{
                 .addGap(50, 50, 50)
                 .addGroup(pnlTimelineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(produitPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(clientPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addGroup(pnlTimelineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -786,11 +787,11 @@ public class Dashboard extends JFrame implements MouseListener{
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel labelProduit;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel clientPanel;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel produitPanel;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel fournisseurPanel;
     private javax.swing.JPanel jPanel5;
@@ -829,6 +830,11 @@ public class Dashboard extends JFrame implements MouseListener{
 			FournisseurUi fournisseurUi = new FournisseurUi();
 			fournisseurUi.setVisible(true);
 		}
+		if(e.getSource().equals(produitPanel)) {
+			ProductUi productUi = new ProductUi();
+			productUi.setVisible(true);
+		}
+		
 		
 	}
 

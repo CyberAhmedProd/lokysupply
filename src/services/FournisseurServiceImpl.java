@@ -73,7 +73,7 @@ public class FournisseurServiceImpl implements FournisseurService{
 				//
 				fournisseur.setMatricule(rs.getString("matricule"));
 				if(rs.getString("matricule")=="PHYSIQUE") {
-					fournisseur.setType(TypeEntreprise.PYHSIUE);
+					fournisseur.setType(TypeEntreprise.PHYSIQUE);
 				}
 				else {
 					fournisseur.setType(TypeEntreprise.MORALE);
@@ -87,6 +87,7 @@ public class FournisseurServiceImpl implements FournisseurService{
 				fournisseur.setAdresse(address);
 				fournisseur.setCompteBancaires(listCompte);
 				fournisseur.setRaisonSocial(social);
+				fournisseur.setTva_assuj(rs.getBoolean("tva_ajussti"));
 				listFournisseur.add(fournisseur);
 				
 				
@@ -172,8 +173,8 @@ public class FournisseurServiceImpl implements FournisseurService{
 				
 				System.out.println("anque");
 			}
-			String sql ="INSERT INTO `fournisseur`(`matricule`, `type`, `description`, `telfix`, `telmobile`, `email`, `website`, `raision_social`, `compte_bancaire`, `address`) VALUES "
-					+ "('"+p.getMatricule()+"','"+p.getType()+"','"+p.getDescription()+"',"+p.getTelFix()+",'"+p.getTelMobile()+"','"+p.getEmail()+"','"+p.getWebSite()+"',"+p.getRaisonSocial().getId()+","+p.getCompteBancaires().get(0).getId()+","+p.getAdresse().getId()+")";
+			String sql ="INSERT INTO `fournisseur`(`matricule`, `type`, `description`, `telfix`, `telmobile`, `email`, `website`, `raision_social`, `compte_bancaire`, `address`, `tva_ajussti`) VALUES "
+					+ "('"+p.getMatricule()+"','"+p.getType()+"','"+p.getDescription()+"',"+p.getTelFix()+",'"+p.getTelMobile()+"','"+p.getEmail()+"','"+p.getWebSite()+"',"+p.getRaisonSocial().getId()+","+p.getCompteBancaires().get(0).getId()+","+p.getAdresse().getId()+","+p.isTva_assuj()+")";
 			try {
 				st = cn.createStatement();
 				st.executeUpdate(sql);
@@ -253,7 +254,7 @@ public class FournisseurServiceImpl implements FournisseurService{
 				System.out.println("anque");
 			}
 			
-			String sqlUpdate ="UPDATE `fournisseur` SET `matricule`= ?,`type`= ?,`description`= ?,`telfix`= ?,`telmobile`= ?,`email`= ?,`website`= ? WHERE id=?";
+			String sqlUpdate ="UPDATE `fournisseur` SET `matricule`= ?,`type`= ?,`description`= ?,`telfix`= ?,`telmobile`= ?,`email`= ?,`website`= ?,`tva_ajussti`= ? WHERE id=?";
 			try {
 				ps=(PreparedStatement) cn.prepareStatement(sqlUpdate);
 				ps.setString(1,c.getMatricule());
@@ -263,7 +264,8 @@ public class FournisseurServiceImpl implements FournisseurService{
 				ps.setInt(5,c.getTelMobile());
 				ps.setString(6,c.getEmail());
 				ps.setString(7,c.getWebSite());
-				ps.setInt(8,c.getId());
+				ps.setBoolean(8,c.isTva_assuj());
+				ps.setInt(9,c.getId());
 				
 				ps.executeUpdate();
 				ps.close();

@@ -48,6 +48,8 @@ import javax.swing.JEditorPane;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JCheckBox;
+import models.Ville;
 
 public class FournisseurUi extends JFrame implements ActionListener,MouseListener {
 
@@ -68,12 +70,14 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 	private JTextField fieldCode;
 	private JTextField fieldGouvernat;
 	private JComboBox comboVille,comboPays;
+	JCheckBox checkBoxTva;
 	JEditorPane editorPaneDescription;
 	private JButton addFournisseurtbtn,modifyFournisseurBtn,deleteDeleteBtn;
 	private JTextField fieldIdClient;
 	private JTextField fieldIdSocial;
 	private JTextField fieldIdAdress;
 	private JTextField fieldIdBanque;
+	JComboBox comboBoxType;
 
 	/**
 	 * Launch the application.
@@ -104,7 +108,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JPanel topPanel = new JPanel();
-		topPanel.setBackground(new Color(46, 139, 87));
+		topPanel.setBackground(new Color(0, 204, 255));
 		contentPane.add(topPanel, BorderLayout.NORTH);
 		
 		JLabel lblFournisseurManagement = new JLabel("Supplier Management");
@@ -179,7 +183,8 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
         			 Integer.toString(fournisseurServ.getAll().get(i).getId()),
         			 Integer.toString(fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getId()),
         			 Integer.toString(fournisseurServ.getAll().get(i).getRaisonSocial().getId()),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getId())
+        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getId()),
+        			 Boolean.toString(fournisseurServ.getAll().get(i).isTva_assuj())
         			 
         			 });
         }
@@ -280,7 +285,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		JLabel labelMatricule = new JLabel("Matricule :");
@@ -407,6 +412,21 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(fieldEmail, gbc_fieldEmail);
 		fieldEmail.setColumns(10);
 		
+		JLabel labelTva = new JLabel("TVA :");
+		GridBagConstraints gbc_labelTva = new GridBagConstraints();
+		gbc_labelTva.anchor = GridBagConstraints.NORTHWEST;
+		gbc_labelTva.insets = new Insets(0, 0, 5, 5);
+		gbc_labelTva.gridx = 6;
+		gbc_labelTva.gridy = 4;
+		panel.add(labelTva, gbc_labelTva);
+		
+		checkBoxTva = new JCheckBox("tva_ajjusti");
+		GridBagConstraints gbc_checkBoxTva = new GridBagConstraints();
+		gbc_checkBoxTva.insets = new Insets(0, 0, 5, 5);
+		gbc_checkBoxTva.gridx = 7;
+		gbc_checkBoxTva.gridy = 4;
+		panel.add(checkBoxTva, gbc_checkBoxTva);
+		
 		JLabel labelWebSite = new JLabel("WebSite :");
 		GridBagConstraints gbc_labelWebSite = new GridBagConstraints();
 		gbc_labelWebSite.insets = new Insets(0, 0, 5, 5);
@@ -437,9 +457,10 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		gbc_labelType.gridx = 1;
 		gbc_labelType.gridy = 6;
 		panel.add(labelType, gbc_labelType);
-		
-		JComboBox comboBoxType = new JComboBox();
-		comboBoxType.setModel(new DefaultComboBoxModel(new String[] {"PYHSIUE", "MORALE"}));
+	
+		comboBoxType = new JComboBox();
+	
+		comboBoxType.setModel(new DefaultComboBoxModel(TypeEntreprise.values()));
 		GridBagConstraints gbc_comboBoxType = new GridBagConstraints();
 		gbc_comboBoxType.gridwidth = 3;
 		gbc_comboBoxType.insets = new Insets(0, 0, 5, 5);
@@ -568,7 +589,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelVille, gbc_labelVille);
 		
 		comboVille = new JComboBox();
-		comboVille.setModel(new DefaultComboBoxModel(new String[] {"Monastir"}));
+		comboVille.setModel(new DefaultComboBoxModel(Ville.values()));
 		GridBagConstraints gbc_comboVille = new GridBagConstraints();
 		gbc_comboVille.gridwidth = 3;
 		gbc_comboVille.insets = new Insets(0, 0, 5, 5);
@@ -707,8 +728,8 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 			
 			//
 			fournisseur.setMatricule(fieldMatricule.getText());
-			if(comboVille.getSelectedItem().toString()=="PYHSIUE") {
-				fournisseur.setType(TypeEntreprise.PYHSIUE);
+			if(comboBoxType.getSelectedItem().toString()==TypeEntreprise.PHYSIQUE.toString()) {
+				fournisseur.setType(TypeEntreprise.PHYSIQUE);
 			}
 			else {
 				fournisseur.setType(TypeEntreprise.MORALE);
@@ -722,6 +743,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 			fournisseur.setAdresse(address);
 			fournisseur.setCompteBancaires(listCompte);
 			fournisseur.setRaisonSocial(social);
+			fournisseur.setTva_assuj(checkBoxTva.isSelected());
 			
 			
 			
@@ -765,8 +787,8 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 			
 			//
 			fournisseur.setMatricule(fieldMatricule.getText());
-			if(comboVille.getSelectedItem().toString()=="PHYSIQUE") {
-				fournisseur.setType(TypeEntreprise.PYHSIUE);
+			if(comboBoxType.getSelectedItem().toString()=="PHYSIQUE") {
+				fournisseur.setType(TypeEntreprise.PHYSIQUE);
 			}
 			else {
 				fournisseur.setType(TypeEntreprise.MORALE);
@@ -781,6 +803,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 			fournisseur.setCompteBancaires(listCompte);
 			fournisseur.setRaisonSocial(social);
 			fournisseur.setId(Integer.parseInt(fieldIdClient.getText()));
+			fournisseur.setTva_assuj(checkBoxTva.isSelected());
 			fournisseurImpl.update(fournisseur);
 		}
 		if(e.getSource().equals(deleteDeleteBtn)) {
@@ -836,6 +859,13 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
         fieldIdBanque.setText((String) val[20]);
         fieldIdSocial.setText((String) val[21]);
         fieldIdAdress.setText((String) val[22]);
+        if(((String) val[23]) == "true") {
+        	checkBoxTva.setSelected(true);
+        }
+        else
+        {
+        	checkBoxTva.setSelected(false);
+        }
        
 	}
 

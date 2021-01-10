@@ -72,7 +72,7 @@ public class ClientServiceImpl implements ClientService{
 				//
 				client.setMatricule(rs.getString("matricule"));
 				if(rs.getString("matricule")=="PHYSIQUE") {
-					client.setType(TypeEntreprise.PYHSIUE);
+					client.setType(TypeEntreprise.PHYSIQUE);
 				}
 				else {
 					client.setType(TypeEntreprise.MORALE);
@@ -86,6 +86,7 @@ public class ClientServiceImpl implements ClientService{
 				client.setAdresse(address);
 				client.setCompteBancaires(listCompte);
 				client.setRaisonSocial(social);
+				client.setTva_assuj(rs.getBoolean("tva_ajussti"));
 				listClient.add(client);
 				/*
 				ArrayList<CompteBancaire> listCompte = new ArrayList();
@@ -139,11 +140,7 @@ public class ClientServiceImpl implements ClientService{
 		
 	}
 
-	private Client Client(String string, String string2, int parseInt, int parseInt2, String string3, String string4,
-			Adress adress, RaisonSocial raisonSocial, TypeEntreprise type, ArrayList<CompteBancaire> listCompte) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public Boolean save(Client p) {
@@ -216,8 +213,8 @@ public class ClientServiceImpl implements ClientService{
 				
 				System.out.println("anque");
 			}
-			String sql ="INSERT INTO `client`(`matricule`, `type`, `description`, `telfix`, `telmobile`, `email`, `website`, `raision_social`, `compte_bancaire`, `address`) VALUES "
-					+ "('"+p.getMatricule()+"','"+p.getType()+"','"+p.getDescription()+"',"+p.getTelFix()+",'"+p.getTelMobile()+"','"+p.getEmail()+"','"+p.getWebSite()+"',"+p.getRaisonSocial().getId()+","+p.getCompteBancaires().get(0).getId()+","+p.getAdresse().getId()+")";
+			String sql ="INSERT INTO `client`(`matricule`, `type`, `description`, `telfix`, `telmobile`, `email`, `website`, `raision_social`, `compte_bancaire`, `address`, `tva_ajussti`) VALUES "
+					+ "('"+p.getMatricule()+"','"+p.getType()+"','"+p.getDescription()+"',"+p.getTelFix()+",'"+p.getTelMobile()+"','"+p.getEmail()+"','"+p.getWebSite()+"',"+p.getRaisonSocial().getId()+","+p.getCompteBancaires().get(0).getId()+","+p.getAdresse().getId()+","+p.isTva_assuj()+")";
 			try {
 				st = cn.createStatement();
 				st.executeUpdate(sql);
@@ -301,7 +298,7 @@ public class ClientServiceImpl implements ClientService{
 				System.out.println("anque");
 			}
 			
-			String sqlUpdate ="UPDATE `client` SET `matricule`= ?,`type`= ?,`description`= ?,`telfix`= ?,`telmobile`= ?,`email`= ?,`website`= ? WHERE id=?";
+			String sqlUpdate ="UPDATE `client` SET `matricule`= ?,`type`= ?,`description`= ?,`telfix`= ?,`telmobile`= ?,`email`= ?,`website`= ?,`tva_ajussti`= ? WHERE id=?";
 			try {
 				ps=(PreparedStatement) cn.prepareStatement(sqlUpdate);
 				ps.setString(1,c.getMatricule());
@@ -311,7 +308,8 @@ public class ClientServiceImpl implements ClientService{
 				ps.setInt(5,c.getTelMobile());
 				ps.setString(6,c.getEmail());
 				ps.setString(7,c.getWebSite());
-				ps.setInt(8,c.getId());
+				ps.setBoolean(8,c.isTva_assuj());
+				ps.setInt(9,c.getId());
 				
 				ps.executeUpdate();
 				ps.close();

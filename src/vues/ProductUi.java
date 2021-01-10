@@ -1,36 +1,38 @@
 package vues;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FlowLayout;
-import javax.swing.JList;
+
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.FieldView;
+
 
 import models.Adress;
-import models.Client;
-import models.CompteBancaire;
+
+
 import models.Fournisseur;
-import models.RaisonSocial;
-import models.TypeEntreprise;
+import models.Product;
+import models.ProduitFamille;
 import services.ClientServiceImpl;
 import services.FournisseurServiceImpl;
+import services.ProductServiceImpl;
 
-import javax.swing.AbstractListModel;
 import javax.swing.JScrollPane;
-import java.awt.GridLayout;
+
 import javax.swing.JComboBox;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -40,28 +42,33 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JEditorPane;
 import javax.swing.DefaultComboBoxModel;
-import java.awt.Component;
-import javax.swing.ScrollPaneConstants;
 
-public class ProductUi extends JFrame implements ActionListener,MouseListener {
+import javax.swing.ScrollPaneConstants;
+import models.UnitOfMeasure;
+
+public class ProductUi extends JFrame implements ActionListener,MouseListener,CaretListener{
 
 	private JPanel contentPane;
 	private JTable table;
-	private JTextField fieldMatricule;
-	private JTextField fieldLastName;
-	private JTextField fieldName;
+	private JTextField fieldRef;
+	private JTextField fieldDesignation;
+	private JTextField fieldMinStock;
 	private JTextField fieldTva;
-	private JTextField fieldRue;
-	private JComboBox comboVille;
+	private JTextField fieldPrice;
+	private JComboBox comboFournisseur;
 	private JButton addFournisseurtbtn,modifyFournisseurBtn,deleteDeleteBtn;
 	private JTextField fieldIdClient;
 	private JTextField fieldIdSocial;
+	private JTextField fieldStock;
+	private JTextField fieldNomFamille;
+	private JTextField fieldTypeFamille;
+	Map<Integer, String> mapFournisseur;
+	JComboBox comboUnit;
 
 	/**
 	 * Launch the application.
@@ -115,60 +122,38 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ref");
         model.addColumn("designation");
-        model.addColumn("");
-        model.addColumn("mobile");
-        model.addColumn("email");
-        model.addColumn("tel");
         
-        model.addColumn("pays");
-        model.addColumn("rue");
-        model.addColumn("numRue");
-        model.addColumn("ville");
-        model.addColumn("gouvernat");
-        model.addColumn("code postal");
-        model.addColumn("type");
+        model.addColumn("unit");
+        model.addColumn("price");
+        model.addColumn("tva");
         
-        model.addColumn("RIB");
-        model.addColumn("nom banque");
-        model.addColumn("nom agance");
+        model.addColumn("stock");
+        model.addColumn("minstock");
+        model.addColumn("fournisseur_name");
+        model.addColumn("famille_name");
+        model.addColumn("famille_type");
+        model.addColumn("famille_id");
+        model.addColumn("fournisseur_id");
         
-        model.addColumn("sexe");
+        model.addColumn("id");
         
       
-        model.addColumn("siteweb");
-        model.addColumn("description");
-        model.addColumn("id client");
-        model.addColumn("id banque");
-        model.addColumn("id soc");
-        model.addColumn("id Adress");
-      
-        FournisseurServiceImpl fournisseurServ = new FournisseurServiceImpl();
-        for(int i =0 ; i<fournisseurServ.getAll().size(); i++) {
+        ProductServiceImpl produitServ = new ProductServiceImpl();
+        for(int i =0 ; i<produitServ.getAll().size(); i++) {
         	 model.addRow(new String[] {
-        			 fournisseurServ.getAll().get(i).getRaisonSocial().getNom(),
-        			 fournisseurServ.getAll().get(i).getRaisonSocial().getPrenom(),
-        			 fournisseurServ.getAll().get(i).getMatricule(),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getTelMobile()),
-        			 fournisseurServ.getAll().get(i).getEmail(),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getTelFix()),
-        			 fournisseurServ.getAll().get(i).getAdresse().getPays(),
-        			 fournisseurServ.getAll().get(i).getAdresse().getLibelleRue(),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getNumRue()),
-        			 fournisseurServ.getAll().get(i).getAdresse().getNomVille(),
-        			 fournisseurServ.getAll().get(i).getAdresse().getGouvernat(),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getCodePostale()),
-        			 fournisseurServ.getAll().get(i).getType().toString(),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getNumRib()),
-        			 fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getNameBanque(),
-        			 fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getAgence(),
-        			 fournisseurServ.getAll().get(i).getRaisonSocial().getSexe(),
-        			 fournisseurServ.getAll().get(i).getWebSite(),
-        			 fournisseurServ.getAll().get(i).getDescription(),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getId()),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getId()),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getRaisonSocial().getId()),
-        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getId())
-        			 
+        			 produitServ.getAll().get(i).getRef(),
+        			 produitServ.getAll().get(i).getDesignation(),
+        			 produitServ.getAll().get(i).getUnit().toString(),
+        			 Double.toString(produitServ.getAll().get(i).getUnitPriceHt()),
+        			 Double.toString(produitServ.getAll().get(i).getUnitPriceTva()),
+        			 Integer.toString(produitServ.getAll().get(i).getStock()),
+        			 Integer.toString(produitServ.getAll().get(i).getMinStock()),
+        			 produitServ.getAll().get(i).getFournisseur().getRaisonSocial().getNom(),
+        			 produitServ.getAll().get(i).getFamille().getNom(),
+        			 produitServ.getAll().get(i).getFamille().getType(),
+        			 Integer.toString(produitServ.getAll().get(i).getFamille().getId()),
+        			 Integer.toString(produitServ.getAll().get(i).getFournisseur().getId()),
+        			 Integer.toString(produitServ.getAll().get(i).getId()),
         			 });
         }
        
@@ -265,10 +250,10 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		JPanel panel = new JPanel();
 		scrollPane_1.setViewportView(panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		JLabel labelRef = new JLabel("Ref  :");
@@ -278,15 +263,15 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		gbc_labelRef.gridy = 1;
 		panel.add(labelRef, gbc_labelRef);
 		
-		fieldMatricule = new JTextField();
-		GridBagConstraints gbc_fieldMatricule = new GridBagConstraints();
-		gbc_fieldMatricule.gridwidth = 3;
-		gbc_fieldMatricule.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldMatricule.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldMatricule.gridx = 2;
-		gbc_fieldMatricule.gridy = 1;
-		panel.add(fieldMatricule, gbc_fieldMatricule);
-		fieldMatricule.setColumns(10);
+		fieldRef = new JTextField();
+		GridBagConstraints gbc_fieldRef = new GridBagConstraints();
+		gbc_fieldRef.gridwidth = 3;
+		gbc_fieldRef.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldRef.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldRef.gridx = 2;
+		gbc_fieldRef.gridy = 1;
+		panel.add(fieldRef, gbc_fieldRef);
+		fieldRef.setColumns(10);
 		
 		JLabel labelDesignation = new JLabel("Designation :");
 		GridBagConstraints gbc_labelDesignation = new GridBagConstraints();
@@ -296,14 +281,14 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		gbc_labelDesignation.gridy = 1;
 		panel.add(labelDesignation, gbc_labelDesignation);
 		
-		fieldLastName = new JTextField();
-		GridBagConstraints gbc_fieldLastName = new GridBagConstraints();
-		gbc_fieldLastName.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldLastName.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldLastName.gridx = 7;
-		gbc_fieldLastName.gridy = 1;
-		panel.add(fieldLastName, gbc_fieldLastName);
-		fieldLastName.setColumns(10);
+		fieldDesignation = new JTextField();
+		GridBagConstraints gbc_fieldDesignation = new GridBagConstraints();
+		gbc_fieldDesignation.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldDesignation.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldDesignation.gridx = 7;
+		gbc_fieldDesignation.gridy = 1;
+		panel.add(fieldDesignation, gbc_fieldDesignation);
+		fieldDesignation.setColumns(10);
 		
 		JLabel labelUnit = new JLabel("Unit :");
 		GridBagConstraints gbc_labelUnit = new GridBagConstraints();
@@ -312,32 +297,33 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		gbc_labelUnit.gridy = 3;
 		panel.add(labelUnit, gbc_labelUnit);
 		
-		JComboBox comboBoxType = new JComboBox();
-		comboBoxType.setModel(new DefaultComboBoxModel(new String[] {"PYHSIUE", "MORALE"}));
-		GridBagConstraints gbc_comboBoxType = new GridBagConstraints();
-		gbc_comboBoxType.gridwidth = 3;
-		gbc_comboBoxType.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBoxType.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxType.gridx = 2;
-		gbc_comboBoxType.gridy = 3;
-		panel.add(comboBoxType, gbc_comboBoxType);
+		comboUnit = new JComboBox();
+		comboUnit.setModel(new DefaultComboBoxModel(UnitOfMeasure.values()));
+		GridBagConstraints gbc_comboUnit = new GridBagConstraints();
+		gbc_comboUnit.gridwidth = 3;
+		gbc_comboUnit.insets = new Insets(0, 0, 5, 5);
+		gbc_comboUnit.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboUnit.gridx = 2;
+		gbc_comboUnit.gridy = 3;
+		panel.add(comboUnit, gbc_comboUnit);
 		
-		JLabel labelMinStock = new JLabel("Min Stock : ");
-		GridBagConstraints gbc_labelMinStock = new GridBagConstraints();
-		gbc_labelMinStock.anchor = GridBagConstraints.WEST;
-		gbc_labelMinStock.insets = new Insets(0, 0, 5, 5);
-		gbc_labelMinStock.gridx = 6;
-		gbc_labelMinStock.gridy = 3;
-		panel.add(labelMinStock, gbc_labelMinStock);
+		JButton btnAddFamily = new JButton("add Family");
+		btnAddFamily.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		GridBagConstraints gbc_btnAddFamily = new GridBagConstraints();
+		gbc_btnAddFamily.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAddFamily.gridx = 6;
+		gbc_btnAddFamily.gridy = 4;
+		panel.add(btnAddFamily, gbc_btnAddFamily);
 		
-		fieldName = new JTextField();
-		GridBagConstraints gbc_fieldName = new GridBagConstraints();
-		gbc_fieldName.fill = GridBagConstraints.BOTH;
-		gbc_fieldName.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldName.gridx = 7;
-		gbc_fieldName.gridy = 3;
-		panel.add(fieldName, gbc_fieldName);
-		fieldName.setColumns(10);
+		JButton btnDeleteFamily = new JButton("delete family");
+		GridBagConstraints gbc_btnDeleteFamily = new GridBagConstraints();
+		gbc_btnDeleteFamily.insets = new Insets(0, 0, 5, 5);
+		gbc_btnDeleteFamily.gridx = 7;
+		gbc_btnDeleteFamily.gridy = 4;
+		panel.add(btnDeleteFamily, gbc_btnDeleteFamily);
 		
 		JLabel labelFournisseur = new JLabel("Fournisseur  : ");
 		GridBagConstraints gbc_labelFournisseur = new GridBagConstraints();
@@ -347,15 +333,29 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		gbc_labelFournisseur.gridy = 5;
 		panel.add(labelFournisseur, gbc_labelFournisseur);
 		
-		comboVille = new JComboBox();
-		comboVille.setModel(new DefaultComboBoxModel(new String[] {"Monastir"}));
-		GridBagConstraints gbc_comboVille = new GridBagConstraints();
-		gbc_comboVille.gridwidth = 3;
-		gbc_comboVille.insets = new Insets(0, 0, 5, 5);
-		gbc_comboVille.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboVille.gridx = 2;
-		gbc_comboVille.gridy = 5;
-		panel.add(comboVille, gbc_comboVille);
+		
+		comboFournisseur = new JComboBox();
+		mapFournisseur = new HashMap<>();
+		FournisseurServiceImpl fournisseurImpl = new FournisseurServiceImpl();
+		//---------------------------
+		// list des fournisseur 
+	
+		for(int i =0 ; i<fournisseurImpl.getAll().size(); i++) {
+			
+			mapFournisseur.put(fournisseurImpl.getAll().get(i).getId(),fournisseurImpl.getAll().get(i).getRaisonSocial().getNom());
+		}
+		//----------------------------
+				
+		  for (String name : mapFournisseur.values()) {
+			  comboFournisseur.addItem(name);
+		    }
+		GridBagConstraints gbc_comboFournisseur = new GridBagConstraints();
+		gbc_comboFournisseur.gridwidth = 3;
+		gbc_comboFournisseur.insets = new Insets(0, 0, 5, 5);
+		gbc_comboFournisseur.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboFournisseur.gridx = 2;
+		gbc_comboFournisseur.gridy = 5;
+		panel.add(comboFournisseur, gbc_comboFournisseur);
 		
 		JLabel labelFamille = new JLabel("Family : ");
 		GridBagConstraints gbc_labelFamille = new GridBagConstraints();
@@ -365,38 +365,76 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		gbc_labelFamille.gridy = 5;
 		panel.add(labelFamille, gbc_labelFamille);
 		
-		JComboBox comboBox = new JComboBox();
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.gridx = 7;
-		gbc_comboBox.gridy = 5;
-		panel.add(comboBox, gbc_comboBox);
+	
+		JComboBox comboFamily = new JComboBox();
+		comboFamily.setModel(new DefaultComboBoxModel(new String[] {"1"}));
+		GridBagConstraints gbc_comboFamily = new GridBagConstraints();
+		gbc_comboFamily.insets = new Insets(0, 0, 5, 5);
+		gbc_comboFamily.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboFamily.gridx = 7;
+		gbc_comboFamily.gridy = 5;
+		panel.add(comboFamily, gbc_comboFamily);
+		
+		JLabel labelNomFamily = new JLabel("Nom famille :");
+		GridBagConstraints gbc_labelNomFamily = new GridBagConstraints();
+		gbc_labelNomFamily.anchor = GridBagConstraints.WEST;
+		gbc_labelNomFamily.insets = new Insets(0, 0, 5, 5);
+		gbc_labelNomFamily.gridx = 6;
+		gbc_labelNomFamily.gridy = 7;
+		panel.add(labelNomFamily, gbc_labelNomFamily);
+		
+		fieldNomFamille = new JTextField();
+		GridBagConstraints gbc_fieldNomFamille = new GridBagConstraints();
+		gbc_fieldNomFamille.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldNomFamille.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldNomFamille.gridx = 7;
+		gbc_fieldNomFamille.gridy = 7;
+		panel.add(fieldNomFamille, gbc_fieldNomFamille);
+		fieldNomFamille.setColumns(10);
+		
+		JLabel labelTypeFamily = new JLabel("Type :");
+		GridBagConstraints gbc_labelTypeFamily = new GridBagConstraints();
+		gbc_labelTypeFamily.anchor = GridBagConstraints.WEST;
+		gbc_labelTypeFamily.insets = new Insets(0, 0, 5, 5);
+		gbc_labelTypeFamily.gridx = 6;
+		gbc_labelTypeFamily.gridy = 8;
+		panel.add(labelTypeFamily, gbc_labelTypeFamily);
+		
+		fieldTypeFamille = new JTextField();
+		GridBagConstraints gbc_fieldTypeFamille = new GridBagConstraints();
+		gbc_fieldTypeFamille.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldTypeFamille.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldTypeFamille.gridx = 7;
+		gbc_fieldTypeFamille.gridy = 8;
+		panel.add(fieldTypeFamille, gbc_fieldTypeFamille);
+		fieldTypeFamille.setColumns(10);
+		
+		fieldPrice = new JTextField();
+		fieldPrice.setText("0");
+		fieldPrice.addCaretListener(this);
 		
 		JLabel labelPrice = new JLabel("Price  : ");
 		GridBagConstraints gbc_labelPrice = new GridBagConstraints();
 		gbc_labelPrice.anchor = GridBagConstraints.EAST;
 		gbc_labelPrice.insets = new Insets(0, 0, 5, 5);
 		gbc_labelPrice.gridx = 1;
-		gbc_labelPrice.gridy = 7;
+		gbc_labelPrice.gridy = 10;
 		panel.add(labelPrice, gbc_labelPrice);
-		
-		fieldRue = new JTextField();
-		GridBagConstraints gbc_fieldRue = new GridBagConstraints();
-		gbc_fieldRue.gridwidth = 3;
-		gbc_fieldRue.insets = new Insets(0, 0, 5, 5);
-		gbc_fieldRue.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldRue.gridx = 2;
-		gbc_fieldRue.gridy = 7;
-		panel.add(fieldRue, gbc_fieldRue);
-		fieldRue.setColumns(10);
+		GridBagConstraints gbc_fieldPrice = new GridBagConstraints();
+		gbc_fieldPrice.gridwidth = 3;
+		gbc_fieldPrice.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldPrice.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldPrice.gridx = 2;
+		gbc_fieldPrice.gridy = 10;
+		panel.add(fieldPrice, gbc_fieldPrice);
+		fieldPrice.setColumns(10);
 		
 		JLabel labelTva = new JLabel("TVA  :");
 		GridBagConstraints gbc_labelTva = new GridBagConstraints();
 		gbc_labelTva.anchor = GridBagConstraints.WEST;
 		gbc_labelTva.insets = new Insets(0, 0, 5, 5);
 		gbc_labelTva.gridx = 6;
-		gbc_labelTva.gridy = 7;
+		gbc_labelTva.gridy = 10;
 		panel.add(labelTva, gbc_labelTva);
 		
 		fieldTva = new JTextField();
@@ -405,13 +443,48 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		gbc_fieldTva.insets = new Insets(0, 0, 5, 5);
 		gbc_fieldTva.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fieldTva.gridx = 7;
-		gbc_fieldTva.gridy = 7;
+		gbc_fieldTva.gridy = 10;
 		panel.add(fieldTva, gbc_fieldTva);
 		fieldTva.setColumns(10);
 		
+		JLabel labelStock = new JLabel("Stock : ");
+		GridBagConstraints gbc_labelStock = new GridBagConstraints();
+		gbc_labelStock.insets = new Insets(0, 0, 5, 5);
+		gbc_labelStock.anchor = GridBagConstraints.EAST;
+		gbc_labelStock.gridx = 1;
+		gbc_labelStock.gridy = 12;
+		panel.add(labelStock, gbc_labelStock);
+		
+		fieldStock = new JTextField();
+		GridBagConstraints gbc_fieldStock = new GridBagConstraints();
+		gbc_fieldStock.gridwidth = 3;
+		gbc_fieldStock.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldStock.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldStock.gridx = 2;
+		gbc_fieldStock.gridy = 12;
+		panel.add(fieldStock, gbc_fieldStock);
+		fieldStock.setColumns(10);
+		
+		JLabel labelMinStock = new JLabel("Min Stock : ");
+		GridBagConstraints gbc_labelMinStock = new GridBagConstraints();
+		gbc_labelMinStock.anchor = GridBagConstraints.WEST;
+		gbc_labelMinStock.insets = new Insets(0, 0, 5, 5);
+		gbc_labelMinStock.gridx = 6;
+		gbc_labelMinStock.gridy = 12;
+		panel.add(labelMinStock, gbc_labelMinStock);
+		
+		fieldMinStock = new JTextField();
+		GridBagConstraints gbc_fieldMinStock = new GridBagConstraints();
+		gbc_fieldMinStock.fill = GridBagConstraints.BOTH;
+		gbc_fieldMinStock.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldMinStock.gridx = 7;
+		gbc_fieldMinStock.gridy = 12;
+		panel.add(fieldMinStock, gbc_fieldMinStock);
+		fieldMinStock.setColumns(10);
+		
 		fieldIdSocial = new JTextField();
 		GridBagConstraints gbc_fieldIdSocial = new GridBagConstraints();
-		gbc_fieldIdSocial.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldIdSocial.insets = new Insets(0, 0, 0, 5);
 		gbc_fieldIdSocial.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fieldIdSocial.gridx = 6;
 		gbc_fieldIdSocial.gridy = 13;
@@ -421,7 +494,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 		
 		fieldIdClient = new JTextField();
 		GridBagConstraints gbc_fieldIdClient = new GridBagConstraints();
-		gbc_fieldIdClient.insets = new Insets(0, 0, 5, 5);
+		gbc_fieldIdClient.insets = new Insets(0, 0, 0, 5);
 		gbc_fieldIdClient.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fieldIdClient.gridx = 7;
 		gbc_fieldIdClient.gridy = 13;
@@ -434,131 +507,59 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(addFournisseurtbtn)) {
 			
-		
-			FournisseurServiceImpl fournisseurImpl = new FournisseurServiceImpl();
+			ProductServiceImpl clientImpl = new ProductServiceImpl();
 			Fournisseur fournisseur = new Fournisseur();
-			Adress address = new Adress();
-			CompteBancaire compte = new CompteBancaire();
-			RaisonSocial social = new RaisonSocial();
-			ArrayList<CompteBancaire> listCompte = new ArrayList();
-			listCompte.add(compte);
+			ProduitFamille familleProduct = new ProduitFamille();
+			// --------- info famille product 
+			familleProduct.setNom(fieldNomFamille.getText());
+			familleProduct.setType(fieldTypeFamille.getText());
 			
-			// -----------Address info
-			address.setNumRue(Integer.parseInt(fieldNumRue.getText()));
-			address.setLibelleRue( fieldRue.getText());
-			address.setNomVille(comboVille.getSelectedItem().toString());
-			address.setCodePostale(Integer.parseInt(fieldCode.getText()));
-			address.setGouvernat(fieldGouvernat.getText());
-			address.setPays(comboPays.getSelectedItem().toString());
-			// -----------------------------------------
-			// --------------------------CompteBancaire info 
 			
-			compte.setNameBanque(fieldNameBanque.getText());
-			compte.setAgence(fieldTva.getText());
-			compte.setNumRib(Integer.parseInt(fieldRib.getText()));
+			for (Entry<Integer, String> entry : mapFournisseur.entrySet()) {
+				if(entry.getValue().equals(comboFournisseur.getSelectedItem().toString()))
+					fournisseur.setId(entry.getKey());
+			    }
 			
-			/// --------------------------------------------------
-			// ------------------info Social
-			//-----------------------------------------------
-			social.setNom(fieldLastName.getText());
-			social.setPrenom(fieldName.getText());
-			social.setSexe("homme");
-			
-			//
-			fournisseur.setMatricule(fieldMatricule.getText());
-			if(comboVille.getSelectedItem().toString()=="PYHSIUE") {
-				fournisseur.setType(TypeEntreprise.PYHSIUE);
-			}
-			else {
-				fournisseur.setType(TypeEntreprise.MORALE);
-			}
+			Product product = new Product();
+			// ---------------------------
+			// -------------------------- Produit 
+			product.setRef(fieldRef.getText());
+			product.setDesignation(fieldDesignation.getText());
+			product.setUnitPriceHt(Double.parseDouble(fieldPrice.getText()));
+			product.setUnitPriceTva(Double.parseDouble(fieldTva.getText()));
+			product.setMinStock(Integer.parseInt(fieldMinStock.getText()));
+			product.setStock(Integer.parseInt(fieldStock.getText()));
+			product.setFournisseur(fournisseur);
 	
-			fournisseur.setDescription(editorPaneDescription.getText());
-			fournisseur.setTelFix(Integer.parseInt(fielTel.getText()));
-			fournisseur.setTelMobile(Integer.parseInt(fieldMobile.getText()));
-			fournisseur.setEmail(fieldEmail.getText());
-			fournisseur.setWebSite(fieldWebSIte.getText());
-			fournisseur.setAdresse(address);
-			fournisseur.setCompteBancaires(listCompte);
-			fournisseur.setRaisonSocial(social);
+			switch(comboUnit.getSelectedItem().toString()) {
+			case "KILOGRAMME" : product.setUnit(UnitOfMeasure.KILOGRAMME);
+			case "GRAMME" : product.setUnit(UnitOfMeasure.GRAMME);
+			case "LITRE" : product.setUnit(UnitOfMeasure.LITRE);
+			case "LOT" : product.setUnit(UnitOfMeasure.LOT);
+			case "PIECE" : product.setUnit(UnitOfMeasure.PIECE);
+			case "METRE" : product.setUnit(UnitOfMeasure.METRE);
+			case "MILLIMETRE" : product.setUnit(UnitOfMeasure.MILLIMETRE);
+			case "MILLIGRAMME" : product.setUnit(UnitOfMeasure.MILLIGRAMME);
+			}
+			
+			product.setFamille(familleProduct);
+			
+			clientImpl.save(product);
 			
 			
 			
-			fournisseurImpl.save(fournisseur);
+			
+			
+			
 		
 		
 		}
 		
 		if(e.getSource().equals(modifyFournisseurBtn)){
-			FournisseurServiceImpl fournisseurImpl = new FournisseurServiceImpl();
-			Fournisseur fournisseur = new Fournisseur();
-			Adress address = new Adress();
-			CompteBancaire compte = new CompteBancaire();
-			RaisonSocial social = new RaisonSocial();
-			ArrayList<CompteBancaire> listCompte = new ArrayList();
-			listCompte.add(compte);
 			
-			// -----------Address info
-			address.setId(Integer.parseInt(fieldIdAdress.getText()));
-			address.setNumRue(Integer.parseInt(fieldNumRue.getText()));
-			address.setLibelleRue( fieldRue.getText());
-			address.setNomVille(comboVille.getSelectedItem().toString());
-			address.setCodePostale(Integer.parseInt(fieldCode.getText()));
-			address.setGouvernat(fieldGouvernat.getText());
-			address.setPays(comboPays.getSelectedItem().toString());
-			// -----------------------------------------
-			// --------------------------CompteBancaire info 
-			
-			compte.setId(Integer.parseInt(fieldIdBanque.getText()));
-			compte.setNameBanque(fieldNameBanque.getText());
-			compte.setAgence(fieldTva.getText());
-			compte.setNumRib(Integer.parseInt(fieldRib.getText()));
-			
-			/// --------------------------------------------------
-			// ------------------info Social
-			//-----------------------------------------------
-			social.setId(Integer.parseInt(fieldIdSocial.getText()));
-			social.setNom(fieldLastName.getText());
-			social.setPrenom(fieldName.getText());
-			social.setSexe("homme");
-			
-			//
-			fournisseur.setMatricule(fieldMatricule.getText());
-			if(comboVille.getSelectedItem().toString()=="PHYSIQUE") {
-				fournisseur.setType(TypeEntreprise.PYHSIUE);
-			}
-			else {
-				fournisseur.setType(TypeEntreprise.MORALE);
-			}
-	
-			fournisseur.setDescription(editorPaneDescription.getText());
-			fournisseur.setTelFix(Integer.parseInt(fielTel.getText()));
-			fournisseur.setTelMobile(Integer.parseInt(fieldMobile.getText()));
-			fournisseur.setEmail(fieldEmail.getText());
-			fournisseur.setWebSite(fieldWebSIte.getText());
-			fournisseur.setAdresse(address);
-			fournisseur.setCompteBancaires(listCompte);
-			fournisseur.setRaisonSocial(social);
-			fournisseur.setId(Integer.parseInt(fieldIdClient.getText()));
-			fournisseurImpl.update(fournisseur);
 		}
 		if(e.getSource().equals(deleteDeleteBtn)) {
-			FournisseurServiceImpl fournisseurImpl = new FournisseurServiceImpl();
-			Fournisseur fournisseur = new Fournisseur();
-			Adress address = new Adress();
-			CompteBancaire compte = new CompteBancaire();
-			RaisonSocial social = new RaisonSocial();
-			ArrayList<CompteBancaire> listCompte = new ArrayList();
-			listCompte.add(compte);
 			
-			address.setId(Integer.parseInt(fieldIdAdress.getText()));
-			compte.setId(Integer.parseInt(fieldIdBanque.getText()));
-			social.setId(Integer.parseInt(fieldIdSocial.getText()));
-			fournisseur.setId(Integer.parseInt(fieldIdClient.getText()));
-			fournisseur.setAdresse(address);
-			fournisseur.setCompteBancaires(listCompte);
-			fournisseur.setRaisonSocial(social);
-			fournisseurImpl.delete(fournisseur);
 		
 		}
 		
@@ -574,27 +575,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
             val[i]=table.getValueAt(row, i);
         }
         
-        fieldLastName.setText((String) val[0]);
-        fieldName.setText((String) val[1]);
-        fieldMatricule.setText((String) val[2]);
-        fieldMobile.setText((String) val[3]);
-        fieldEmail.setText((String) val[4]);
-        fielTel.setText((String) val[5]);
-        fieldRue.setText((String) val[7]);
-        fieldNumRue.setText((String) val[8]);
-        fieldGouvernat.setText((String) val[10]);
-        fieldCode.setText((String) val[11]);
-        fieldRib.setText((String) val[13]);
-        fieldNameBanque.setText((String) val[14]);
-        fieldTva.setText((String) val[15]);
         
-        fieldWebSIte.setText((String) val[17]);
-        editorPaneDescription.setText((String) val[18]);
-        
-        fieldIdClient.setText((String) val[19]);
-        fieldIdBanque.setText((String) val[20]);
-        fieldIdSocial.setText((String) val[21]);
-        fieldIdAdress.setText((String) val[22]);
        
 	}
 
@@ -619,6 +600,16 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void caretUpdate(CaretEvent e) {
+			if(e.getSource().equals(fieldPrice)){
+				double result = Double.parseDouble(fieldPrice.getText());
+				result += result*0.18f;
+				fieldTva.setText(Double.toString((double)Math.round(result * 100) /100));
+		}
 		
 	}
 
