@@ -49,8 +49,8 @@ cn = ConnexionDB.getConnexion();
 				
 				// -----------fournisseur info
 				fournisseur.setId(rs.getInt("fournisseur.id"));
-				raisonSocial.setNom(rs.getString("product_family.nom"));
-				raisonSocial.setId(rs.getInt("product_family.id"));
+				raisonSocial.setNom(rs.getString("raison_social.nom"));
+				raisonSocial.setId(rs.getInt("raison_social.id"));
 				fournisseur.setRaisonSocial(raisonSocial);
 			
 				
@@ -147,8 +147,7 @@ cn = ConnexionDB.getConnexion();
 	public Boolean update(Product p) {
 		cn = ConnexionDB.getConnexion();
 		  PreparedStatement ps;
-		String sqlProductUpdate ="UPDATE `produit` SET `ref`=?,"
-				+ "`designation`= ?,`unit`= ?,`unit_price`= ?,`unit_price_tva`= ?,`min_stock`= ?,`stock`= ?,`fournisseur`= ?,`famille`= ? WHERE id = ?";
+		String sqlProductUpdate ="UPDATE `produit` SET `ref`=?,`designation`=?,`unit`=?,`unit_price`=?,`unit_price_tva`= ?,`min_stock`= ?,`stock`= ?,`fournisseur`= ?,`famille`= ? WHERE id = ?";
 				
 			
 			try {
@@ -185,9 +184,28 @@ cn = ConnexionDB.getConnexion();
 	}
 
 	@Override
-	public Boolean delete(Product t) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean delete(Product p) {
+		cn = ConnexionDB.getConnexion();
+		  PreparedStatement ps;
+		
+		
+		String sqlDeleteProduct ="DELETE FROM `produit` WHERE id= ?";
+		try {
+			ps=(PreparedStatement) cn.prepareStatement(sqlDeleteProduct);
+			ps.setInt(1,p.getId());
+			ps.executeUpdate();
+			ps.close();
+			return true;
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+			
+		
+		}
+		
 	}
 
 	@Override

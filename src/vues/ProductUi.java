@@ -61,9 +61,9 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 	private JTextField fieldTva;
 	private JTextField fieldPrice;
 	private JComboBox comboFournisseur;
-	private JButton addFournisseurtbtn,modifyFournisseurBtn,deleteDeleteBtn;
-	private JTextField fieldIdClient;
-	private JTextField fieldIdSocial;
+	private JButton addProductbtn,modifyProductBtn,deleteProductBtn;
+	private JTextField fieldIdFamille;
+	private JTextField fieldIdProduct;
 	private JTextField fieldStock;
 	private JTextField fieldNomFamille;
 	private JTextField fieldTypeFamille;
@@ -224,17 +224,18 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		addFournisseurtbtn = new JButton("add");
-		buttonPanel.add(addFournisseurtbtn);
-		addFournisseurtbtn.addActionListener(this);
+		addProductbtn = new JButton("add");
+		buttonPanel.add(addProductbtn);
+		addProductbtn.addActionListener(this);
 		
-		modifyFournisseurBtn = new JButton("update");
-		modifyFournisseurBtn.addActionListener(this);
-		buttonPanel.add(modifyFournisseurBtn);
+		modifyProductBtn = new JButton("update");
+		modifyProductBtn.addActionListener(this);
 		
-		deleteDeleteBtn = new JButton("delete");
-		deleteDeleteBtn.addActionListener(this);
-		buttonPanel.add(deleteDeleteBtn);
+		buttonPanel.add(modifyProductBtn);
+		
+		deleteProductBtn = new JButton("delete");
+		deleteProductBtn.addActionListener(this);
+		buttonPanel.add(deleteProductBtn);
 		
 		JPanel panel_3 = new JPanel();
 		contentPane.add(panel_3, BorderLayout.CENTER);
@@ -482,32 +483,40 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		panel.add(fieldMinStock, gbc_fieldMinStock);
 		fieldMinStock.setColumns(10);
 		
-		fieldIdSocial = new JTextField();
-		GridBagConstraints gbc_fieldIdSocial = new GridBagConstraints();
-		gbc_fieldIdSocial.insets = new Insets(0, 0, 0, 5);
-		gbc_fieldIdSocial.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldIdSocial.gridx = 6;
-		gbc_fieldIdSocial.gridy = 13;
-		panel.add(fieldIdSocial, gbc_fieldIdSocial);
-		fieldIdSocial.setColumns(10);
-		fieldIdSocial.setVisible(false);
+		fieldIdProduct = new JTextField();
+		fieldIdProduct.setText("none");
+		if(fieldIdProduct.getText().equals("none")) {
+			modifyProductBtn.setEnabled(false);
+		}
+		if(fieldIdProduct.getText().equals("none")) {
+			deleteProductBtn.setEnabled(false);
+		}
 		
-		fieldIdClient = new JTextField();
-		GridBagConstraints gbc_fieldIdClient = new GridBagConstraints();
-		gbc_fieldIdClient.insets = new Insets(0, 0, 0, 5);
-		gbc_fieldIdClient.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fieldIdClient.gridx = 7;
-		gbc_fieldIdClient.gridy = 13;
-		panel.add(fieldIdClient, gbc_fieldIdClient);
-		fieldIdClient.setColumns(10);
-		fieldIdClient.setVisible(false);
+		GridBagConstraints gbc_fieldIdProduct = new GridBagConstraints();
+		gbc_fieldIdProduct.insets = new Insets(0, 0, 0, 5);
+		gbc_fieldIdProduct.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldIdProduct.gridx = 6;
+		gbc_fieldIdProduct.gridy = 13;
+		panel.add(fieldIdProduct, gbc_fieldIdProduct);
+		fieldIdProduct.setColumns(10);
+		fieldIdProduct.setVisible(false);
+		
+		fieldIdFamille = new JTextField();
+		GridBagConstraints gbc_fieldIdFamille = new GridBagConstraints();
+		gbc_fieldIdFamille.insets = new Insets(0, 0, 0, 5);
+		gbc_fieldIdFamille.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldIdFamille.gridx = 7;
+		gbc_fieldIdFamille.gridy = 13;
+		panel.add(fieldIdFamille, gbc_fieldIdFamille);
+		fieldIdFamille.setColumns(10);
+		fieldIdFamille.setVisible(false);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(addFournisseurtbtn)) {
+		if(e.getSource().equals(addProductbtn)) {
 			
-			ProductServiceImpl clientImpl = new ProductServiceImpl();
+			ProductServiceImpl productImpl = new ProductServiceImpl();
 			Fournisseur fournisseur = new Fournisseur();
 			ProduitFamille familleProduct = new ProduitFamille();
 			// --------- info famille product 
@@ -544,23 +553,58 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 			
 			product.setFamille(familleProduct);
 			
-			clientImpl.save(product);
-			
-			
-			
-			
-			
-			
-		
-		
-		}
-		
-		if(e.getSource().equals(modifyFournisseurBtn)){
+			productImpl.save(product);
 			
 		}
-		if(e.getSource().equals(deleteDeleteBtn)) {
-			
 		
+		if(e.getSource().equals(modifyProductBtn)){
+			
+			ProductServiceImpl productImpl = new ProductServiceImpl();
+			Fournisseur fournisseur = new Fournisseur();
+			ProduitFamille familleProduct = new ProduitFamille();
+			// --------- info famille product 
+			familleProduct.setId(Integer.parseInt(fieldIdFamille.getText()));
+			
+			
+			for (Entry<Integer, String> entry : mapFournisseur.entrySet()) {
+				if(entry.getValue().equals(comboFournisseur.getSelectedItem().toString()))
+					fournisseur.setId(entry.getKey());
+			    }
+			
+			Product product = new Product();
+			// ---------------------------
+			// -------------------------- Produit 
+			product.setRef(fieldRef.getText());
+			product.setDesignation(fieldDesignation.getText());
+			product.setUnitPriceHt(Double.parseDouble(fieldPrice.getText()));
+			product.setUnitPriceTva(Double.parseDouble(fieldTva.getText()));
+			product.setMinStock(Integer.parseInt(fieldMinStock.getText()));
+			product.setStock(Integer.parseInt(fieldStock.getText()));
+			product.setFournisseur(fournisseur);
+	
+			switch(comboUnit.getSelectedItem().toString()) {
+			case "KILOGRAMME" : product.setUnit(UnitOfMeasure.KILOGRAMME);
+			case "GRAMME" : product.setUnit(UnitOfMeasure.GRAMME);
+			case "LITRE" : product.setUnit(UnitOfMeasure.LITRE);
+			case "LOT" : product.setUnit(UnitOfMeasure.LOT);
+			case "PIECE" : product.setUnit(UnitOfMeasure.PIECE);
+			case "METRE" : product.setUnit(UnitOfMeasure.METRE);
+			case "MILLIMETRE" : product.setUnit(UnitOfMeasure.MILLIMETRE);
+			case "MILLIGRAMME" : product.setUnit(UnitOfMeasure.MILLIGRAMME);
+			}
+			
+			product.setFamille(familleProduct);
+			product.setId(Integer.parseInt(fieldIdProduct.getText()));
+			productImpl.update(product);
+			
+			
+			
+		}
+		if(e.getSource().equals(deleteProductBtn)) {
+			ProductServiceImpl productImpl = new ProductServiceImpl();
+			Product product = new Product();
+			product.setId(Integer.parseInt(fieldIdProduct.getText()));
+			productImpl.delete(product);
 		}
 		
 		
@@ -575,6 +619,31 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
             val[i]=table.getValueAt(row, i);
         }
         
+
+        
+        fieldRef.setText((String) val[0]);
+        fieldDesignation.setText((String) val[1]);
+        fieldStock.setText((String) val[5]);
+        fieldMinStock.setText((String) val[6]);
+        
+        fieldPrice.setText((String) val[3]);
+        fieldTva.setText((String) val[4]);
+        
+        fieldNomFamille.setText((String) val[8]);
+        fieldTypeFamille.setText((String) val[9]);
+        
+        fieldIdFamille.setText((String) val[10]);
+        fieldIdProduct.setText((String) val[12]);
+        
+        comboUnit.getModel().setSelectedItem(val[2]);
+      
+       
+        comboFournisseur.getModel().setSelectedItem((String) val[7]);
+        
+        modifyProductBtn.setEnabled(true);
+        deleteProductBtn.setEnabled(true);
+        
+  
         
        
 	}
