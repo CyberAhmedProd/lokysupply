@@ -66,7 +66,7 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 	private final Toaster toaster;
 	private JPanel contentPane;
 	private JTable table;
-	private JButton addDevisValider,printBtn,btnBackToDash,seekClientButton,btnSeekProduct,btnMakedDevis,addToLigne;
+	private JButton addDevisValider,printBtn,btnBackToDash,seekClientButton,btnSeekProduct,addToLigne,deleteFromLigne;
 	private JTextField fieldMatricule;
 	private JTextField fieldName;
 	private JTextField fieldLastName;
@@ -77,7 +77,7 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 	private JTextField FieldTva;
 	private JTextField fieldQty;
 	JLabel labelTotTva,labelTotal,labelTot;
-	private int idDevis;
+	private int idDevis,rowDelete;
 	DefaultTableModel model;
 	
 
@@ -155,6 +155,7 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
                 return c;
             }
         };
+        table.addMouseListener(this);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setModel(model);
 		table.addMouseListener(this);
@@ -296,16 +297,6 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 		panel.add(fieldTel, gbc_fieldTel);
 		fieldTel.setColumns(10);
 		
-		btnMakedDevis = new JButton("");
-		btnMakedDevis.setEnabled(false);
-		btnMakedDevis.addActionListener(this);
-		btnMakedDevis.setIcon(new ImageIcon(DevisUi.class.getResource("/Gambar/business.png")));
-		GridBagConstraints gbc_btnMakedDevis = new GridBagConstraints();
-		gbc_btnMakedDevis.insets = new Insets(0, 0, 5, 0);
-		gbc_btnMakedDevis.gridx = 3;
-		gbc_btnMakedDevis.gridy = 5;
-		panel.add(btnMakedDevis, gbc_btnMakedDevis);
-		
 		JLabel labelRefProduit = new JLabel("R\u00E9ference Produit :");
 		GridBagConstraints gbc_labelRefProduit = new GridBagConstraints();
 		gbc_labelRefProduit.anchor = GridBagConstraints.EAST;
@@ -381,7 +372,8 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 		panel.add(fieldPrixHt, gbc_fieldPrixHt);
 		fieldPrixHt.setColumns(10);
 		
-		JButton deleteFromLigne = new JButton("");
+		deleteFromLigne = new JButton("");
+		deleteFromLigne.addActionListener(this);
 		deleteFromLigne.setEnabled(false);
 		deleteFromLigne.setIcon(new ImageIcon(DevisUi.class.getResource("/Gambar/delete.png")));
 		GridBagConstraints gbc_deleteFromLigne = new GridBagConstraints();
@@ -462,13 +454,14 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 	
 	private DefaultTableModel makeCompoTable() {
 		
-		 model = new DefaultTableModel();
+		model = new DefaultTableModel();
         model.addColumn("Designation");
         model.addColumn("Reference");
         model.addColumn("Price Ht");
         model.addColumn("Price tva");
         model.addColumn("Qte");
         model.addColumn("id");
+        model.addColumn("idProduct");
  
 
        
@@ -487,7 +480,9 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 				fieldLastName.setText(c.getRaisonSocial().getPrenom());
 				fieldTel.setText(Integer.toString(c.getTelMobile()));
 				if(fieldName.getText() != "") {
-					btnMakedDevis.setEnabled(true);
+					btnSeekProduct.setEnabled(true);
+					DevisServiceImpl devisService = new DevisServiceImpl();
+					idDevis = devisService.createDevis(Integer.parseInt(fieldIdClient.getText()));
 					
 				}
 			}
@@ -505,10 +500,7 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 				addToLigne.setEnabled(true);
 			}
 		}
-		if(e.getSource().equals(addDevisValider)) {
-			
 		
-		}
 		
 		if(e.getSource().equals(printBtn)){
 			
@@ -517,51 +509,84 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 			this.dispose();
 			dash.setVisible(true);
 		}
-		if(e.getSource().equals(btnMakedDevis)) {
+		
+		if(e.getSource().equals(addToLigne)) {
+			
+			model.addRow(new String[] {
+					p.getDesignation(),
+					p.getRef(),
+					Double.toString(p.getUnitPriceHt() * Integer.parseInt(fieldQty.getText())),
+					Double.toString(p.getUnitPriceTva() * Integer.parseInt(fieldQty.getText())),
+					fieldQty.getText(),
+					Integer.toString(idDevis),
+					Integer.toString(p.getId())
+			});
+			model.fireTableDataChanged();
+			 if(model.getRowCount()>0) {
+		    	 addDevisValider.setEnabled(true);
+		     }
+		     else {
+		    	 addDevisValider.setEnabled(false);
+		     }
+			double totHt=0,tot=0;
+			
+			for (int count = 0; count < model.getRowCount(); count++){
+				
+				  totHt+=Double.parseDouble(model.getValueAt(count, 2).toString());
+				  tot+=Double.parseDouble(model.getValueAt(count, 3).toString());
+				}
+			
+			 labelTot.setText(Double.toString(totHt));
+		     labelTotTva.setText(Double.toString(tot));
+		     toaster.success("product added to devis");
+		     
+		}
+		
+		if(e.getSource().equals(addDevisValider)) {
 			DevisServiceImpl devisService = new DevisServiceImpl();
-			idDevis = devisService.createDevis(Integer.parseInt(fieldIdClient.getText()));
+			
 			if(idDevis > 0) {
+				devisService.addProductLignes(model);
 				btnSeekProduct.setEnabled(true);
 				seekClientButton.setEnabled(false);
-				btnMakedDevis.setEnabled(false);
+				
 			}
-		}
-		if(e.getSource().equals(addToLigne)) {
-			DevisServiceImpl devisService = new DevisServiceImpl();
-			 devisService.addProductLigne(p, Integer.parseInt(fieldQty.getText()), idDevis);
-			 toaster.success("ligne added successfuly");
-			 fieldRef.setText("");
-			 fieldDesignation.setText("");
-			 fieldPrixHt.setText("");
-			 FieldTva.setText("");
-			 addToLigne.setEnabled(false);
-			 
-			 
-			 
-			 DevisServiceImpl devisServ = new DevisServiceImpl();
-		        model.setRowCount(0);
-		        double totHt=0,tot=0;
-		        for(int i =0 ; i<devisServ.getAllLigneDevis(idDevis).size(); i++) {
-		        	 model.addRow(new String[] {
-		        			 devisServ.getAllLigneDevis(idDevis).get(i).getProducts().getDesignation(),
-		        			 devisServ.getAllLigneDevis(idDevis).get(i).getProducts().getRef(),
-		        			 Double.toString(devisServ.getAllLigneDevis(idDevis).get(i).getTotalHt()),
-		        			 Double.toString(devisServ.getAllLigneDevis(idDevis).get(i).getTotalTva()),
-		        			 Integer.toString(devisServ.getAllLigneDevis(idDevis).get(i).getQuantity()),
-		        			 Integer.toString(devisServ.getAllLigneDevis(idDevis).get(i).getId())
-		        			 });
-		        	 totHt+=devisServ.getAllLigneDevis(idDevis).get(i).getTotalHt();
-		        	 tot+=devisServ.getAllLigneDevis(idDevis).get(i).getTotalTva();
-		        }
-		        labelTot.setText(Double.toString(totHt));
-		        labelTotTva.setText(Double.toString(tot));
+			toaster.success("Devis added successfuly");
 		}
 		
+		if(e.getSource().equals(deleteFromLigne)) {
+			((DefaultTableModel) table.getModel()).removeRow(rowDelete);
+			toaster.error("product deleted from devis");
+			double totHt=0,tot=0;
+			
+			for (int count = 0; count < model.getRowCount(); count++){
+				
+				  totHt+=Double.parseDouble(model.getValueAt(count, 2).toString());
+				  tot+=Double.parseDouble(model.getValueAt(count, 3).toString());
+				}
+			
+			 labelTot.setText(Double.toString(totHt));
+		     labelTotTva.setText(Double.toString(tot));
+		     if(totHt==0 || tot==0) {
+		    	 addDevisValider.setEnabled(false);
+		     }
+		     else {
+		    	 addDevisValider.setEnabled(true);
+		     }
+		     deleteFromLigne.setEnabled(false);
+			}
 		
 	}
+	
+		
+	
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource().equals(table)) {
+			rowDelete = table.getSelectedRow();
+			deleteFromLigne.setEnabled(true);
+		}
 		
         
        

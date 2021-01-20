@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.mysql.jdbc.PreparedStatement;
 
 import dao.DevisService;
@@ -54,27 +56,33 @@ public class DevisServiceImpl implements DevisService{
 	}
 
 	@Override
-	public Boolean addProductLigne(Product p, int n,int idDevis) {
-		 cn = ConnexionDB.getConnexion();
+	public Boolean addProductLignes(DefaultTableModel model) {
+		 Boolean valid = false;
 		 PreparedStatement ps;
+		 cn = ConnexionDB.getConnexion();
+		 for (int count = 0; count < model.getRowCount(); count++){
+		
 		 String sqlLigneDevis ="INSERT INTO `lignes_devis`(`quantity`, `totalHt`, `totalTva`, `produit`, `devis`) VALUES (?,?,?,?,?)";
 					
 			try {
 				ps=(PreparedStatement) cn.prepareStatement(sqlLigneDevis, Statement.RETURN_GENERATED_KEYS);
-				ps.setInt(1,n);
-				ps.setDouble(2,p.getUnitPriceHt()*n);
-				ps.setDouble(3,p.getUnitPriceTva()*n);
-				ps.setInt(4,p.getId());
-				ps.setInt(5,idDevis);
+				ps.setInt(1,Integer.parseInt(model.getValueAt(count, 4).toString()));
+				ps.setDouble(2,Double.parseDouble(model.getValueAt(count, 2).toString()));
+				ps.setDouble(3,Double.parseDouble(model.getValueAt(count, 3).toString()));
+				ps.setInt(4,Integer.parseInt(model.getValueAt(count, 6).toString()));
+				ps.setInt(5,Integer.parseInt(model.getValueAt(count, 5).toString()));
 				ps.executeUpdate();
 				ps.close();
-				return true;
+				valid = true;
 			} catch (SQLException e2) {
 				
 				System.out.println("ligne");
-				return false;
+				
 			}
-			
+		 }
+		return valid;
+		
+	
 	}
 
 	@Override
