@@ -2,6 +2,7 @@ package vues;
 import Toaster.Toaster;
 import Utils.*;
 import models.User;
+import services.EntrepriseServiceImpl;
 import services.UserServiceImpl;
 
 import java.awt.*;
@@ -20,6 +21,8 @@ public class LoginUI extends JFrame {
     private TextFieldPassword passwordField;
 	private TextFieldUsername usernameField;
 	private User user;
+	public static EntrepriseUI singletonEntreprise = null;
+	public static Dashboard singletonDashboard = null;
 
     public LoginUI() throws IOException {
         JPanel loginJPanel = getMainJPanel();
@@ -271,17 +274,35 @@ public class LoginUI extends JFrame {
         {
             UserServiceImpl userServices = new UserServiceImpl();
              User user = userServices.login(this.usernameField.getText(), passwordField.getText());
-            if(!user.equals(null)) {
-            	toaster.warn("Login event");
-            	Dashboard dash = new Dashboard(user);
-            	this.dispose();
-            	dash.setVisible(true);
+            if(user != null) {
+            	
+            	EntrepriseServiceImpl entrepriseService = new EntrepriseServiceImpl();
+            	if(entrepriseService.getEntreprise() == null) {
+            		toaster.warn("Login Ok");
+                	Thread.sleep(500);
+                	singletonDashboard = new Dashboard(user);
+                	singletonDashboard.setVisible(false);
+            		singletonEntreprise= new EntrepriseUI(singletonDashboard);
+            	
+            		
+            		this.dispose();
+            		singletonEntreprise.setVisible(true);
+            		
+            	}
+            	else {
+            		Dashboard dash = new Dashboard(user);
+                	this.dispose();
+                	dash.setVisible(true);
+            		
+            	}
+            	
             }
             else {
             	toaster.error("Login wrong password or login");
+            	Thread.sleep(500);
             }
            
-        	Thread.sleep(1000);
+        	
         	
             
         } 

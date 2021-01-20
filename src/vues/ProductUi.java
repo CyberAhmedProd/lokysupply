@@ -10,9 +10,11 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FlowLayout;
 
@@ -35,6 +37,7 @@ import javax.swing.JScrollPane;
 
 import javax.swing.JComboBox;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
@@ -61,7 +64,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 	private JTextField fieldTva;
 	private JTextField fieldPrice;
 	private JComboBox comboFournisseur;
-	private JButton addProductbtn,modifyProductBtn,deleteProductBtn;
+	private JButton addProductbtn,modifyProductBtn,deleteProductBtn,btnBackToDash;
 	private JTextField fieldIdFamille;
 	private JTextField fieldIdProduct;
 	private JTextField fieldStock;
@@ -69,6 +72,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 	private JTextField fieldTypeFamille;
 	Map<Integer, String> mapFournisseur;
 	JComboBox comboUnit;
+	Dashboard dash;
 
 	/**
 	 * Launch the application.
@@ -89,26 +93,29 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 	/**
 	 * Create the frame.
 	 */
-	public ProductUi() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public ProductUi(Dashboard dash) {
+		this.dash = dash;
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1036, 639);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 240));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+		Dimension d =   contentPane.getSize();
 		JPanel topPanel = new JPanel();
 		topPanel.setBackground(new Color(204, 0, 102));
 		contentPane.add(topPanel, BorderLayout.NORTH);
 		
 		JLabel lblFournisseurManagement = new JLabel("Product Management");
-		lblFournisseurManagement.setIcon(new ImageIcon(ClientUi.class.getResource("/Gambar/file-viewer.png")));
+		lblFournisseurManagement.setIcon(new ImageIcon(ProductUi.class.getResource("/Gambar/product.png")));
 		lblFournisseurManagement.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 17));
 		topPanel.add(lblFournisseurManagement);
 		
 		JPanel vuePanel = new JPanel();
-		contentPane.add(vuePanel, BorderLayout.WEST);
+		
+
+		//contentPane.add(vuePanel, BorderLayout.WEST);
 		vuePanel.setLayout(new BoxLayout(vuePanel, BoxLayout.Y_AXIS));
 		
 		JLabel labelFournisseurList = new JLabel("Product's List");
@@ -162,83 +169,41 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setModel(model);
 		table.addMouseListener(this);
-			/*new Object[][] {
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"nom", "prenom", "matricule", "mobile", "email", "tel", "adress"
-			}
-		));*/
+			
 		scrollPane.setViewportView(table);
 		
 		JPanel buttonPanel = new JPanel();
 		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		addProductbtn = new JButton("add");
+		addProductbtn = new JButton("");
+		addProductbtn.setIcon(new ImageIcon(ProductUi.class.getResource("/Gambar/shopping-cart.png")));
 		buttonPanel.add(addProductbtn);
 		addProductbtn.addActionListener(this);
 		
-		modifyProductBtn = new JButton("update");
+		modifyProductBtn = new JButton("");
+		modifyProductBtn.setIcon(new ImageIcon(ProductUi.class.getResource("/Gambar/files.png")));
 		modifyProductBtn.addActionListener(this);
 		
 		buttonPanel.add(modifyProductBtn);
 		
-		deleteProductBtn = new JButton("delete");
+		deleteProductBtn = new JButton("");
+		deleteProductBtn.setIcon(new ImageIcon(ProductUi.class.getResource("/Gambar/delete.png")));
 		deleteProductBtn.addActionListener(this);
 		buttonPanel.add(deleteProductBtn);
 		
+		btnBackToDash = new JButton("");
+		btnBackToDash.setIcon(new ImageIcon(ProductUi.class.getResource("/Gambar/reply-message.png")));
+		buttonPanel.add(btnBackToDash);
+		btnBackToDash.addActionListener(this);
+		
+		JPanel panelCenter = new JPanel();
+		panelCenter.setLayout(new GridLayout(1,2));
+		
 		JPanel panel_3 = new JPanel();
-		contentPane.add(panel_3, BorderLayout.CENTER);
+		panelCenter.add(vuePanel);
+		panelCenter.add(panel_3);
+		contentPane.add(panelCenter, BorderLayout.CENTER);
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblFournisseur = new JLabel("Product");
@@ -604,7 +569,17 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 			ProductServiceImpl productImpl = new ProductServiceImpl();
 			Product product = new Product();
 			product.setId(Integer.parseInt(fieldIdProduct.getText()));
-			productImpl.delete(product);
+			JOptionPane confirmPan = new JOptionPane();
+			int a=confirmPan.showConfirmDialog(this,"Are you sure deleting this product?");
+			if(a==confirmPan.YES_OPTION){  
+				productImpl.delete(product);
+			}  
+		
+		}
+		
+		if(e.getSource().equals(btnBackToDash)) {
+			this.dispose();
+			dash.setVisible(true);
 		}
 		
 		

@@ -27,22 +27,30 @@ public class UserServiceImpl implements UserService{
 		try {
 				st = cn.createStatement();
 				ResultSet rs = st.executeQuery(sql);
-				rs.next();
-				person= new User();
-				person.setId(rs.getInt("id"));
-				person.setNom(rs.getString("nom"));
-				person.setPrenom(rs.getString("prenom"));
-				person.setLogin(rs.getString("login"));
-				person.setPassword(rs.getString("password"));
-				person.setCreated_at(rs.getTimestamp("account_created"));
-				person.setEtat(rs.getBoolean("etat"));
-				return person;
+				if(rs.next()) {
+					person= new User();
+					person.setId(rs.getInt("id"));
+					person.setNom(rs.getString("nom"));
+					person.setPrenom(rs.getString("prenom"));
+					person.setLogin(rs.getString("login"));
+					person.setPassword(rs.getString("password"));
+					person.setCreated_at(rs.getTimestamp("account_created"));
+					person.setEtat(rs.getBoolean("etat"));
+					System.out.println("a");
+					return person;
+				}
+				else {
+					System.out.println("b");
+					return null;
+				}
+					
+				
 				
 			}catch(SQLException e) {
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-				return person;
+				System.out.println(person);
+				return null;
 			}
+			
 		
 	}
 

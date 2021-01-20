@@ -7,7 +7,7 @@ import models.Client;
 
 public interface ClientService {
 	
-	Client get(long id);
+	Client seekByMatricule(String matricule);
 
     ArrayList<Client> getAll();
 
@@ -16,4 +16,6 @@ public interface ClientService {
     Boolean update(Client t);
 
     Boolean delete(Client t);
+    
+
 }

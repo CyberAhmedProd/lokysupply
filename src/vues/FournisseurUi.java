@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FlowLayout;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -72,12 +73,13 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 	private JComboBox comboVille,comboPays;
 	JCheckBox checkBoxTva;
 	JEditorPane editorPaneDescription;
-	private JButton addFournisseurtbtn,modifyFournisseurBtn,deleteDeleteBtn;
+	private JButton addFournisseurtbtn,modifyFournisseurBtn,deleteDeleteBtn,btnBackToDash;
 	private JTextField fieldIdClient;
 	private JTextField fieldIdSocial;
 	private JTextField fieldIdAdress;
 	private JTextField fieldIdBanque;
 	JComboBox comboBoxType;
+	Dashboard dash;
 
 	/**
 	 * Launch the application.
@@ -98,7 +100,8 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 	/**
 	 * Create the frame.
 	 */
-	public FournisseurUi() {
+	public FournisseurUi(Dashboard dash) {
+		this.dash = dash;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1036, 639);
 		contentPane = new JPanel();
@@ -112,12 +115,12 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		contentPane.add(topPanel, BorderLayout.NORTH);
 		
 		JLabel lblFournisseurManagement = new JLabel("Supplier Management");
-		lblFournisseurManagement.setIcon(new ImageIcon(ClientUi.class.getResource("/Gambar/file-viewer.png")));
+		lblFournisseurManagement.setIcon(new ImageIcon(FournisseurUi.class.getResource("/Gambar/manufacture.png")));
 		lblFournisseurManagement.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 17));
 		topPanel.add(lblFournisseurManagement);
 		
 		JPanel vuePanel = new JPanel();
-		contentPane.add(vuePanel, BorderLayout.WEST);
+		//contentPane.add(vuePanel, BorderLayout.WEST);
 		vuePanel.setLayout(new BoxLayout(vuePanel, BoxLayout.Y_AXIS));
 		
 		JLabel labelFournisseurList = new JLabel("Supplier's List");
@@ -194,82 +197,38 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setModel(model);
 		table.addMouseListener(this);
-			/*new Object[][] {
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"nom", "prenom", "matricule", "mobile", "email", "tel", "adress"
-			}
-		));*/
+		
 		scrollPane.setViewportView(table);
 		
 		JPanel buttonPanel = new JPanel();
 		contentPane.add(buttonPanel, BorderLayout.SOUTH);
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		addFournisseurtbtn = new JButton("add");
+		addFournisseurtbtn = new JButton("");
+		addFournisseurtbtn.setIcon(new ImageIcon(FournisseurUi.class.getResource("/Gambar/add-user.png")));
 		buttonPanel.add(addFournisseurtbtn);
 		addFournisseurtbtn.addActionListener(this);
 		
-		modifyFournisseurBtn = new JButton("update");
+		modifyFournisseurBtn = new JButton("");
+		modifyFournisseurBtn.setIcon(new ImageIcon(FournisseurUi.class.getResource("/Gambar/files.png")));
 		modifyFournisseurBtn.addActionListener(this);
 		buttonPanel.add(modifyFournisseurBtn);
 		
-		deleteDeleteBtn = new JButton("delete");
+		deleteDeleteBtn = new JButton("");
+		deleteDeleteBtn.setIcon(new ImageIcon(FournisseurUi.class.getResource("/Gambar/delete.png")));
 		deleteDeleteBtn.addActionListener(this);
 		buttonPanel.add(deleteDeleteBtn);
 		
+		btnBackToDash = new JButton("");
+		btnBackToDash.setIcon(new ImageIcon(FournisseurUi.class.getResource("/Gambar/reply-message.png")));
+		buttonPanel.add(btnBackToDash);
+		btnBackToDash.addActionListener(this);
+		JPanel panelCenter = new JPanel();
+		panelCenter.setLayout(new GridLayout(1,2));
 		JPanel panel_3 = new JPanel();
-		contentPane.add(panel_3, BorderLayout.CENTER);
+		panelCenter.add(vuePanel);
+		panelCenter.add(panel_3);
+		contentPane.add(panelCenter, BorderLayout.CENTER);
 		panel_3.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblFournisseur = new JLabel("Supplier");
@@ -822,8 +781,19 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 			fournisseur.setAdresse(address);
 			fournisseur.setCompteBancaires(listCompte);
 			fournisseur.setRaisonSocial(social);
-			fournisseurImpl.delete(fournisseur);
+			
+			JOptionPane confirmPan = new JOptionPane();
+			int a=confirmPan.showConfirmDialog(this,"Are you sure deleting this supplier?");
+			if(a==confirmPan.YES_OPTION){  
+				fournisseurImpl.delete(fournisseur);
+			}  
+			
 		
+		}
+		
+		if(e.getSource().equals(btnBackToDash)) {
+			this.dispose();
+			dash.setVisible(true);
 		}
 		
 		

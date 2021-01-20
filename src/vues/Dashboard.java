@@ -20,6 +20,15 @@ import javax.swing.JLabel;
 
 import Utils.UIUtils;
 import models.User;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.JPanel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -229,7 +238,7 @@ public class Dashboard extends JFrame implements MouseListener{
 
         btnNews.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 16)); // NOI18N
         btnNews.setForeground(new java.awt.Color(44, 62, 80));
-        btnNews.setText("STATS");
+        btnNews.setText("Ventes");
         btnNews.setContentAreaFilled(false);
         btnNews.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnNews.setFocusable(false);
@@ -387,7 +396,7 @@ public class Dashboard extends JFrame implements MouseListener{
         jLabel6.setOpaque(true);
 
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/file-viewer.png"))); // NOI18N
+        jLabel11.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/client-management.png"))); // NOI18N
 
         javax.swing.GroupLayout gl_clientPanel = new javax.swing.GroupLayout(clientPanel);
         clientPanel.setLayout(gl_clientPanel);
@@ -419,7 +428,7 @@ public class Dashboard extends JFrame implements MouseListener{
         labelProduit.setOpaque(true);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/note.png"))); // NOI18N
+        jLabel12.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/product.png"))); // NOI18N
 
         javax.swing.GroupLayout gl_produitPanel = new javax.swing.GroupLayout(produitPanel);
         produitPanel.setLayout(gl_produitPanel);
@@ -451,7 +460,7 @@ public class Dashboard extends JFrame implements MouseListener{
         jLabel8.setOpaque(true);
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gambar/settings.png"))); // NOI18N
+        jLabel13.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/param.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -577,28 +586,171 @@ public class Dashboard extends JFrame implements MouseListener{
 
         jLabel18.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(44, 62, 80));
-        jLabel18.setText("NEWS");
+        jLabel18.setText("Gestion des Ventes");
+        
+        jspTimeline_1 = new JScrollPane();
+        jspTimeline_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jspTimeline_1.setBorder(null);
 
         javax.swing.GroupLayout pnlNewsLayout = new javax.swing.GroupLayout(pnlNews);
-        pnlNews.setLayout(pnlNewsLayout);
         pnlNewsLayout.setHorizontalGroup(
-            pnlNewsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlNewsLayout.createSequentialGroup()
-                .addGap(70, 70, 70)
-                .addGroup(pnlNewsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel18)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(60, Short.MAX_VALUE))
+        	pnlNewsLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(pnlNewsLayout.createSequentialGroup()
+        			.addGroup(pnlNewsLayout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(pnlNewsLayout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(jspTimeline_1, GroupLayout.PREFERRED_SIZE, 980, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(pnlNewsLayout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 934, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(pnlNewsLayout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(jLabel18)))
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlNewsLayout.setVerticalGroup(
-            pnlNewsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlNewsLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(298, Short.MAX_VALUE))
+        	pnlNewsLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(pnlNewsLayout.createSequentialGroup()
+        			.addGap(45)
+        			.addComponent(jLabel18, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(jspTimeline_1, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+        
+        pnlTimeline_1 = new JPanel();
+        pnlTimeline_1.setBackground(new Color(245, 245, 245));
+        jspTimeline_1.setViewportView(pnlTimeline_1);
+        
+        devisPanel = new JPanel();
+        devisPanel.setBackground(Color.WHITE);
+        devisPanel.addMouseListener(this);
+        
+        labelDevis = new JLabel();
+        labelDevis.setText("Devis");
+        labelDevis.setOpaque(true);
+        labelDevis.setHorizontalAlignment(SwingConstants.CENTER);
+        labelDevis.setForeground(Color.WHITE);
+        labelDevis.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        labelDevis.setBackground(new Color(0, 204, 106));
+        
+        jLabel11_1 = new JLabel();
+        jLabel11_1.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/DEVIS.png")));
+        jLabel11_1.setHorizontalAlignment(SwingConstants.CENTER);
+        GroupLayout gl_devisPanel = new GroupLayout(devisPanel);
+        gl_devisPanel.setHorizontalGroup(
+        	gl_devisPanel.createParallelGroup(Alignment.LEADING)
+        		.addComponent(labelDevis, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+        		.addGroup(gl_devisPanel.createSequentialGroup()
+        			.addGap(50)
+        			.addComponent(jLabel11_1, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(51, Short.MAX_VALUE))
+        );
+        gl_devisPanel.setVerticalGroup(
+        	gl_devisPanel.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_devisPanel.createSequentialGroup()
+        			.addComponent(labelDevis, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(jLabel11_1, GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(29, Short.MAX_VALUE))
+        );
+        devisPanel.setLayout(gl_devisPanel);
+        
+        produitPanel_1 = new JPanel();
+        produitPanel_1.setBackground(Color.WHITE);
+        
+        labelProduit_1 = new JLabel();
+        labelProduit_1.setText("Produit");
+        labelProduit_1.setOpaque(true);
+        labelProduit_1.setHorizontalAlignment(SwingConstants.CENTER);
+        labelProduit_1.setForeground(Color.WHITE);
+        labelProduit_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        labelProduit_1.setBackground(new Color(52, 152, 219));
+        
+        jLabel12_1 = new JLabel();
+        jLabel12_1.setHorizontalAlignment(SwingConstants.CENTER);
+        GroupLayout gl_produitPanel_1 = new GroupLayout(produitPanel_1);
+        gl_produitPanel_1.setHorizontalGroup(
+        	gl_produitPanel_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addComponent(labelProduit_1, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+        		.addGroup(gl_produitPanel_1.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jLabel12_1, GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        gl_produitPanel_1.setVerticalGroup(
+        	gl_produitPanel_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addGroup(gl_produitPanel_1.createSequentialGroup()
+        			.addComponent(labelProduit_1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(jLabel12_1, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        produitPanel_1.setLayout(gl_produitPanel_1);
+        
+        jPanel3_1 = new JPanel();
+        jPanel3_1.setBackground(Color.WHITE);
+        
+        jLabel8_1 = new JLabel();
+        jLabel8_1.setText("Personalization");
+        jLabel8_1.setOpaque(true);
+        jLabel8_1.setHorizontalAlignment(SwingConstants.CENTER);
+        jLabel8_1.setForeground(Color.WHITE);
+        jLabel8_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        jLabel8_1.setBackground(new Color(243, 156, 18));
+        
+        jLabel13_1 = new JLabel();
+        jLabel13_1.setHorizontalAlignment(SwingConstants.CENTER);
+        GroupLayout gl_jPanel3_1 = new GroupLayout(jPanel3_1);
+        gl_jPanel3_1.setHorizontalGroup(
+        	gl_jPanel3_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addComponent(jLabel8_1, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+        		.addGroup(gl_jPanel3_1.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jLabel13_1, GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        gl_jPanel3_1.setVerticalGroup(
+        	gl_jPanel3_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addGroup(gl_jPanel3_1.createSequentialGroup()
+        			.addComponent(jLabel8_1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(jLabel13_1, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        jPanel3_1.setLayout(gl_jPanel3_1);
+        GroupLayout gl_pnlTimeline_1 = new GroupLayout(pnlTimeline_1);
+        gl_pnlTimeline_1.setHorizontalGroup(
+        	gl_pnlTimeline_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 1003, Short.MAX_VALUE)
+        		.addGroup(gl_pnlTimeline_1.createSequentialGroup()
+        			.addGap(70)
+        			.addComponent(devisPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(50)
+        			.addComponent(produitPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(50)
+        			.addComponent(jPanel3_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap())
+        );
+        gl_pnlTimeline_1.setVerticalGroup(
+        	gl_pnlTimeline_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 650, Short.MAX_VALUE)
+        		.addGroup(gl_pnlTimeline_1.createSequentialGroup()
+        			.addGap(50)
+        			.addGroup(gl_pnlTimeline_1.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(jPanel3_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(produitPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(devisPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addContainerGap(350, Short.MAX_VALUE))
+        );
+        pnlTimeline_1.setLayout(gl_pnlTimeline_1);
+        pnlNews.setLayout(pnlNewsLayout);
 
         pnlBody.add(pnlNews, "card4");
 
@@ -806,6 +958,17 @@ public class Dashboard extends JFrame implements MouseListener{
     private javax.swing.JPanel pnlMenu;
     private javax.swing.JPanel pnlNews;
     private javax.swing.JPanel pnlTimeline;
+    private JScrollPane jspTimeline_1;
+    private JPanel pnlTimeline_1;
+    private JPanel devisPanel;
+    private JLabel labelDevis;
+    private JLabel jLabel11_1;
+    private JPanel produitPanel_1;
+    private JLabel labelProduit_1;
+    private JLabel jLabel12_1;
+    private JPanel jPanel3_1;
+    private JLabel jLabel8_1;
+    private JLabel jLabel13_1;
     // End of variables declaration//GEN-END:variables
 
 	
@@ -822,17 +985,26 @@ public class Dashboard extends JFrame implements MouseListener{
 			}
 		}
 		if(e.getSource().equals(clientPanel)){
-				ClientUi clientUi = new ClientUi();
+				this.dispose();
+				ClientUi clientUi = new ClientUi(this);
 				clientUi.setVisible(true);
+				
 				
 		}
 		if(e.getSource().equals(fournisseurPanel)) {
-			FournisseurUi fournisseurUi = new FournisseurUi();
+			this.dispose();
+			FournisseurUi fournisseurUi = new FournisseurUi(this);
 			fournisseurUi.setVisible(true);
 		}
 		if(e.getSource().equals(produitPanel)) {
-			ProductUi productUi = new ProductUi();
+			this.dispose();
+			ProductUi productUi = new ProductUi(this);
 			productUi.setVisible(true);
+		}
+		if(e.getSource().equals(devisPanel)) {
+			this.dispose();
+			DevisUi devisUi = new DevisUi(this);
+			devisUi.setVisible(true);
 		}
 		
 		

@@ -8,7 +8,7 @@ import models.Product;
 
 public interface ProductService {
 	
-	Product get(long id);
+	Product seekByRef(String ref);
 
     ArrayList<Product> getAll();
 

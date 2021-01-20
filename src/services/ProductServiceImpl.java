@@ -22,15 +22,11 @@ import models.UnitOfMeasure;
 public class ProductServiceImpl implements ProductService{
 	Statement st = null;
 	Connection cn = null;
-	@Override
-	public Product get(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public ArrayList<Product> getAll() {
-cn = ConnexionDB.getConnexion();
+		cn = ConnexionDB.getConnexion();
 		
 		ArrayList<Product> listProduct = new ArrayList();
 		String sql = "SELECT * FROM produit LEFT JOIN fournisseur on fournisseur.id = produit.fournisseur LEFT JOIN product_family on product_family.id = produit.famille LEFT JOIN raison_social on raison_social.id = fournisseur.raision_social";
@@ -174,11 +170,6 @@ cn = ConnexionDB.getConnexion();
 				return false;
 			}
 			
-		
-			
-		
-			
-			
 			
 		
 	}
@@ -218,6 +209,79 @@ cn = ConnexionDB.getConnexion();
 	public String alerteStock() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Product seekByRef(String ref) {
+cn = ConnexionDB.getConnexion();
+		
+		
+		String sql = "SELECT * FROM produit LEFT JOIN fournisseur on fournisseur.id = produit.fournisseur LEFT JOIN product_family on product_family.id = produit.famille LEFT JOIN raison_social on raison_social.id = fournisseur.raision_social WHERE ref = '"+ref+"'";
+		try {
+			
+				st = cn.createStatement();
+				ResultSet rs = st.executeQuery(sql);
+				rs.next();
+				
+				
+				Product product = new Product();
+				Fournisseur fournisseur = new Fournisseur();
+				ProduitFamille famille = new ProduitFamille();
+				RaisonSocial raisonSocial = new RaisonSocial();
+				
+				
+				// -----------fournisseur info
+				fournisseur.setId(rs.getInt("fournisseur.id"));
+				raisonSocial.setNom(rs.getString("raison_social.nom"));
+				raisonSocial.setId(rs.getInt("raison_social.id"));
+				fournisseur.setRaisonSocial(raisonSocial);
+			
+				
+				// -----------------------------------------
+				// --------------------------type product  info 
+				famille.setId(rs.getInt("product_family.id"));
+				famille.setNom(rs.getString("product_family.nom"));
+				famille.setType(rs.getString("product_family.type"));
+				
+				/// --------------------------------------------------
+				// ------------------info Product
+				//-----------------------------------------------
+				product.setId(rs.getInt("produit.id"));
+				product.setRef(rs.getString("produit.ref"));
+				product.setDesignation(rs.getString("produit.designation"));
+				product.setDesignation(rs.getString("produit.designation"));
+				product.setDesignation(rs.getString("produit.designation"));
+				switch(rs.getString("produit.unit")) {
+				case "KILOGRAMME" : product.setUnit(UnitOfMeasure.KILOGRAMME);
+				case "GRAMME" : product.setUnit(UnitOfMeasure.GRAMME);
+				case "LITRE" : product.setUnit(UnitOfMeasure.LITRE);
+				case "LOT" : product.setUnit(UnitOfMeasure.LOT);
+				case "PIECE" : product.setUnit(UnitOfMeasure.PIECE);
+				case "METRE" : product.setUnit(UnitOfMeasure.METRE);
+				case "MILLIMETRE" : product.setUnit(UnitOfMeasure.MILLIMETRE);
+				case "MILLIGRAMME" : product.setUnit(UnitOfMeasure.MILLIGRAMME);
+				}
+				
+				product.setUnitPriceHt(rs.getDouble("produit.unit_price"));
+				product.setUnitPriceTva(rs.getDouble("produit.unit_price_tva"));
+				product.setMinStock(rs.getInt("produit.min_stock"));
+				product.setStock(rs.getInt("produit.stock"));
+				product.setFournisseur(fournisseur);
+				product.setFamille(famille);
+				
+			
+				
+				
+			
+				rs.close();
+				st.close();
+	
+			return product;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
