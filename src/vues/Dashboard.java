@@ -596,17 +596,14 @@ public class Dashboard extends JFrame implements MouseListener{
         pnlNewsLayout.setHorizontalGroup(
         	pnlNewsLayout.createParallelGroup(Alignment.LEADING)
         		.addGroup(pnlNewsLayout.createSequentialGroup()
+        			.addContainerGap()
         			.addGroup(pnlNewsLayout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jspTimeline_1, GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
         				.addGroup(pnlNewsLayout.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(jspTimeline_1, GroupLayout.PREFERRED_SIZE, 980, GroupLayout.PREFERRED_SIZE))
-        				.addGroup(pnlNewsLayout.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 934, GroupLayout.PREFERRED_SIZE))
-        				.addGroup(pnlNewsLayout.createSequentialGroup()
-        					.addContainerGap()
-        					.addComponent(jLabel18)))
-        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        					.addComponent(jSeparator1, GroupLayout.DEFAULT_SIZE, 934, Short.MAX_VALUE)
+        					.addGap(46))
+        				.addComponent(jLabel18))
+        			.addContainerGap())
         );
         pnlNewsLayout.setVerticalGroup(
         	pnlNewsLayout.createParallelGroup(Alignment.LEADING)

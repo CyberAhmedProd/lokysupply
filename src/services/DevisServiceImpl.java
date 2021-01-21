@@ -98,9 +98,36 @@ public class DevisServiceImpl implements DevisService{
 	}
 
 	@Override
-	public Devis getDevis(Devis devis) {
-		// TODO Auto-generated method stub
-		return null;
+	public Devis getDevis(int id) {
+cn = ConnexionDB.getConnexion();
+		
+		Devis devis = new Devis();
+		Client client;
+		ClientServiceImpl clientServiceImpl = new ClientServiceImpl();
+		String sql = "SELECT * FROM `devis` where id="+id;
+		
+		try {
+			
+			st = cn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			rs.next();
+			/// --------------------------------------------------
+			// ------------------info Devis
+			//-----------------------------------------------
+			devis.setId(rs.getInt("devis.id"));
+			devis.setCode(rs.getString("devis.code"));
+			devis.setClient(clientServiceImpl.getClient(rs.getInt("devis.client")));
+			devis.setDate(rs.getTimestamp("devis.date"));
+		
+			rs.close();
+			st.close();
+	
+			return devis;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override

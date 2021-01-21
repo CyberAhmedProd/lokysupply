@@ -1,46 +1,45 @@
 package vues;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FlowLayout;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
+
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.text.FieldView;
+
+
 
 import Toaster.Toaster;
-import models.Adress;
+import Utils.MonDevis;
 import models.Client;
-import models.CompteBancaire;
-import models.Fournisseur;
+import models.Devis;
+import models.Ligne_devis;
 import models.Product;
-import models.RaisonSocial;
-import models.TypeEntreprise;
+
+
 import services.ClientServiceImpl;
 import services.DevisServiceImpl;
-import services.FournisseurServiceImpl;
+
 import services.ProductServiceImpl;
 
-import javax.swing.AbstractListModel;
+
 import javax.swing.JScrollPane;
 import java.awt.GridLayout;
-import javax.swing.JComboBox;
+
 import javax.swing.JComponent;
 
 import java.awt.GridBagLayout;
@@ -51,16 +50,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JEditorPane;
-import javax.swing.DefaultComboBoxModel;
+
+
 import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.JCheckBox;
-import models.Ville;
+
+
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.Jpeg2000.ColorSpecBox;
+import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 
 public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 	private final Toaster toaster;
@@ -173,7 +191,7 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 		addDevisValider.addActionListener(this);
 		
 		printBtn = new JButton("");
-		printBtn.setEnabled(false);
+		printBtn.addActionListener(this);
 		printBtn.setIcon(new ImageIcon(DevisUi.class.getResource("/Gambar/printer.png")));
 		printBtn.addActionListener(this);
 		buttonPanel.add(printBtn);
@@ -576,6 +594,10 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 		     deleteFromLigne.setEnabled(false);
 			}
 		
+		
+		if(e.getSource().equals(printBtn)) {
+			MonDevis printDevis = new MonDevis(idDevis);
+		}
 	}
 	
 		
@@ -586,6 +608,7 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 		if(e.getSource().equals(table)) {
 			rowDelete = table.getSelectedRow();
 			deleteFromLigne.setEnabled(true);
+			
 		}
 		
         

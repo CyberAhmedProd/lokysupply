@@ -476,4 +476,83 @@ cn = ConnexionDB.getConnexion();
 		}
 	}
 
+
+
+	@Override
+	public Client getClient(int id) {
+		cn = ConnexionDB.getConnexion();
+		
+		ArrayList<Client> listClient = new ArrayList();
+		String sql = "SELECT * FROM client LEFT JOIN raison_social on raison_social.id = client.raision_social LEFT JOIN compte_bancaire on compte_bancaire.id = client.compte_bancaire LEFT JOIN adress on adress.id = client.address WHERE client.id = "+id;
+			try {
+			
+				st = cn.createStatement();
+				ResultSet rs = st.executeQuery(sql);
+				Client client = new Client();
+				rs.next();
+			
+				
+				
+				Adress address = new Adress();
+				CompteBancaire compte = new CompteBancaire();
+				RaisonSocial social = new RaisonSocial();
+				ArrayList<CompteBancaire> listCompte = new ArrayList();
+				listCompte.add(compte);
+				
+				// -----------Address info
+				address.setId(rs.getInt("adress.id"));
+				address.setNumRue(rs.getInt("numRue"));
+				address.setLibelleRue(rs.getString("libelleRue"));
+				address.setNomVille(rs.getString("nomVille"));
+				address.setCodePostale(rs.getInt("codepostal"));
+				address.setGouvernat(rs.getString("gouvernorat"));
+				address.setPays(rs.getString("pays"));
+				// -----------------------------------------
+				// --------------------------CompteBancaire info 
+				compte.setId(rs.getInt("compte_bancaire.id"));
+				compte.setNameBanque(rs.getString("nom_banque"));
+				compte.setAgence(rs.getString("nom_agance"));
+				compte.setNumRib(rs.getInt("rib_num"));
+				
+				/// --------------------------------------------------
+				// ------------------info Social
+				//-----------------------------------------------
+				social.setId(rs.getInt("raison_social.id"));
+				social.setNom(rs.getString("nom"));
+				social.setPrenom(rs.getString("prenom"));
+				social.setSexe("homme");
+				
+				//
+				client.setMatricule(rs.getString("matricule"));
+				if(rs.getString("matricule")=="PHYSIQUE") {
+					client.setType(TypeEntreprise.PHYSIQUE);
+				}
+				else {
+					client.setType(TypeEntreprise.MORALE);
+				}
+				client.setId(rs.getInt("id"));
+				client.setDescription(rs.getString("description"));
+				client.setTelFix(Integer.parseInt(rs.getString("telfix")));
+				client.setTelMobile(Integer.parseInt(rs.getString("telmobile")));
+				client.setEmail(rs.getString("email"));
+				client.setWebSite(rs.getString("website"));
+				client.setAdresse(address);
+				client.setCompteBancaires(listCompte);
+				client.setRaisonSocial(social);
+				client.setTva_assuj(rs.getBoolean("tva_ajussti"));
+				listClient.add(client);
+				
+				
+			
+				rs.close();
+				st.close();
+	
+				return client;
+			} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

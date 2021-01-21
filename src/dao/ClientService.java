@@ -8,7 +8,7 @@ import models.Client;
 public interface ClientService {
 	
 	Client seekByMatricule(String matricule);
-
+	Client getClient(int id);
     ArrayList<Client> getAll();
 
     Boolean save(Client t);
