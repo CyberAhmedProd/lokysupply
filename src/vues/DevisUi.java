@@ -78,6 +78,7 @@ import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Toolkit;
 
 
 public class DevisUi extends JFrame implements ActionListener,MouseListener  {
@@ -123,6 +124,8 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 	 * Create the frame.
 	 */
 	public DevisUi(Dashboard dash) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(DevisUi.class.getResource("/Gambar/dragon.png")));
+		setTitle("LokyErp - Devis");
 		
 		this.dash = dash;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -15,6 +15,7 @@ public interface DevisService {
 	public Boolean valideDevis(Devis devis);
 	public Boolean addProductLignes(DefaultTableModel model);
 	public Boolean deleteProductLigne(Product p);
+	public Boolean deleteDevis(int idDevis);
 	public Boolean printDevis(Devis devis);
 	public Devis getDevis(int id);
 	public ArrayList<Devis> getAllDevis();

@@ -101,7 +101,7 @@ public class Dashboard extends JFrame implements MouseListener{
         jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Cube UI");
+        setTitle("LokyErp");
         setUndecorated(true);
         setSize(new java.awt.Dimension(1000, 600));
 
@@ -642,8 +642,8 @@ public class Dashboard extends JFrame implements MouseListener{
         		.addComponent(labelDevis, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
         		.addGroup(gl_devisPanel.createSequentialGroup()
         			.addGap(50)
-        			.addComponent(jLabel11_1, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
-        			.addContainerGap(51, Short.MAX_VALUE))
+        			.addComponent(jLabel11_1, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+        			.addGap(51))
         );
         gl_devisPanel.setVerticalGroup(
         	gl_devisPanel.createParallelGroup(Alignment.LEADING)
@@ -655,39 +655,39 @@ public class Dashboard extends JFrame implements MouseListener{
         );
         devisPanel.setLayout(gl_devisPanel);
         
-        produitPanel_1 = new JPanel();
-        produitPanel_1.setBackground(Color.WHITE);
+        listDevisPanel = new JPanel();
+        listDevisPanel.addMouseListener(this);
+        listDevisPanel.setBackground(Color.WHITE);
         
-        labelProduit_1 = new JLabel();
-        labelProduit_1.setText("Produit");
-        labelProduit_1.setOpaque(true);
-        labelProduit_1.setHorizontalAlignment(SwingConstants.CENTER);
-        labelProduit_1.setForeground(Color.WHITE);
-        labelProduit_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        labelProduit_1.setBackground(new Color(52, 152, 219));
+        labelAllDevis = new JLabel();
+        labelAllDevis.setText("Liste Devis");
+        labelAllDevis.setOpaque(true);
+        labelAllDevis.setHorizontalAlignment(SwingConstants.CENTER);
+        labelAllDevis.setForeground(Color.WHITE);
+        labelAllDevis.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        labelAllDevis.setBackground(new Color(52, 152, 219));
         
         jLabel12_1 = new JLabel();
+        jLabel12_1.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/completed-task.png")));
         jLabel12_1.setHorizontalAlignment(SwingConstants.CENTER);
-        GroupLayout gl_produitPanel_1 = new GroupLayout(produitPanel_1);
-        gl_produitPanel_1.setHorizontalGroup(
-        	gl_produitPanel_1.createParallelGroup(Alignment.LEADING)
-        		.addGap(0, 250, Short.MAX_VALUE)
-        		.addComponent(labelProduit_1, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-        		.addGroup(gl_produitPanel_1.createSequentialGroup()
-        			.addContainerGap()
-        			.addComponent(jLabel12_1, GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-        			.addContainerGap())
+        GroupLayout gl_listDevisPanel = new GroupLayout(listDevisPanel);
+        gl_listDevisPanel.setHorizontalGroup(
+        	gl_listDevisPanel.createParallelGroup(Alignment.LEADING)
+        		.addComponent(labelAllDevis, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+        		.addGroup(gl_listDevisPanel.createSequentialGroup()
+        			.addGap(28)
+        			.addComponent(jLabel12_1, GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+        			.addGap(22))
         );
-        gl_produitPanel_1.setVerticalGroup(
-        	gl_produitPanel_1.createParallelGroup(Alignment.LEADING)
-        		.addGap(0, 250, Short.MAX_VALUE)
-        		.addGroup(gl_produitPanel_1.createSequentialGroup()
-        			.addComponent(labelProduit_1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        gl_listDevisPanel.setVerticalGroup(
+        	gl_listDevisPanel.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_listDevisPanel.createSequentialGroup()
+        			.addComponent(labelAllDevis, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(jLabel12_1, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
         			.addContainerGap())
         );
-        produitPanel_1.setLayout(gl_produitPanel_1);
+        listDevisPanel.setLayout(gl_listDevisPanel);
         
         jPanel3_1 = new JPanel();
         jPanel3_1.setBackground(Color.WHITE);
@@ -730,7 +730,7 @@ public class Dashboard extends JFrame implements MouseListener{
         			.addGap(70)
         			.addComponent(devisPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addGap(50)
-        			.addComponent(produitPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(listDevisPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addGap(50)
         			.addComponent(jPanel3_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addContainerGap())
@@ -742,11 +742,39 @@ public class Dashboard extends JFrame implements MouseListener{
         			.addGap(50)
         			.addGroup(gl_pnlTimeline_1.createParallelGroup(Alignment.TRAILING)
         				.addComponent(jPanel3_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        				.addComponent(produitPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(listDevisPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(devisPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addContainerGap(350, Short.MAX_VALUE))
         );
         pnlTimeline_1.setLayout(gl_pnlTimeline_1);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         pnlNews.setLayout(pnlNewsLayout);
 
         pnlBody.add(pnlNews, "card4");
@@ -960,8 +988,8 @@ public class Dashboard extends JFrame implements MouseListener{
     private JPanel devisPanel;
     private JLabel labelDevis;
     private JLabel jLabel11_1;
-    private JPanel produitPanel_1;
-    private JLabel labelProduit_1;
+    private JPanel listDevisPanel;
+    private JLabel labelAllDevis;
     private JLabel jLabel12_1;
     private JPanel jPanel3_1;
     private JLabel jLabel8_1;
@@ -1004,7 +1032,11 @@ public class Dashboard extends JFrame implements MouseListener{
 			devisUi.setVisible(true);
 		}
 		
-		
+		if(e.getSource().equals(listDevisPanel)) {
+			this.dispose();
+			ListDevisUi listDevisUi = new ListDevisUi();
+			listDevisUi.setVisible(true);
+		}
 	}
 
 	@Override

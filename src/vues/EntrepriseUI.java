@@ -55,6 +55,7 @@ import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JCheckBox;
 import models.Ville;
+import java.awt.Toolkit;
 
 public class EntrepriseUI extends JFrame implements ActionListener {
 
@@ -104,6 +105,8 @@ public class EntrepriseUI extends JFrame implements ActionListener {
 	JFrame parentFrame;
 	
 	public EntrepriseUI(Dashboard dash) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(EntrepriseUI.class.getResource("/Gambar/dragon.png")));
+		setTitle("LokyErp - devis");
 		
 		singletonDashboard = dash;
 		this.parentFrame = parentFrame;

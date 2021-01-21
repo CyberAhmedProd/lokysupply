@@ -51,6 +51,7 @@ import java.awt.Component;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JCheckBox;
 import models.Ville;
+import java.awt.Toolkit;
 
 public class FournisseurUi extends JFrame implements ActionListener,MouseListener {
 
@@ -101,6 +102,8 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 	 * Create the frame.
 	 */
 	public FournisseurUi(Dashboard dash) {
+		setTitle("LokyErp - Fournisseur");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(FournisseurUi.class.getResource("/Gambar/dragon.png")));
 		this.dash = dash;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1036, 639);

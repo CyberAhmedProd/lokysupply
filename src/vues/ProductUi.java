@@ -53,6 +53,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import javax.swing.ScrollPaneConstants;
 import models.UnitOfMeasure;
+import java.awt.Toolkit;
 
 public class ProductUi extends JFrame implements ActionListener,MouseListener,CaretListener{
 
@@ -94,6 +95,8 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 	 * Create the frame.
 	 */
 	public ProductUi(Dashboard dash) {
+		setTitle("LokyErp - Produit");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ProductUi.class.getResource("/Gambar/dragon.png")));
 		this.dash = dash;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1036, 639);

@@ -99,10 +99,11 @@ public class DevisServiceImpl implements DevisService{
 
 	@Override
 	public Devis getDevis(int id) {
-cn = ConnexionDB.getConnexion();
+		
+		cn = ConnexionDB.getConnexion();
 		
 		Devis devis = new Devis();
-		Client client;
+		
 		ClientServiceImpl clientServiceImpl = new ClientServiceImpl();
 		String sql = "SELECT * FROM `devis` where id="+id;
 		
@@ -132,15 +133,46 @@ cn = ConnexionDB.getConnexion();
 
 	@Override
 	public ArrayList<Devis> getAllDevis() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		cn = ConnexionDB.getConnexion();
+		ArrayList<Devis> listeDevis = new ArrayList<Devis>();
+		
+	
+		ClientServiceImpl clientServiceImpl = new ClientServiceImpl();
+		String sql = "SELECT * FROM `devis`";
+		
+		try {
+			
+			st = cn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()){
+			Devis devis = new Devis();
+			/// --------------------------------------------------
+			// ------------------info Devis
+			//-----------------------------------------------
+			devis.setId(rs.getInt("devis.id"));
+			devis.setCode(rs.getString("devis.code"));
+			devis.setClient(clientServiceImpl.getClient(rs.getInt("devis.client")));
+			devis.setDate(rs.getTimestamp("devis.date"));
+			
+			listeDevis.add(devis);
+			}
+			rs.close();
+			st.close();
+	
+			return listeDevis;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
 	public ArrayList<Ligne_devis> getAllLigneDevis(int idDevis) {
 		cn = ConnexionDB.getConnexion();
 		
-		ArrayList<Ligne_devis> listeLineDevis = new ArrayList();
+		ArrayList<Ligne_devis> listeLineDevis = new ArrayList<Ligne_devis>();
 		String sql = "SELECT * FROM lignes_devis LEFT JOIN produit on produit.id = lignes_devis.produit LEFT JOIN devis on devis.id = lignes_devis.devis WHERE lignes_devis.devis="+idDevis;
 		try {
 			
@@ -196,6 +228,33 @@ cn = ConnexionDB.getConnexion();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	@Override
+	public Boolean deleteDevis(int idDevis) {
+		cn = ConnexionDB.getConnexion();
+		  PreparedStatement ps;
+		String sqlDevisDelete ="DELETE FROM `devis` WHERE id = ?";
+				
+		try {
+			ps=(PreparedStatement) cn.prepareStatement(sqlDevisDelete);
+			ps.setInt(1,idDevis);
+			int test = ps.executeUpdate();
+			ps.close();
+			if(test>0) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+			
+		
 		}
 	}
 

@@ -54,6 +54,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JCheckBox;
 import javax.swing.JSeparator;
 import java.util.regex.*;
+import java.awt.Toolkit;
+import java.awt.Dialog.ModalExclusionType;
 
 public class ClientUi extends JFrame implements ActionListener,MouseListener,CaretListener {
 
@@ -102,6 +104,8 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 	 * Create the frame.
 	 */
 	public ClientUi(Dashboard dash) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ClientUi.class.getResource("/Gambar/dragon.png")));
+		setTitle("LokyErp - Client");
 		this.dash = dash;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1036, 639);
