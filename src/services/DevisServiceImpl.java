@@ -119,6 +119,7 @@ public class DevisServiceImpl implements DevisService{
 			devis.setCode(rs.getString("devis.code"));
 			devis.setClient(clientServiceImpl.getClient(rs.getInt("devis.client")));
 			devis.setDate(rs.getTimestamp("devis.date"));
+			devis.setLignesDevis(this.getAllLigneDevis(devis.getId()));
 		
 			rs.close();
 			st.close();
@@ -139,6 +140,7 @@ public class DevisServiceImpl implements DevisService{
 		
 	
 		ClientServiceImpl clientServiceImpl = new ClientServiceImpl();
+		
 		String sql = "SELECT * FROM `devis`";
 		
 		try {
@@ -154,7 +156,7 @@ public class DevisServiceImpl implements DevisService{
 			devis.setCode(rs.getString("devis.code"));
 			devis.setClient(clientServiceImpl.getClient(rs.getInt("devis.client")));
 			devis.setDate(rs.getTimestamp("devis.date"));
-			
+			devis.setLignesDevis(this.getAllLigneDevis(devis.getId()));
 			listeDevis.add(devis);
 			}
 			rs.close();

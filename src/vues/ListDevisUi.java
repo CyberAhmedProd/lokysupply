@@ -10,8 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 
@@ -34,13 +33,14 @@ public class ListDevisUi extends JFrame implements MouseListener,ActionListener{
 
 
 	private JTable table;
-	private JTable table_1;
+
 	JLabel idSelected;
-	JButton btnDetails,btnDelete;
+	JButton btnDetails,btnDelete,btnBack;
 	DefaultTableModel model;
+	private Dashboard dash;
 
-		public ListDevisUi() {
-
+		public ListDevisUi(Dashboard dash) {
+		this.dash = dash;
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(ListDevisUi.class.getResource("/Gambar/dragon.png")));
 		this.setTitle("Liste Devis");
 		this.setBounds(100, 100, 913, 621);
@@ -72,7 +72,8 @@ public class ListDevisUi extends JFrame implements MouseListener,ActionListener{
 		btnDelete.setIcon(new ImageIcon(ListDevisUi.class.getResource("/Gambar/delete.png")));
 		buttonPanel.add(btnDelete);
 		
-		JButton btnBack = new JButton("");
+		btnBack = new JButton("");
+		btnBack.addActionListener(this);
 		btnBack.setIcon(new ImageIcon(ListDevisUi.class.getResource("/Gambar/reply-message.png")));
 		buttonPanel.add(btnBack);
 		
@@ -183,6 +184,12 @@ public class ListDevisUi extends JFrame implements MouseListener,ActionListener{
 				DevisServiceImpl devisService = new DevisServiceImpl();
 				devisService.deleteDevis(Integer.parseInt(idSelected.getText()));
 				model.fireTableDataChanged();
+			}
+			
+			if(e.getSource().equals(btnBack)) {
+				this.dispose();
+				dash.setVisible(true);
+				
 			}
 			
 		}

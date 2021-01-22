@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import Utils.UIUtils;
+import models.BonLivraison;
 import models.User;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -29,6 +30,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ImageIcon;
+import java.awt.Toolkit;
+import javax.swing.JSeparator;
 
 /**
  *
@@ -42,6 +45,7 @@ public class Dashboard extends JFrame implements MouseListener{
     User user;
     
     public Dashboard(User user) {
+    	setIconImage(Toolkit.getDefaultToolkit().getImage(Dashboard.class.getResource("/Gambar/dragon.png")));
     	this.user = user;
         initComponents();
     }
@@ -67,9 +71,9 @@ public class Dashboard extends JFrame implements MouseListener{
         loginAdminInfo = new javax.swing.JLabel();
         btnTimeline = new javax.swing.JButton();
         lblTimeline = new javax.swing.JLabel();
-        btnNews = new javax.swing.JButton();
+        btnDevis = new javax.swing.JButton();
         lblNews = new javax.swing.JLabel();
-        btnTrending = new javax.swing.JButton();
+        btnVentes = new javax.swing.JButton();
         lblTrending = new javax.swing.JLabel();
         btnQA = new javax.swing.JButton();
         lblQA = new javax.swing.JLabel();
@@ -236,14 +240,14 @@ public class Dashboard extends JFrame implements MouseListener{
         lblTimeline.setBackground(new java.awt.Color(0, 204, 106));
         lblTimeline.setOpaque(true);
 
-        btnNews.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 16)); // NOI18N
-        btnNews.setForeground(new java.awt.Color(44, 62, 80));
-        btnNews.setText("Ventes");
-        btnNews.setContentAreaFilled(false);
-        btnNews.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnNews.setFocusable(false);
-        btnNews.setPreferredSize(new java.awt.Dimension(100, 27));
-        btnNews.addActionListener(new java.awt.event.ActionListener() {
+        btnDevis.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 16)); // NOI18N
+        btnDevis.setForeground(new java.awt.Color(44, 62, 80));
+        btnDevis.setText("Devis");
+        btnDevis.setContentAreaFilled(false);
+        btnDevis.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDevis.setFocusable(false);
+        btnDevis.setPreferredSize(new java.awt.Dimension(100, 27));
+        btnDevis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewsActionPerformed(evt);
             }
@@ -252,14 +256,14 @@ public class Dashboard extends JFrame implements MouseListener{
         lblNews.setBackground(new java.awt.Color(255, 255, 255));
         lblNews.setOpaque(true);
 
-        btnTrending.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 16)); // NOI18N
-        btnTrending.setForeground(new java.awt.Color(44, 62, 80));
-        btnTrending.setText("tawaba3ad");
-        btnTrending.setContentAreaFilled(false);
-        btnTrending.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnTrending.setFocusable(false);
-        btnTrending.setPreferredSize(new java.awt.Dimension(100, 27));
-        btnTrending.addActionListener(new java.awt.event.ActionListener() {
+        btnVentes.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 16)); // NOI18N
+        btnVentes.setForeground(new java.awt.Color(44, 62, 80));
+        btnVentes.setText("Ventes");
+        btnVentes.setContentAreaFilled(false);
+        btnVentes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVentes.setFocusable(false);
+        btnVentes.setPreferredSize(new java.awt.Dimension(100, 27));
+        btnVentes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTrendingActionPerformed(evt);
             }
@@ -313,10 +317,10 @@ public class Dashboard extends JFrame implements MouseListener{
                         .addGap(60, 60, 60)
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblNews, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnNews, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnDevis, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(60, 60, 60)
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnTrending, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                            .addComponent(btnVentes, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                             .addComponent(lblTrending, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(60, 60, 60)
                         .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -361,7 +365,7 @@ public class Dashboard extends JFrame implements MouseListener{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTimeline)
-                    .addComponent(btnNews, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDevis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblTimeline, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNews, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -369,7 +373,7 @@ public class Dashboard extends JFrame implements MouseListener{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
-                        .addComponent(btnTrending, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnVentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
                         .addComponent(lblTrending, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
@@ -796,6 +800,181 @@ public class Dashboard extends JFrame implements MouseListener{
                 .addGap(0, 0, 0)
                 .addComponent(pnlBody, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE))
         );
+        
+        pnlVentes = new JPanel();
+        pnlVentes.setBackground(new Color(245, 245, 245));
+        pnlBody.add(pnlVentes, "name_622314798048300");
+        
+        jspTimeline_2 = new JScrollPane();
+        jspTimeline_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jspTimeline_2.setBorder(null);
+        
+        jSeparator1_1 = new JSeparator();
+        
+        jLabel18_1 = new JLabel();
+        jLabel18_1.setText("Gestion des Ventes");
+        jLabel18_1.setForeground(new Color(44, 62, 80));
+        jLabel18_1.setFont(new Font("Berlin Sans FB Demi", Font.PLAIN, 16));
+        GroupLayout gl_pnlVentes = new GroupLayout(pnlVentes);
+        gl_pnlVentes.setHorizontalGroup(
+        	gl_pnlVentes.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 1000, Short.MAX_VALUE)
+        		.addGroup(gl_pnlVentes.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(gl_pnlVentes.createParallelGroup(Alignment.LEADING)
+        				.addComponent(jspTimeline_2, GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
+        				.addGroup(gl_pnlVentes.createSequentialGroup()
+        					.addComponent(jSeparator1_1, GroupLayout.DEFAULT_SIZE, 934, Short.MAX_VALUE)
+        					.addGap(46))
+        				.addComponent(jLabel18_1))
+        			.addContainerGap())
+        );
+        gl_pnlVentes.setVerticalGroup(
+        	gl_pnlVentes.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 529, Short.MAX_VALUE)
+        		.addGroup(gl_pnlVentes.createSequentialGroup()
+        			.addGap(45)
+        			.addComponent(jLabel18_1, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(jSeparator1_1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(jspTimeline_2, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        
+        JPanel pnlTimeline_1_1 = new JPanel();
+        pnlTimeline_1_1.setBackground(new Color(245, 245, 245));
+        jspTimeline_2.setViewportView(pnlTimeline_1_1);
+        
+        bonLivraisonPanel_1 = new JPanel();
+        bonLivraisonPanel_1.addMouseListener(this);
+        bonLivraisonPanel_1.setBackground(Color.WHITE);
+        
+        JLabel lblBonDeLivraison = new JLabel();
+        lblBonDeLivraison.setText("Bon de Livraison");
+        lblBonDeLivraison.setOpaque(true);
+        lblBonDeLivraison.setHorizontalAlignment(SwingConstants.CENTER);
+        lblBonDeLivraison.setForeground(Color.WHITE);
+        lblBonDeLivraison.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        lblBonDeLivraison.setBackground(new Color(0, 204, 106));
+        
+        JLabel jLabel11_1_1 = new JLabel();
+        jLabel11_1_1.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/product.png")));
+        jLabel11_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+        GroupLayout gl_bonLivraisonPanel_1 = new GroupLayout(bonLivraisonPanel_1);
+        gl_bonLivraisonPanel_1.setHorizontalGroup(
+        	gl_bonLivraisonPanel_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addComponent(lblBonDeLivraison, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+        		.addGroup(gl_bonLivraisonPanel_1.createSequentialGroup()
+        			.addGap(50)
+        			.addComponent(jLabel11_1_1, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+        			.addGap(51))
+        );
+        gl_bonLivraisonPanel_1.setVerticalGroup(
+        	gl_bonLivraisonPanel_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addGroup(gl_bonLivraisonPanel_1.createSequentialGroup()
+        			.addComponent(lblBonDeLivraison, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(jLabel11_1_1, GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(29, Short.MAX_VALUE))
+        );
+        bonLivraisonPanel_1.setLayout(gl_bonLivraisonPanel_1);
+        
+        JPanel listBonLivraisonPanel_1 = new JPanel();
+        listBonLivraisonPanel_1.setBackground(Color.WHITE);
+        
+        JLabel lblListeDeBon = new JLabel();
+        lblListeDeBon.setText("Liste De Bon de Livraison");
+        lblListeDeBon.setOpaque(true);
+        lblListeDeBon.setHorizontalAlignment(SwingConstants.CENTER);
+        lblListeDeBon.setForeground(Color.WHITE);
+        lblListeDeBon.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        lblListeDeBon.setBackground(new Color(52, 152, 219));
+        
+        JLabel jLabel12_1_1 = new JLabel();
+        jLabel12_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+        GroupLayout gl_listBonLivraisonPanel_1 = new GroupLayout(listBonLivraisonPanel_1);
+        gl_listBonLivraisonPanel_1.setHorizontalGroup(
+        	gl_listBonLivraisonPanel_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addComponent(lblListeDeBon, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+        		.addGroup(gl_listBonLivraisonPanel_1.createSequentialGroup()
+        			.addGap(28)
+        			.addComponent(jLabel12_1_1, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+        			.addGap(22))
+        );
+        gl_listBonLivraisonPanel_1.setVerticalGroup(
+        	gl_listBonLivraisonPanel_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addGroup(gl_listBonLivraisonPanel_1.createSequentialGroup()
+        			.addComponent(lblListeDeBon, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(jLabel12_1_1, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        listBonLivraisonPanel_1.setLayout(gl_listBonLivraisonPanel_1);
+        
+        JPanel jPanel3_1_1 = new JPanel();
+        jPanel3_1_1.setBackground(Color.WHITE);
+        
+        JLabel jLabel8_1_1 = new JLabel();
+        jLabel8_1_1.setText("Personalization");
+        jLabel8_1_1.setOpaque(true);
+        jLabel8_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+        jLabel8_1_1.setForeground(Color.WHITE);
+        jLabel8_1_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        jLabel8_1_1.setBackground(new Color(243, 156, 18));
+        
+        JLabel jLabel13_1_1 = new JLabel();
+        jLabel13_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+        GroupLayout gl_jPanel3_1_1 = new GroupLayout(jPanel3_1_1);
+        gl_jPanel3_1_1.setHorizontalGroup(
+        	gl_jPanel3_1_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addComponent(jLabel8_1_1, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+        		.addGroup(gl_jPanel3_1_1.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(jLabel13_1_1, GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        gl_jPanel3_1_1.setVerticalGroup(
+        	gl_jPanel3_1_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 250, Short.MAX_VALUE)
+        		.addGroup(gl_jPanel3_1_1.createSequentialGroup()
+        			.addComponent(jLabel8_1_1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(jLabel13_1_1, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+        			.addContainerGap())
+        );
+        jPanel3_1_1.setLayout(gl_jPanel3_1_1);
+        GroupLayout gl_pnlTimeline_1_1 = new GroupLayout(pnlTimeline_1_1);
+        gl_pnlTimeline_1_1.setHorizontalGroup(
+        	gl_pnlTimeline_1_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 1003, Short.MAX_VALUE)
+        		.addGroup(gl_pnlTimeline_1_1.createSequentialGroup()
+        			.addGap(70)
+        			.addComponent(bonLivraisonPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(50)
+        			.addComponent(listBonLivraisonPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addGap(50)
+        			.addComponent(jPanel3_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap())
+        );
+        gl_pnlTimeline_1_1.setVerticalGroup(
+        	gl_pnlTimeline_1_1.createParallelGroup(Alignment.LEADING)
+        		.addGap(0, 650, Short.MAX_VALUE)
+        		.addGroup(gl_pnlTimeline_1_1.createSequentialGroup()
+        			.addGap(50)
+        			.addGroup(gl_pnlTimeline_1_1.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(jPanel3_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(listBonLivraisonPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(bonLivraisonPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addContainerGap(350, Short.MAX_VALUE))
+        );
+        pnlTimeline_1_1.setLayout(gl_pnlTimeline_1_1);
+        pnlVentes.setLayout(gl_pnlVentes);
 
         setSize(new java.awt.Dimension(1000, 600));
         setLocationRelativeTo(null);
@@ -880,6 +1059,13 @@ public class Dashboard extends JFrame implements MouseListener{
         lblTimeline.setBackground(new Color(255,255,255));
         lblNews.setBackground(new Color(255,255,255));
         lblQA.setBackground(new Color(255,255,255));
+        
+        pnlBody.removeAll();
+        pnlBody.repaint();
+        pnlBody.revalidate();
+        pnlBody.add(pnlVentes);
+        pnlBody.repaint();
+        pnlBody.revalidate();
     }//GEN-LAST:event_btnTrendingActionPerformed
 
     private void btnQAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQAActionPerformed
@@ -944,10 +1130,10 @@ public class Dashboard extends JFrame implements MouseListener{
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnMaximize;
     private javax.swing.JButton btnMinimize;
-    private javax.swing.JButton btnNews;
+    private javax.swing.JButton btnDevis;
     private javax.swing.JButton btnQA;
     private javax.swing.JButton btnTimeline;
-    private javax.swing.JButton btnTrending;
+    private javax.swing.JButton btnVentes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -972,6 +1158,7 @@ public class Dashboard extends JFrame implements MouseListener{
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel fournisseurPanel;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel bonLivraisonPanel_1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JScrollPane jspTimeline;
     private javax.swing.JLabel lblNews;
@@ -994,6 +1181,10 @@ public class Dashboard extends JFrame implements MouseListener{
     private JPanel jPanel3_1;
     private JLabel jLabel8_1;
     private JLabel jLabel13_1;
+    private JPanel pnlVentes;
+    private JScrollPane jspTimeline_2;
+    private JSeparator jSeparator1_1;
+    private JLabel jLabel18_1;
     // End of variables declaration//GEN-END:variables
 
 	
@@ -1034,9 +1225,15 @@ public class Dashboard extends JFrame implements MouseListener{
 		
 		if(e.getSource().equals(listDevisPanel)) {
 			this.dispose();
-			ListDevisUi listDevisUi = new ListDevisUi();
+			ListDevisUi listDevisUi = new ListDevisUi(this);
 			listDevisUi.setVisible(true);
 		}
+		if(e.getSource().equals(bonLivraisonPanel_1)) {
+			this.dispose();
+			BonLivraisonUi bonLivraisonUi = new BonLivraisonUi(this);
+			bonLivraisonUi.setVisible(true);
+		}
+		
 	}
 
 	@Override
