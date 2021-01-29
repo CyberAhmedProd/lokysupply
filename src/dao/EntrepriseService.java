@@ -7,8 +7,6 @@ import models.Entreprise;
 public interface EntrepriseService {
 	Entreprise getEntreprise();
 
-    ArrayList<Entreprise> getAll();
-    
     Boolean save(Entreprise e);
 
     Boolean update(Entreprise e);

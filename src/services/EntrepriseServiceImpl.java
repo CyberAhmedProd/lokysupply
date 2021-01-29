@@ -99,11 +99,7 @@ public class EntrepriseServiceImpl implements EntrepriseService{
 		
 	}
 
-	@Override
-	public ArrayList<Entreprise> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public Boolean save(Entreprise e) {

@@ -10,55 +10,33 @@ import javax.swing.table.DefaultTableModel;
 
 import com.mysql.jdbc.PreparedStatement;
 
-import dao.BonLivraisionService;
+import dao.FactureClientService;
 import db.ConnexionDB;
 import models.Adress;
 import models.BonLivraison;
-import models.Devis;
+import models.FactureClient;
 import models.LigneBonLivraision;
-import models.Ligne_devis;
 import models.Product;
 import models.UnitOfMeasure;
 
-public class BonLivraisionImpl implements BonLivraisionService{
+public class FactureClientServiceImpl implements FactureClientService{
 	Statement st = null;
 	Connection cn = null;
 	@Override
-	public int createBonLivraison(int idClient,BonLivraison bl) {
+	public int createFacture(int idClient,FactureClient bl) {
 		int idBon=0;
 		cn = ConnexionDB.getConnexion();
 		 PreparedStatement ps;
-		 String sqlDevis ="INSERT INTO `bon_livraison`(`code`, `client`, `address`, `information`) VALUES (?,?,?,?)";
-		 String sqladdress ="INSERT INTO `adress`(`numRue`, `libelleRue`, `nomVille`, `codepostal`, `gouvernorat`, `pays`) VALUES (?,?,?,?,?,?)";
-		 
-		 try {
-				ps=(PreparedStatement) cn.prepareStatement(sqladdress, Statement.RETURN_GENERATED_KEYS);
-				ps.setInt(1,bl.getAdressLivraison().getNumRue());
-				ps.setString(2,bl.getAdressLivraison().getLibelleRue());
-				ps.setString(3,bl.getAdressLivraison().getNomVille());
-				ps.setInt(4,bl.getAdressLivraison().getCodePostale());
-				ps.setString(5,bl.getAdressLivraison().getGouvernat());
-				ps.setString(6,bl.getAdressLivraison().getPays());
-				ps.executeUpdate();
-				ResultSet rs = ps.getGeneratedKeys();
-				rs.next();
-				bl.getAdressLivraison().setId(rs.getInt(1));
-				//System.out.println("ok");
-				ps.close();
-				
-			} catch (SQLException e2) {
-				
-				System.out.println("adress");
-				return 0;
-			}
-		 
+		 String sqlDevis ="INSERT INTO `facture_client`(`code`, `mode_payment`, `client`) VALUES (?,?,?,?)";
+	
 		 
 		 try {
 				ps=(PreparedStatement) cn.prepareStatement(sqlDevis, Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1,null);
-				ps.setDouble(2,idClient);
-				ps.setInt(3,bl.getAdressLivraison().getId());
-				ps.setString(4,bl.getInformation());
+				ps.setString(2,bl.getModePayement().toString());
+				ps.setDouble(3,idClient);
+				
+			
 				ps.executeUpdate();
 				ResultSet rs = ps.getGeneratedKeys();
 				rs.next();
@@ -68,7 +46,7 @@ public class BonLivraisionImpl implements BonLivraisionService{
 				
 			} catch (SQLException e2) {
 				
-				System.out.println("bon livraision");
+				System.out.println("create facture");
 				return 0;
 			}
 		return idBon;
@@ -76,10 +54,10 @@ public class BonLivraisionImpl implements BonLivraisionService{
 
 	@Override
 	public ArrayList<LigneBonLivraision> getAllLigneBonLivraison(int idBonLivraison) {
-cn = ConnexionDB.getConnexion();
+		cn = ConnexionDB.getConnexion();
 		
 		ArrayList<LigneBonLivraision> listeLigneBonLivraision = new ArrayList<LigneBonLivraision>();
-		String sql = "SELECT * FROM lignes_bon_livraison LEFT JOIN produit on produit.id = lignes_bon_livraison.produit LEFT JOIN bon_livraison on bon_livraison.id = lignes_bon_livraison.bon_livraison WHERE lignes_bon_livraison.bon_livraison="+idBonLivraison;
+		String sql = "SELECT * FROM lignes_facture LEFT JOIN produit on produit.id = lignes_facture.produit LEFT JOIN facture_client on facture_client.id = lignes_facture.facture_client WHERE lignes_facture.facture_client="+idBonLivraison;
 		try {
 			
 			st = cn.createStatement();
@@ -138,7 +116,7 @@ cn = ConnexionDB.getConnexion();
 	}
 
 	@Override
-	public Boolean valideBonLivraison(BonLivraison bonLivraison) {
+	public Boolean valideFacture(FactureClient bonLivraison) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -150,7 +128,7 @@ cn = ConnexionDB.getConnexion();
 		 cn = ConnexionDB.getConnexion();
 		 for (int count = 0; count < model.getRowCount(); count++){
 		
-		 String sqlLigneDevis ="INSERT INTO `lignes_bon_livraison`(`quantity`, `totalHt`, `totalTva`, `produit`, `bon_livraison`) VALUES (?,?,?,?,?)";
+		 String sqlLigneDevis ="INSERT INTO `lignes_facture`(`quantity`, `totalHt`, `totalTva`, `produit`, `bon_livraison`) VALUES (?,?,?,?,?)";
 					
 			try {
 				ps=(PreparedStatement) cn.prepareStatement(sqlLigneDevis, Statement.RETURN_GENERATED_KEYS);
@@ -178,10 +156,10 @@ cn = ConnexionDB.getConnexion();
 	}
 
 	@Override
-	public Boolean deleteBonLivraison(int idBonLivraison) {
+	public Boolean deleteFacture(int idBonLivraison) {
 		cn = ConnexionDB.getConnexion();
 		  PreparedStatement ps;
-		String sqlDevisDelete ="DELETE FROM `bon_livraison` WHERE id = ?";
+		String sqlDevisDelete ="DELETE FROM `facture_client` WHERE id = ?";
 				
 		try {
 			ps=(PreparedStatement) cn.prepareStatement(sqlDevisDelete);
@@ -205,19 +183,19 @@ cn = ConnexionDB.getConnexion();
 	}
 
 	@Override
-	public Boolean printBonLivraison(BonLivraison bonLivraison) {
+	public Boolean printFacture(FactureClient bonLivraison) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public BonLivraison getBonLivraison(int id) {
+	public FactureClient getFacture(int id) {
 		cn = ConnexionDB.getConnexion();
 		
-		BonLivraison bonLivraison = new BonLivraison();
+		FactureClient bonLivraison = new FactureClient();
 		
 		ClientServiceImpl clientServiceImpl = new ClientServiceImpl();
-		String sql = "SELECT * FROM `bon_livraison` LEFT JOIN adress on adress.id = bon_livraison.address where bon_livraison.id="+id;
+		String sql = "SELECT * FROM `facture_client` LEFT JOIN adress on adress.id = bon_livraison.address where bon_livraison.id="+id;
 		
 		try {
 			
@@ -239,11 +217,7 @@ cn = ConnexionDB.getConnexion();
 			//-----------------------------------------------
 			bonLivraison.setId(rs.getInt("bon_livraison.id"));
 			bonLivraison.setCode(rs.getString("bon_livraison.code"));
-			bonLivraison.setClient(clientServiceImpl.getClient(rs.getInt("bon_livraison.client")));
-			bonLivraison.setDate(rs.getTimestamp("bon_livraison.date"));
-			bonLivraison.setAdressLivraison(address);
-			bonLivraison.setInformation(rs.getString("bon_livraison.information"));
-			bonLivraison.setLignesDevis(this.getAllLigneBonLivraison(bonLivraison.getId()));
+		
 		
 			rs.close();
 			st.close();
@@ -257,9 +231,9 @@ cn = ConnexionDB.getConnexion();
 	}
 
 	@Override
-	public ArrayList<BonLivraison> getAllBonLivraison() {
+	public ArrayList<FactureClient> getAllBonLivraison() {
 		cn = ConnexionDB.getConnexion();
-		ArrayList<BonLivraison> listeBonLivraison = new ArrayList<BonLivraison>();
+		ArrayList<FactureClient> listeBonLivraison = new ArrayList<FactureClient>();
 		
 	
 		ClientServiceImpl clientServiceImpl = new ClientServiceImpl();
@@ -272,25 +246,14 @@ cn = ConnexionDB.getConnexion();
 			ResultSet rs = st.executeQuery(sql);
 			while(rs.next()){
 			    // info address
-				Adress address = new Adress();
-				address.setId(rs.getInt("adress.id"));
-				address.setNumRue(rs.getInt("numRue"));
-				address.setLibelleRue(rs.getString("libelleRue"));
-				address.setNomVille(rs.getString("nomVille"));
-				address.setCodePostale(rs.getInt("codepostal"));
-				address.setGouvernat(rs.getString("gouvernorat"));
-				address.setPays(rs.getString("pays"));
-				BonLivraison bonLivraison = new BonLivraison();
+				
+				FactureClient bonLivraison = new FactureClient();
 				/// --------------------------------------------------
 				// ------------------info bon livraison
 				//-----------------------------------------------
 				bonLivraison.setId(rs.getInt("bon_livraison.id"));
 				bonLivraison.setCode(rs.getString("bon_livraison.code"));
-				bonLivraison.setClient(clientServiceImpl.getClient(rs.getInt("bon_livraison.client")));
-				bonLivraison.setDate(rs.getTimestamp("bon_livraison.date"));
-				bonLivraison.setAdressLivraison(address);
-				bonLivraison.setInformation(rs.getString("bon_livraison.information"));
-				bonLivraison.setLignesDevis(this.getAllLigneBonLivraison(bonLivraison.getId()));
+		
 				listeBonLivraison.add(bonLivraison);
 			}
 			rs.close();
@@ -305,9 +268,9 @@ cn = ConnexionDB.getConnexion();
 	}
 
 	@Override
-	public ArrayList<BonLivraison> getAllBonLivraisonSeekByCode(String code) {
+	public ArrayList<FactureClient> getAllBonLivraisonSeekByCode(String code) {
 		cn = ConnexionDB.getConnexion();
-		ArrayList<BonLivraison> listeBonLivraison = new ArrayList<BonLivraison>();
+		ArrayList<FactureClient> listeBonLivraison = new ArrayList<FactureClient>();
 		
 	
 		ClientServiceImpl clientServiceImpl = new ClientServiceImpl();
@@ -328,17 +291,13 @@ cn = ConnexionDB.getConnexion();
 				address.setCodePostale(rs.getInt("codepostal"));
 				address.setGouvernat(rs.getString("gouvernorat"));
 				address.setPays(rs.getString("pays"));
-				BonLivraison bonLivraison = new BonLivraison();
+				FactureClient bonLivraison = new FactureClient();
 				/// --------------------------------------------------
 				// ------------------info bon livraison
 				//-----------------------------------------------
 				bonLivraison.setId(rs.getInt("bon_livraison.id"));
 				bonLivraison.setCode(rs.getString("bon_livraison.code"));
-				bonLivraison.setClient(clientServiceImpl.getClient(rs.getInt("bon_livraison.client")));
-				bonLivraison.setDate(rs.getTimestamp("bon_livraison.date"));
-				bonLivraison.setAdressLivraison(address);
-				bonLivraison.setInformation(rs.getString("bon_livraison.information"));
-				bonLivraison.setLignesDevis(this.getAllLigneBonLivraison(bonLivraison.getId()));
+			
 				listeBonLivraison.add(bonLivraison);
 			}
 			rs.close();
@@ -351,5 +310,5 @@ cn = ConnexionDB.getConnexion();
 			return null;
 		}
 	}
-	
+
 }

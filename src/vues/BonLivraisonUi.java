@@ -25,6 +25,7 @@ import javax.swing.table.TableCellRenderer;
 
 
 import Toaster.Toaster;
+import Utils.MonBonLivraison;
 import Utils.MonDevis;
 import models.Adress;
 import models.BonLivraison;
@@ -51,10 +52,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-
-
+import java.io.File;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.Component;
+import java.awt.Desktop;
+
 import javax.swing.ScrollPaneConstants;
 
 
@@ -67,7 +72,7 @@ import models.Ville;
 
 
 public class BonLivraisonUi extends JFrame implements ActionListener,MouseListener,CaretListener  {
-	private final Toaster toaster;
+
 	private JPanel contentPane;
 	private JTable table;
 	private JButton addBonDeLivraisonValider,printBtn,btnBackToDash,seekClientButton,btnSeekProduct,addToLigne,deleteFromLigne;
@@ -83,6 +88,7 @@ public class BonLivraisonUi extends JFrame implements ActionListener,MouseListen
 	JLabel labelTotTva,labelTotal,labelTot;
 	private int idBonLibraison,rowDelete;
 	DefaultTableModel model;
+	private final Toaster toaster;
 	
 
 	Product p;
@@ -106,7 +112,7 @@ public class BonLivraisonUi extends JFrame implements ActionListener,MouseListen
 	private JLabel lblInformationExtra;
 	private JLabel lblNewLabel_9;
 	private JTextField fieldInfo;
-	private boolean testGouv=false,testNumRue=false,testRue=false,testCode=false,testInfo=false;
+	private boolean testGouv=false,testNumRue=false,testRue=false,testCode=false,testInfo=false,testQty = false;
 	private JButton btncomm;
 
 	/**
@@ -142,6 +148,7 @@ public class BonLivraisonUi extends JFrame implements ActionListener,MouseListen
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
+	
 		
 		JPanel topPanel = new JPanel();
 		topPanel.setBackground(Color.PINK);
@@ -245,6 +252,7 @@ public class BonLivraisonUi extends JFrame implements ActionListener,MouseListen
 		
 		fieldIdClient = new JTextField();
 		fieldIdClient.setEnabled(false);
+		fieldIdClient.setVisible(false);
 		fieldIdClient.setEditable(false);
 		GridBagConstraints gbc_fieldIdClient = new GridBagConstraints();
 		gbc_fieldIdClient.insets = new Insets(0, 0, 5, 5);
@@ -612,6 +620,8 @@ public class BonLivraisonUi extends JFrame implements ActionListener,MouseListen
 		panel.add(labelQty, gbc_labelQty);
 		
 		fieldQty = new JTextField();
+		fieldQty.addCaretListener(this);
+		fieldQty.setText("1");
 		GridBagConstraints gbc_fieldQty = new GridBagConstraints();
 		gbc_fieldQty.insets = new Insets(0, 0, 5, 5);
 		gbc_fieldQty.fill = GridBagConstraints.HORIZONTAL;
@@ -727,7 +737,11 @@ public class BonLivraisonUi extends JFrame implements ActionListener,MouseListen
 		}
 		
 		if(e.getSource().equals(addToLigne)) {
+			if(testQty) {
+				
 			
+			ProductServiceImpl prouctService = new ProductServiceImpl();
+			if(prouctService.seekByRef(fieldRef.getText()).getStock()- Double.parseDouble(fieldQty.getText()) > prouctService.seekByRef(fieldRef.getText()).getMinStock()) {
 			model.addRow(new String[] {
 					p.getDesignation(),
 					p.getRef(),
@@ -754,14 +768,22 @@ public class BonLivraisonUi extends JFrame implements ActionListener,MouseListen
 			
 			 labelTot.setText(Double.toString(totHt));
 		     labelTotTva.setText(Double.toString(tot));
-		     toaster.success("product added to devis");
-		     
+		     toaster.success("product added to Bon livraison");
+			}
+			else {
+				 toaster.error("Stock minimal ="+prouctService.seekByRef(fieldRef.getText()).getMinStock()+" and you have "+prouctService.seekByRef(fieldRef.getText()).getStock()+" in stock");
+			}
+			}
+			else {
+				 toaster.error("verifier champs Quantity");
+			}
 		}
 		
 		if(e.getSource().equals(addBonDeLivraisonValider)) {
 			BonLivraisionImpl bonLivraisionService = new BonLivraisionImpl();
 			
 			if(idBonLibraison > 0) {
+				
 				bonLivraisionService.addProductLignes(model);
 				btnSeekProduct.setEnabled(true);
 				seekClientButton.setEnabled(false);
@@ -794,13 +816,33 @@ public class BonLivraisonUi extends JFrame implements ActionListener,MouseListen
 		
 		
 		if(e.getSource().equals(printBtn)) {
-			MonDevis printDevis = new MonDevis(idBonLibraison);
+			 if (Desktop.isDesktopSupported()) {
+				 MonBonLivraison printDevis = new MonBonLivraison(idBonLibraison);
+	             try {
+	            	 String path = this.getClass().getClassLoader().getResource("").getPath();
+	            	    String fullPath = URLDecoder.decode(path, "UTF-8");
+	            	    String pathArr[] = fullPath.split("bin/");
+	            	    System.out.println(fullPath);
+	            	    System.out.println(pathArr[0]);
+	            	    fullPath = pathArr[0];
+
+	                    
+	                    File myFile = new File(fullPath+"bon_livraison.pdf");
+	                    Desktop.getDesktop().open(myFile);
+	            } catch (IOException ex) {
+	                        // no application registered for PDFs
+	                }
+	            }
+			
 		}
 	
 		if(e.getSource().equals(btncomm)) {
 			if(testGouv && testCode && testNumRue && testRue && testInfo) {
 				seekClientButton.setEnabled(true);
 				fieldMatricule.setEnabled(true);
+			}
+			else {
+				toaster.error("verifier les champs address");
 			}
 			
 		}
@@ -893,6 +935,18 @@ public class BonLivraisonUi extends JFrame implements ActionListener,MouseListen
 				fieldMatricule.setEnabled(false);
 			}
 		}
+		if(e.getSource().equals(fieldQty)) {
+			String regex = "^[0-9]+";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldQty.getText());
+			if(matcher.matches()) {
+				testQty = true;
+			}
+			else {
+				testQty= false;
+			}
+		}
+		
 		
 	}
 

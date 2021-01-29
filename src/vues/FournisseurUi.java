@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -20,6 +23,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.FieldView;
 
+import Toaster.Toaster;
+import Utils.UIUtils;
 import models.Adress;
 import models.Client;
 import models.CompteBancaire;
@@ -39,9 +44,13 @@ import javax.swing.JTextField;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -53,7 +62,7 @@ import javax.swing.JCheckBox;
 import models.Ville;
 import java.awt.Toolkit;
 
-public class FournisseurUi extends JFrame implements ActionListener,MouseListener {
+public class FournisseurUi extends JFrame implements ActionListener,MouseListener,CaretListener,FocusListener {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -80,7 +89,10 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 	private JTextField fieldIdAdress;
 	private JTextField fieldIdBanque;
 	JComboBox comboBoxType;
+	private final Toaster toaster;
+	DefaultTableModel model;
 	Dashboard dash;
+	private Boolean a=true,b=true,c=true,d=true,ee=true,f=true,g=true,h=true,j=true,k=true, mm = true;
 
 	/**
 	 * Launch the application.
@@ -112,7 +124,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+		this.toaster = new Toaster(contentPane);
 		JPanel topPanel = new JPanel();
 		topPanel.setBackground(new Color(0, 204, 255));
 		contentPane.add(topPanel, BorderLayout.NORTH);
@@ -134,7 +146,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		vuePanel.add(scrollPane);
-		DefaultTableModel model = new DefaultTableModel();
+		model = new DefaultTableModel();
         model.addColumn("nom");
         model.addColumn("prenom");
         model.addColumn("matricule");
@@ -257,7 +269,8 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		gbc_labelMatricule.gridy = 1;
 		panel.add(labelMatricule, gbc_labelMatricule);
 		
-		fieldMatricule = new JTextField();
+		fieldMatricule = new JTextField(UIUtils.MATRICULE_FISCALE);
+		fieldMatricule.addFocusListener(this);
 		GridBagConstraints gbc_fieldMatricule = new GridBagConstraints();
 		gbc_fieldMatricule.gridwidth = 3;
 		gbc_fieldMatricule.fill = GridBagConstraints.HORIZONTAL;
@@ -276,6 +289,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelName, gbc_labelName);
 		
 		fieldLastName = new JTextField();
+		fieldLastName.addCaretListener(this);
 		GridBagConstraints gbc_fieldLastName = new GridBagConstraints();
 		gbc_fieldLastName.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fieldLastName.insets = new Insets(0, 0, 5, 5);
@@ -292,6 +306,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelTel, gbc_labelTel);
 		
 		fielTel = new JTextField();
+		fielTel.addCaretListener(this);
 		GridBagConstraints gbc_fielTel = new GridBagConstraints();
 		gbc_fielTel.gridwidth = 3;
 		gbc_fielTel.insets = new Insets(0, 0, 5, 5);
@@ -310,6 +325,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelLastName, gbc_labelLastName);
 		
 		fieldName = new JTextField();
+		fieldName.addCaretListener(this);
 		GridBagConstraints gbc_fieldName = new GridBagConstraints();
 		gbc_fieldName.fill = GridBagConstraints.BOTH;
 		gbc_fieldName.insets = new Insets(0, 0, 5, 5);
@@ -326,6 +342,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelMobile, gbc_labelMobile);
 		
 		fieldMobile = new JTextField();
+		fieldMobile.addCaretListener(this);
 		GridBagConstraints gbc_fieldMobile = new GridBagConstraints();
 		gbc_fieldMobile.gridwidth = 3;
 		gbc_fieldMobile.insets = new Insets(0, 0, 5, 5);
@@ -365,6 +382,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelEmail, gbc_labelEmail);
 		
 		fieldEmail = new JTextField();
+		fieldEmail.addCaretListener(this);
 		GridBagConstraints gbc_fieldEmail = new GridBagConstraints();
 		gbc_fieldEmail.gridwidth = 3;
 		gbc_fieldEmail.insets = new Insets(0, 0, 5, 5);
@@ -397,6 +415,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelWebSite, gbc_labelWebSite);
 		
 		fieldWebSIte = new JTextField();
+		fieldWebSIte.addCaretListener(this);
 		GridBagConstraints gbc_fieldWebSIte = new GridBagConstraints();
 		gbc_fieldWebSIte.gridwidth = 3;
 		gbc_fieldWebSIte.insets = new Insets(0, 0, 5, 5);
@@ -440,6 +459,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelNomBanque, gbc_labelNomBanque);
 		
 		fieldNameBanque = new JTextField();
+		fieldNameBanque.addCaretListener(this);
 		GridBagConstraints gbc_fieldNameBanque = new GridBagConstraints();
 		gbc_fieldNameBanque.insets = new Insets(0, 0, 5, 5);
 		gbc_fieldNameBanque.fill = GridBagConstraints.HORIZONTAL;
@@ -475,6 +495,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelNomAgence, gbc_labelNomAgence);
 		
 		fieldNameAgence = new JTextField();
+		fieldNameAgence.addCaretListener(this);
 		GridBagConstraints gbc_fieldNameAgence = new GridBagConstraints();
 		gbc_fieldNameAgence.insets = new Insets(0, 0, 5, 5);
 		gbc_fieldNameAgence.fill = GridBagConstraints.HORIZONTAL;
@@ -492,6 +513,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelRib, gbc_labelRib);
 		
 		fieldRib = new JTextField();
+		fieldRib.addCaretListener(this);
 		GridBagConstraints gbc_fieldRib = new GridBagConstraints();
 		gbc_fieldRib.insets = new Insets(0, 0, 5, 5);
 		gbc_fieldRib.fill = GridBagConstraints.HORIZONTAL;
@@ -516,6 +538,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(LabelRue, gbc_LabelRue);
 		
 		fieldRue = new JTextField();
+		fieldRue.addCaretListener(this);
 		GridBagConstraints gbc_fieldRue = new GridBagConstraints();
 		gbc_fieldRue.gridwidth = 3;
 		gbc_fieldRue.insets = new Insets(0, 0, 5, 5);
@@ -586,6 +609,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		panel.add(labelGouvernat, gbc_labelGouvernat);
 		
 		fieldGouvernat = new JTextField();
+		fieldGouvernat.addCaretListener(this);
 		GridBagConstraints gbc_fieldGouvernat = new GridBagConstraints();
 		gbc_fieldGouvernat.gridwidth = 3;
 		gbc_fieldGouvernat.insets = new Insets(0, 0, 5, 5);
@@ -657,6 +681,7 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(addFournisseurtbtn)) {
+			if(a && b && c && d && ee && f && g && h && j && k) {
 			
 		
 			FournisseurServiceImpl fournisseurImpl = new FournisseurServiceImpl();
@@ -710,11 +735,50 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 			
 			
 			fournisseurImpl.save(fournisseur);
-		
+			((DefaultTableModel)table.getModel()).setNumRows(0);
+			 FournisseurServiceImpl fournisseurServ = new FournisseurServiceImpl();
+		        for(int i =0 ; i<fournisseurServ.getAll().size(); i++) {
+		        	 model.addRow(new String[] {
+		        			 fournisseurServ.getAll().get(i).getRaisonSocial().getNom(),
+		        			 fournisseurServ.getAll().get(i).getRaisonSocial().getPrenom(),
+		        			 fournisseurServ.getAll().get(i).getMatricule(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getTelMobile()),
+		        			 fournisseurServ.getAll().get(i).getEmail(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getTelFix()),
+		        			 fournisseurServ.getAll().get(i).getAdresse().getPays(),
+		        			 fournisseurServ.getAll().get(i).getAdresse().getLibelleRue(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getNumRue()),
+		        			 fournisseurServ.getAll().get(i).getAdresse().getNomVille(),
+		        			 fournisseurServ.getAll().get(i).getAdresse().getGouvernat(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getCodePostale()),
+		        			 fournisseurServ.getAll().get(i).getType().toString(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getNumRib()),
+		        			 fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getNameBanque(),
+		        			 fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getAgence(),
+		        			 fournisseurServ.getAll().get(i).getRaisonSocial().getSexe(),
+		        			 fournisseurServ.getAll().get(i).getWebSite(),
+		        			 fournisseurServ.getAll().get(i).getDescription(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getId()),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getId()),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getRaisonSocial().getId()),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getId()),
+		        			 Boolean.toString(fournisseurServ.getAll().get(i).isTva_assuj())
+		        			 
+		        			 });
+		        }
+			
+		        model.fireTableDataChanged();
+				toaster.success("inormation Fournisseur Ajouté");
+			
+			}
+			else {
+				toaster.error("verifier les cases rouge");
+			}
 		
 		}
 		
 		if(e.getSource().equals(modifyFournisseurBtn)){
+			if(a && b && c && d && ee && f && g && h && j && k) {
 			FournisseurServiceImpl fournisseurImpl = new FournisseurServiceImpl();
 			Fournisseur fournisseur = new Fournisseur();
 			Adress address = new Adress();
@@ -767,6 +831,45 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 			fournisseur.setId(Integer.parseInt(fieldIdClient.getText()));
 			fournisseur.setTva_assuj(checkBoxTva.isSelected());
 			fournisseurImpl.update(fournisseur);
+			((DefaultTableModel)table.getModel()).setNumRows(0);
+			 FournisseurServiceImpl fournisseurServ = new FournisseurServiceImpl();
+		        for(int i =0 ; i<fournisseurServ.getAll().size(); i++) {
+		        	 model.addRow(new String[] {
+		        			 fournisseurServ.getAll().get(i).getRaisonSocial().getNom(),
+		        			 fournisseurServ.getAll().get(i).getRaisonSocial().getPrenom(),
+		        			 fournisseurServ.getAll().get(i).getMatricule(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getTelMobile()),
+		        			 fournisseurServ.getAll().get(i).getEmail(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getTelFix()),
+		        			 fournisseurServ.getAll().get(i).getAdresse().getPays(),
+		        			 fournisseurServ.getAll().get(i).getAdresse().getLibelleRue(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getNumRue()),
+		        			 fournisseurServ.getAll().get(i).getAdresse().getNomVille(),
+		        			 fournisseurServ.getAll().get(i).getAdresse().getGouvernat(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getCodePostale()),
+		        			 fournisseurServ.getAll().get(i).getType().toString(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getNumRib()),
+		        			 fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getNameBanque(),
+		        			 fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getAgence(),
+		        			 fournisseurServ.getAll().get(i).getRaisonSocial().getSexe(),
+		        			 fournisseurServ.getAll().get(i).getWebSite(),
+		        			 fournisseurServ.getAll().get(i).getDescription(),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getId()),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getCompteBancaires().get(0).getId()),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getRaisonSocial().getId()),
+		        			 Integer.toString(fournisseurServ.getAll().get(i).getAdresse().getId()),
+		        			 Boolean.toString(fournisseurServ.getAll().get(i).isTva_assuj())
+		        			 
+		        			 });
+		        }
+			
+		        model.fireTableDataChanged();
+				toaster.success("inormation Fournisseur Ajouté");
+			
+			}
+			else {
+				toaster.error("verifier les cases rouge");
+			}
 		}
 		if(e.getSource().equals(deleteDeleteBtn)) {
 			FournisseurServiceImpl fournisseurImpl = new FournisseurServiceImpl();
@@ -789,7 +892,10 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 			int a=confirmPan.showConfirmDialog(this,"Are you sure deleting this supplier?");
 			if(a==confirmPan.YES_OPTION){  
 				fournisseurImpl.delete(fournisseur);
-			}  
+				toaster.error("fournisseur deleted");
+			} 
+			modifyFournisseurBtn.setEnabled(false);
+			deleteDeleteBtn.setEnabled(false);
 			
 		
 		}
@@ -866,4 +972,185 @@ public class FournisseurUi extends JFrame implements ActionListener,MouseListene
 		
 	}
 
+	@Override
+	public void caretUpdate(CaretEvent e) {
+		if(e.getSource().equals(fieldEmail)){
+			String regex = "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldEmail.getText());
+			if(matcher.matches()) {
+				fieldEmail.setBorder(new LineBorder(Color.green,1));
+				a = true;
+			}
+			else
+			{
+				fieldEmail.setBorder(new LineBorder(Color.red,1));
+				a = false;
+			}
+		}
+		if(e.getSource().equals(fieldMobile)){
+			String regex = "((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldMobile.getText());
+			if(matcher.matches()) {
+				fieldMobile.setBorder(new LineBorder(Color.green,1));
+				b = true;
+			}
+			else
+			{
+				fieldMobile.setBorder( new LineBorder(Color.red,1));
+				b=false;
+			}
+		}
+		if(e.getSource().equals(fielTel)){
+			String regex = "((?:\\+|00)[17](?: |\\-)?|(?:\\+|00)[1-9]\\d{0,2}(?: |\\-)?|(?:\\+|00)1\\-\\d{3}(?: |\\-)?)?(0\\d|\\([0-9]{3}\\)|[1-9]{0,3})(?:((?: |\\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\\-)[0-9]{3}(?: |\\-)[0-9]{4})|([0-9]{7}))";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fielTel.getText());
+			if(matcher.matches()) {
+				fielTel.setBorder(new LineBorder(Color.green,1));
+				c = true;
+			}
+			else
+			{
+				fielTel.setBorder(new LineBorder(Color.red,1));
+				c=false;
+			}
+		}
+		if(e.getSource().equals(fieldWebSIte)){
+			String regex = "(https?:\\/\\/)?(www\\.)[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)|(https?:\\/\\/)?(www\\.)?(?!ww)[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,4}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldWebSIte.getText());
+			if(matcher.matches()) {
+				fieldWebSIte.setBorder(new LineBorder(Color.green,1));
+				d  = true;
+			}
+			else
+			{
+				fieldWebSIte.setBorder(new LineBorder(Color.red,1));
+				d = false;
+			}
+		}
+		
+		if(e.getSource().equals(fieldName)){
+			String regex = "([a-zA-Z]{3,20}\s*)+";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldName.getText());
+			if(matcher.matches()) {
+				fieldName.setBorder(new LineBorder(Color.green,1));
+				ee =  true;
+			}
+			else
+			{
+				fieldName.setBorder(new LineBorder(Color.red,1));
+				ee = false;
+			}
+		}
+		
+		if(e.getSource().equals(fieldLastName)){
+			String regex = "([a-zA-Z]{3,20}\s*)+";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldLastName.getText());
+			if(matcher.matches()) {
+				fieldLastName.setBorder(new LineBorder(Color.green,1));
+				f = true;
+			}
+			else
+			{
+				fieldLastName.setBorder(new LineBorder(Color.red,1));
+				f = false;
+			}
+		}
+		
+		if(e.getSource().equals(fieldNameBanque)){
+			String regex = "([a-zA-Z]{3,20}\s*)+";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldNameBanque.getText());
+			if(matcher.matches()) {
+				fieldNameBanque.setBorder(new LineBorder(Color.green,1));
+				g = true;
+			}
+			else
+			{
+				fieldNameBanque.setBorder(new LineBorder(Color.red,1));
+				g  = false;
+			}
+		}
+		
+		if(e.getSource().equals(fieldNameAgence)){
+			String regex = "([a-zA-Z]{3,20}\s*)+";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldNameAgence.getText());
+			if(matcher.matches()) {
+				fieldNameAgence.setBorder(new LineBorder(Color.green,1));
+				h = true;
+			}
+			else
+			{
+				fieldNameAgence.setBorder(new LineBorder(Color.red,1));
+				h 	 = false;
+			}
+		}
+		if(e.getSource().equals(fieldRue)){
+			String regex = "([a-zA-Z]{3,20}\s*)+";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldRue.getText());
+			if(matcher.matches()) {
+				fieldRue.setBorder(new LineBorder(Color.green,1));
+				j = true;
+			}
+			else
+			{
+				fieldMatricule.setBorder(new LineBorder(Color.red,1));
+				j = false;
+			}
+		}
+		
+		if(e.getSource().equals(fieldRib)){
+			String regex = "^(0[1-9]|[1-8])([0-9]{9}\s*)$";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldRib.getText());
+			if(matcher.matches()) {
+				fieldRib.setBorder(new LineBorder(Color.green,1));
+				k = true;
+			}
+			else
+			{
+				fieldRib.setBorder(new LineBorder(Color.red,1));
+				k = false;
+			}
+		}
+		
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		if(e.getSource().equals(fieldMatricule)) {
+			if (fieldMatricule.getText().equals(UIUtils.MATRICULE_FISCALE)) {
+	            fieldMatricule.setText("");
+	        }
+
+	
+		}
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		if(e.getSource().equals(fieldMatricule)) {
+			
+			String regex = "[0-9]{8}[/]{1}[A-Z]{1}[/]{1}[A-Z]{1}[/]{1}[A-Z]{1}[/]{1}[0-9]{3}$";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldMatricule.getText());
+			if (matcher.matches()) {
+				fieldMatricule.setBorder(new LineBorder(Color.green,1));
+				mm = true;
+	        }
+			else {
+				fieldMatricule.setBorder(new LineBorder(Color.red,1));
+				mm = false;
+			}
+
+			
+		}
+			
+      }
 }

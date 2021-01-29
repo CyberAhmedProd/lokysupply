@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.BoxLayout;
@@ -22,7 +23,8 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
+import Toaster.Toaster;
+import Utils.UIUtils;
 import models.Adress;
 
 
@@ -43,11 +45,15 @@ import javax.swing.JTextField;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultComboBoxModel;
 
@@ -55,7 +61,7 @@ import javax.swing.ScrollPaneConstants;
 import models.UnitOfMeasure;
 import java.awt.Toolkit;
 
-public class ProductUi extends JFrame implements ActionListener,MouseListener,CaretListener{
+public class ProductUi extends JFrame implements ActionListener,MouseListener,CaretListener,FocusListener{
 
 	private JPanel contentPane;
 	private JTable table;
@@ -72,9 +78,11 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 	private JTextField fieldNomFamille;
 	private JTextField fieldTypeFamille;
 	Map<Integer, String> mapFournisseur;
+	private final Toaster toaster;
 	JComboBox comboUnit;
+	private DefaultTableModel model;
 	Dashboard dash;
-
+	private Boolean mm = false , a= false, b = false , c = false, d = false, ee = false , f = false;
 	/**
 	 * Launch the application.
 	 */
@@ -109,7 +117,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		JPanel topPanel = new JPanel();
 		topPanel.setBackground(new Color(204, 0, 102));
 		contentPane.add(topPanel, BorderLayout.NORTH);
-		
+		this.toaster = new Toaster(contentPane);
 		JLabel lblFournisseurManagement = new JLabel("Product Management");
 		lblFournisseurManagement.setIcon(new ImageIcon(ProductUi.class.getResource("/Gambar/product.png")));
 		lblFournisseurManagement.setFont(new Font("DejaVu Math TeX Gyre", Font.BOLD, 17));
@@ -129,7 +137,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		vuePanel.add(scrollPane);
-		DefaultTableModel model = new DefaultTableModel();
+		model = new DefaultTableModel();
         model.addColumn("ref");
         model.addColumn("designation");
         
@@ -232,7 +240,8 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		gbc_labelRef.gridy = 1;
 		panel.add(labelRef, gbc_labelRef);
 		
-		fieldRef = new JTextField();
+		fieldRef = new JTextField(UIUtils.REF_PRODUIT);
+		fieldRef.addFocusListener(this);
 		GridBagConstraints gbc_fieldRef = new GridBagConstraints();
 		gbc_fieldRef.gridwidth = 3;
 		gbc_fieldRef.fill = GridBagConstraints.HORIZONTAL;
@@ -251,6 +260,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		panel.add(labelDesignation, gbc_labelDesignation);
 		
 		fieldDesignation = new JTextField();
+		fieldDesignation.addCaretListener(this);
 		GridBagConstraints gbc_fieldDesignation = new GridBagConstraints();
 		gbc_fieldDesignation.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fieldDesignation.insets = new Insets(0, 0, 5, 5);
@@ -275,24 +285,6 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		gbc_comboUnit.gridx = 2;
 		gbc_comboUnit.gridy = 3;
 		panel.add(comboUnit, gbc_comboUnit);
-		
-		JButton btnAddFamily = new JButton("add Family");
-		btnAddFamily.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		GridBagConstraints gbc_btnAddFamily = new GridBagConstraints();
-		gbc_btnAddFamily.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAddFamily.gridx = 6;
-		gbc_btnAddFamily.gridy = 4;
-		panel.add(btnAddFamily, gbc_btnAddFamily);
-		
-		JButton btnDeleteFamily = new JButton("delete family");
-		GridBagConstraints gbc_btnDeleteFamily = new GridBagConstraints();
-		gbc_btnDeleteFamily.insets = new Insets(0, 0, 5, 5);
-		gbc_btnDeleteFamily.gridx = 7;
-		gbc_btnDeleteFamily.gridy = 4;
-		panel.add(btnDeleteFamily, gbc_btnDeleteFamily);
 		
 		JLabel labelFournisseur = new JLabel("Fournisseur  : ");
 		GridBagConstraints gbc_labelFournisseur = new GridBagConstraints();
@@ -334,16 +326,6 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		gbc_labelFamille.gridy = 5;
 		panel.add(labelFamille, gbc_labelFamille);
 		
-	
-		JComboBox comboFamily = new JComboBox();
-		comboFamily.setModel(new DefaultComboBoxModel(new String[] {"1"}));
-		GridBagConstraints gbc_comboFamily = new GridBagConstraints();
-		gbc_comboFamily.insets = new Insets(0, 0, 5, 5);
-		gbc_comboFamily.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboFamily.gridx = 7;
-		gbc_comboFamily.gridy = 5;
-		panel.add(comboFamily, gbc_comboFamily);
-		
 		JLabel labelNomFamily = new JLabel("Nom famille :");
 		GridBagConstraints gbc_labelNomFamily = new GridBagConstraints();
 		gbc_labelNomFamily.anchor = GridBagConstraints.WEST;
@@ -353,6 +335,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		panel.add(labelNomFamily, gbc_labelNomFamily);
 		
 		fieldNomFamille = new JTextField();
+		fieldNomFamille.addCaretListener(this);
 		GridBagConstraints gbc_fieldNomFamille = new GridBagConstraints();
 		gbc_fieldNomFamille.insets = new Insets(0, 0, 5, 5);
 		gbc_fieldNomFamille.fill = GridBagConstraints.HORIZONTAL;
@@ -370,6 +353,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		panel.add(labelTypeFamily, gbc_labelTypeFamily);
 		
 		fieldTypeFamille = new JTextField();
+		fieldTypeFamille.addCaretListener(this);
 		GridBagConstraints gbc_fieldTypeFamille = new GridBagConstraints();
 		gbc_fieldTypeFamille.insets = new Insets(0, 0, 5, 5);
 		gbc_fieldTypeFamille.fill = GridBagConstraints.HORIZONTAL;
@@ -379,10 +363,11 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		fieldTypeFamille.setColumns(10);
 		
 		fieldPrice = new JTextField();
-		fieldPrice.setText("0");
+		fieldPrice.setText("1");
+		fieldPrice.addCaretListener(this);
 		fieldPrice.addCaretListener(this);
 		
-		JLabel labelPrice = new JLabel("Price  : ");
+		JLabel labelPrice = new JLabel("Price(Dt)  : ");
 		GridBagConstraints gbc_labelPrice = new GridBagConstraints();
 		gbc_labelPrice.anchor = GridBagConstraints.EAST;
 		gbc_labelPrice.insets = new Insets(0, 0, 5, 5);
@@ -425,6 +410,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		panel.add(labelStock, gbc_labelStock);
 		
 		fieldStock = new JTextField();
+		fieldStock.addCaretListener(this);
 		GridBagConstraints gbc_fieldStock = new GridBagConstraints();
 		gbc_fieldStock.gridwidth = 3;
 		gbc_fieldStock.insets = new Insets(0, 0, 5, 5);
@@ -443,6 +429,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 		panel.add(labelMinStock, gbc_labelMinStock);
 		
 		fieldMinStock = new JTextField();
+		fieldMinStock.addCaretListener(this);
 		GridBagConstraints gbc_fieldMinStock = new GridBagConstraints();
 		gbc_fieldMinStock.fill = GridBagConstraints.BOTH;
 		gbc_fieldMinStock.insets = new Insets(0, 0, 5, 5);
@@ -483,6 +470,9 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(addProductbtn)) {
+			if(a && b && c && d && ee && f && mm) {
+				
+			
 			
 			ProductServiceImpl productImpl = new ProductServiceImpl();
 			Fournisseur fournisseur = new Fournisseur();
@@ -523,10 +513,38 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 			
 			productImpl.save(product);
 			
+			toaster.success("product added to the liste");
+			((DefaultTableModel)table.getModel()).setNumRows(0);
+			 ProductServiceImpl produitServ = new ProductServiceImpl();
+		        for(int i =0 ; i<produitServ.getAll().size(); i++) {
+		        	 model.addRow(new String[] {
+		        			 produitServ.getAll().get(i).getRef(),
+		        			 produitServ.getAll().get(i).getDesignation(),
+		        			 produitServ.getAll().get(i).getUnit().toString(),
+		        			 Double.toString(produitServ.getAll().get(i).getUnitPriceHt()),
+		        			 Double.toString(produitServ.getAll().get(i).getUnitPriceTva()),
+		        			 Integer.toString(produitServ.getAll().get(i).getStock()),
+		        			 Integer.toString(produitServ.getAll().get(i).getMinStock()),
+		        			 produitServ.getAll().get(i).getFournisseur().getRaisonSocial().getNom(),
+		        			 produitServ.getAll().get(i).getFamille().getNom(),
+		        			 produitServ.getAll().get(i).getFamille().getType(),
+		        			 Integer.toString(produitServ.getAll().get(i).getFamille().getId()),
+		        			 Integer.toString(produitServ.getAll().get(i).getFournisseur().getId()),
+		        			 Integer.toString(produitServ.getAll().get(i).getId()),
+		        			 });
+		        }
+		        
+		        model.fireTableDataChanged();
+		     
+			}
+			else {
+				toaster.error("verifier les champs");
+			}
+			
 		}
 		
 		if(e.getSource().equals(modifyProductBtn)){
-			
+			if(a && b && c && d && ee && f && mm) {
 			ProductServiceImpl productImpl = new ProductServiceImpl();
 			Fournisseur fournisseur = new Fournisseur();
 			ProduitFamille familleProduct = new ProduitFamille();
@@ -564,9 +582,34 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 			product.setFamille(familleProduct);
 			product.setId(Integer.parseInt(fieldIdProduct.getText()));
 			productImpl.update(product);
+			toaster.success("product modified to the liste");
+			((DefaultTableModel)table.getModel()).setNumRows(0);
+			 ProductServiceImpl produitServ = new ProductServiceImpl();
+		        for(int i =0 ; i<produitServ.getAll().size(); i++) {
+		        	 model.addRow(new String[] {
+		        			 produitServ.getAll().get(i).getRef(),
+		        			 produitServ.getAll().get(i).getDesignation(),
+		        			 produitServ.getAll().get(i).getUnit().toString(),
+		        			 Double.toString(produitServ.getAll().get(i).getUnitPriceHt()),
+		        			 Double.toString(produitServ.getAll().get(i).getUnitPriceTva()),
+		        			 Integer.toString(produitServ.getAll().get(i).getStock()),
+		        			 Integer.toString(produitServ.getAll().get(i).getMinStock()),
+		        			 produitServ.getAll().get(i).getFournisseur().getRaisonSocial().getNom(),
+		        			 produitServ.getAll().get(i).getFamille().getNom(),
+		        			 produitServ.getAll().get(i).getFamille().getType(),
+		        			 Integer.toString(produitServ.getAll().get(i).getFamille().getId()),
+		        			 Integer.toString(produitServ.getAll().get(i).getFournisseur().getId()),
+		        			 Integer.toString(produitServ.getAll().get(i).getId()),
+		        			 });
+		        }
+		        
+		        model.fireTableDataChanged();
 			
 			
-			
+			}
+			else {
+				toaster.error("verifier les champs");
+			}
 		}
 		if(e.getSource().equals(deleteProductBtn)) {
 			ProductServiceImpl productImpl = new ProductServiceImpl();
@@ -576,6 +619,7 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 			int a=confirmPan.showConfirmDialog(this,"Are you sure deleting this product?");
 			if(a==confirmPan.YES_OPTION){  
 				productImpl.delete(product);
+				toaster.error("product deleted");
 			}  
 		
 		}
@@ -656,6 +700,127 @@ public class ProductUi extends JFrame implements ActionListener,MouseListener,Ca
 				double result = Double.parseDouble(fieldPrice.getText());
 				result += result*0.18f;
 				fieldTva.setText(Double.toString((double)Math.round(result * 100) /100));
+		}
+			if(e.getSource().equals(fieldDesignation)){
+				String regex = "([a-zA-Z]{3,20}\s*)+";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(fieldDesignation.getText());
+				if(matcher.matches()) {
+					fieldDesignation.setBorder(new LineBorder(Color.green,1));
+					a =  true;
+				}
+				else
+				{
+					fieldDesignation.setBorder(new LineBorder(Color.red,1));
+					a = false;
+				}
+			}
+			
+			if(e.getSource().equals(fieldNomFamille)){
+				String regex = "([a-zA-Z]{3,20}\s*)+";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(fieldNomFamille.getText());
+				if(matcher.matches()) {
+					fieldNomFamille.setBorder(new LineBorder(Color.green,1));
+					b =  true;
+				}
+				else
+				{
+					fieldNomFamille.setBorder(new LineBorder(Color.red,1));
+					b = false;
+				}
+			}
+			if(e.getSource().equals(fieldTypeFamille)){
+				String regex = "([a-zA-Z]{3,20}\s*)+";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(fieldTypeFamille.getText());
+				if(matcher.matches()) {
+					fieldTypeFamille.setBorder(new LineBorder(Color.green,1));
+					c =  true;
+				}
+				else
+				{
+					fieldTypeFamille.setBorder(new LineBorder(Color.red,1));
+					c = false;
+				}
+			}
+			
+			if(e.getSource().equals(fieldPrice)){
+				String regex = "^[0-9]+.?[0-9]{3}$";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(fieldPrice.getText());
+				if(matcher.matches()) {
+					fieldPrice.setBorder(new LineBorder(Color.green,1));
+					d =  true;
+				}
+				else
+				{
+					fieldPrice.setBorder(new LineBorder(Color.red,1));
+					d = false;
+				}
+			}
+			if(e.getSource().equals(fieldStock)){
+				String regex = "^[0-9]+";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(fieldStock.getText());
+				if(matcher.matches()) {
+					fieldStock.setBorder(new LineBorder(Color.green,1));
+					ee =  true;
+				}
+				else
+				{
+					fieldStock.setBorder(new LineBorder(Color.red,1));
+					ee = false;
+				}
+			}
+			if(e.getSource().equals(fieldMinStock)){
+				String regex = "^[0-9]+";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(fieldMinStock.getText());
+				if(matcher.matches()) {
+					fieldMinStock.setBorder(new LineBorder(Color.green,1));
+					f =  true;
+				}
+				else
+				{
+					fieldMinStock.setBorder(new LineBorder(Color.red,1));
+					f = false;
+				}
+			}
+		
+		
+		
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		if(e.getSource().equals(fieldRef)) {
+			if (fieldRef.getText().equals(UIUtils.REF_PRODUIT)) {
+				fieldRef.setText("");
+	        }
+
+	
+		}
+		
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+if(e.getSource().equals(fieldRef)) {
+			
+			String regex = "[0-9]{5}[/]{1}[A-Z]{2}[/]{1}[A-Z]{2}$";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldRef.getText());
+			if (matcher.matches()) {
+				fieldRef.setBorder(new LineBorder(Color.green,1));
+				mm = true;
+	        }
+			else {
+				fieldRef.setBorder(new LineBorder(Color.red,1));
+				mm = false;
+			}
+
+			
 		}
 		
 	}

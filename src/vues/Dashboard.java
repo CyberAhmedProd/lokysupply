@@ -227,7 +227,7 @@ public class Dashboard extends JFrame implements MouseListener{
 
         btnTimeline.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 16)); // NOI18N
         btnTimeline.setForeground(new java.awt.Color(44, 62, 80));
-        btnTimeline.setText("DASHBOARD");
+        btnTimeline.setText("Structure");
         btnTimeline.setContentAreaFilled(false);
         btnTimeline.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnTimeline.setFocusable(false);
@@ -275,7 +275,7 @@ public class Dashboard extends JFrame implements MouseListener{
 
         btnQA.setFont(new java.awt.Font("Berlin Sans FB Demi", 0, 16)); // NOI18N
         btnQA.setForeground(new java.awt.Color(44, 62, 80));
-        btnQA.setText("Q&A");
+        btnQA.setText("Achats");
         btnQA.setContentAreaFilled(false);
         btnQA.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnQA.setFocusable(false);
@@ -460,7 +460,7 @@ public class Dashboard extends JFrame implements MouseListener{
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Personalization");
+        jLabel8.setText("Entreprise");
         jLabel8.setOpaque(true);
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -859,7 +859,7 @@ public class Dashboard extends JFrame implements MouseListener{
         lblBonDeLivraison.setBackground(new Color(0, 204, 106));
         
         JLabel jLabel11_1_1 = new JLabel();
-        jLabel11_1_1.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/product.png")));
+        jLabel11_1_1.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/notes.png")));
         jLabel11_1_1.setHorizontalAlignment(SwingConstants.CENTER);
         GroupLayout gl_bonLivraisonPanel_1 = new GroupLayout(bonLivraisonPanel_1);
         gl_bonLivraisonPanel_1.setHorizontalGroup(
@@ -882,7 +882,8 @@ public class Dashboard extends JFrame implements MouseListener{
         );
         bonLivraisonPanel_1.setLayout(gl_bonLivraisonPanel_1);
         
-        JPanel listBonLivraisonPanel_1 = new JPanel();
+        listBonLivraisonPanel_1 = new JPanel();
+        listBonLivraisonPanel_1.addMouseListener(this);
         listBonLivraisonPanel_1.setBackground(Color.WHITE);
         
         JLabel lblListeDeBon = new JLabel();
@@ -894,6 +895,7 @@ public class Dashboard extends JFrame implements MouseListener{
         lblListeDeBon.setBackground(new Color(52, 152, 219));
         
         JLabel jLabel12_1_1 = new JLabel();
+        jLabel12_1_1.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/delivery-note.png")));
         jLabel12_1_1.setHorizontalAlignment(SwingConstants.CENTER);
         GroupLayout gl_listBonLivraisonPanel_1 = new GroupLayout(listBonLivraisonPanel_1);
         gl_listBonLivraisonPanel_1.setHorizontalGroup(
@@ -916,11 +918,12 @@ public class Dashboard extends JFrame implements MouseListener{
         );
         listBonLivraisonPanel_1.setLayout(gl_listBonLivraisonPanel_1);
         
-        JPanel jPanel3_1_1 = new JPanel();
-        jPanel3_1_1.setBackground(Color.WHITE);
+        facturePanel = new JPanel();
+        facturePanel.addMouseListener(this);
+        facturePanel.setBackground(Color.WHITE);
         
         JLabel jLabel8_1_1 = new JLabel();
-        jLabel8_1_1.setText("Personalization");
+        jLabel8_1_1.setText("Facture Client");
         jLabel8_1_1.setOpaque(true);
         jLabel8_1_1.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel8_1_1.setForeground(Color.WHITE);
@@ -928,27 +931,28 @@ public class Dashboard extends JFrame implements MouseListener{
         jLabel8_1_1.setBackground(new Color(243, 156, 18));
         
         JLabel jLabel13_1_1 = new JLabel();
+        jLabel13_1_1.setIcon(new ImageIcon(Dashboard.class.getResource("/Gambar/bill.png")));
         jLabel13_1_1.setHorizontalAlignment(SwingConstants.CENTER);
-        GroupLayout gl_jPanel3_1_1 = new GroupLayout(jPanel3_1_1);
-        gl_jPanel3_1_1.setHorizontalGroup(
-        	gl_jPanel3_1_1.createParallelGroup(Alignment.LEADING)
+        GroupLayout gl_facturePanel = new GroupLayout(facturePanel);
+        gl_facturePanel.setHorizontalGroup(
+        	gl_facturePanel.createParallelGroup(Alignment.LEADING)
         		.addGap(0, 250, Short.MAX_VALUE)
         		.addComponent(jLabel8_1_1, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-        		.addGroup(gl_jPanel3_1_1.createSequentialGroup()
+        		.addGroup(gl_facturePanel.createSequentialGroup()
         			.addContainerGap()
         			.addComponent(jLabel13_1_1, GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
         			.addContainerGap())
         );
-        gl_jPanel3_1_1.setVerticalGroup(
-        	gl_jPanel3_1_1.createParallelGroup(Alignment.LEADING)
+        gl_facturePanel.setVerticalGroup(
+        	gl_facturePanel.createParallelGroup(Alignment.LEADING)
         		.addGap(0, 250, Short.MAX_VALUE)
-        		.addGroup(gl_jPanel3_1_1.createSequentialGroup()
+        		.addGroup(gl_facturePanel.createSequentialGroup()
         			.addComponent(jLabel8_1_1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
         			.addPreferredGap(ComponentPlacement.RELATED)
         			.addComponent(jLabel13_1_1, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
         			.addContainerGap())
         );
-        jPanel3_1_1.setLayout(gl_jPanel3_1_1);
+        facturePanel.setLayout(gl_facturePanel);
         GroupLayout gl_pnlTimeline_1_1 = new GroupLayout(pnlTimeline_1_1);
         gl_pnlTimeline_1_1.setHorizontalGroup(
         	gl_pnlTimeline_1_1.createParallelGroup(Alignment.LEADING)
@@ -959,7 +963,7 @@ public class Dashboard extends JFrame implements MouseListener{
         			.addGap(50)
         			.addComponent(listBonLivraisonPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addGap(50)
-        			.addComponent(jPanel3_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        			.addComponent(facturePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addContainerGap())
         );
         gl_pnlTimeline_1_1.setVerticalGroup(
@@ -968,7 +972,7 @@ public class Dashboard extends JFrame implements MouseListener{
         		.addGroup(gl_pnlTimeline_1_1.createSequentialGroup()
         			.addGap(50)
         			.addGroup(gl_pnlTimeline_1_1.createParallelGroup(Alignment.TRAILING)
-        				.addComponent(jPanel3_1_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(facturePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(listBonLivraisonPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         				.addComponent(bonLivraisonPanel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addContainerGap(350, Short.MAX_VALUE))
@@ -1159,6 +1163,7 @@ public class Dashboard extends JFrame implements MouseListener{
     private javax.swing.JPanel fournisseurPanel;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel bonLivraisonPanel_1;
+    private javax.swing.JPanel listBonLivraisonPanel_1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JScrollPane jspTimeline;
     private javax.swing.JLabel lblNews;
@@ -1182,6 +1187,7 @@ public class Dashboard extends JFrame implements MouseListener{
     private JLabel jLabel8_1;
     private JLabel jLabel13_1;
     private JPanel pnlVentes;
+    private JPanel facturePanel;
     private JScrollPane jspTimeline_2;
     private JSeparator jSeparator1_1;
     private JLabel jLabel18_1;
@@ -1233,6 +1239,18 @@ public class Dashboard extends JFrame implements MouseListener{
 			BonLivraisonUi bonLivraisonUi = new BonLivraisonUi(this);
 			bonLivraisonUi.setVisible(true);
 		}
+		if(e.getSource().equals(listBonLivraisonPanel_1)) {
+			this.dispose();
+			ListBonLivraisonUi listBonLivraisonUi = new ListBonLivraisonUi(this);
+			listBonLivraisonUi.setVisible(true);
+		}
+		if(e.getSource().equals(facturePanel)) {
+			this.dispose();
+			FactureClientUi factureClientUi = new FactureClientUi(this);
+			factureClientUi.setVisible(true);
+		}
+		
+		
 		
 	}
 

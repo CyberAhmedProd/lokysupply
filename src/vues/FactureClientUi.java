@@ -54,16 +54,14 @@ import java.awt.event.MouseListener;
 
 
 import java.awt.Component;
-import java.awt.Desktop;
-
 import javax.swing.ScrollPaneConstants;
 
-import java.io.File;
+
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -82,9 +80,12 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Toolkit;
 import java.awt.Dialog.ModalExclusionType;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import models.TypeFactureClient;
 
 
-public class DevisUi extends JFrame implements ActionListener,MouseListener  {
+public class FactureClientUi extends JFrame implements ActionListener,MouseListener  {
 	private final Toaster toaster;
 	private JPanel contentPane;
 	private JTable table;
@@ -106,6 +107,7 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 	Product p;
 	Dashboard dash;
 	private JTextField fieldIdClient;
+	private JComboBox comboBox;
 
 	/**
 	 * Launch the application.
@@ -126,7 +128,7 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 	/**
 	 * Create the frame.
 	 */
-	public DevisUi(Dashboard dash) {
+	public FactureClientUi(Dashboard dash) {
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(DevisUi.class.getResource("/Gambar/dragon.png")));
 		setTitle("LokyErp - Devis");
@@ -227,9 +229,18 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
+		
+		comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(TypeFactureClient.values()));
+		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBox.gridx = 1;
+		gbc_comboBox.gridy = 0;
+		panel.add(comboBox, gbc_comboBox);
 		
 		fieldIdClient = new JTextField();
 		fieldIdClient.setEnabled(false);
@@ -603,25 +614,7 @@ public class DevisUi extends JFrame implements ActionListener,MouseListener  {
 		
 		
 		if(e.getSource().equals(printBtn)) {
-			
-			 if (Desktop.isDesktopSupported()) {
-				 MonDevis printDevis = new MonDevis(idDevis);
-	             try {
-	            	 String path = this.getClass().getClassLoader().getResource("").getPath();
-	            	    String fullPath = URLDecoder.decode(path, "UTF-8");
-	            	    String pathArr[] = fullPath.split("bin/");
-	            	    System.out.println(fullPath);
-	            	    System.out.println(pathArr[0]);
-	            	    fullPath = pathArr[0];
-
-	                    
-	                    File myFile = new File(fullPath+"devis.pdf");
-	                    Desktop.getDesktop().open(myFile);
-	            } catch (IOException ex) {
-	                        // no application registered for PDFs
-	                }
-	            }
-			
+			MonDevis printDevis = new MonDevis(idDevis);
 		}
 	}
 	

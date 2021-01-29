@@ -22,7 +22,9 @@ public class UIUtils {
     public static final String PLACEHOLDER_TEXT_NAME = "Name";
     public static final String BUTTON_TEXT_DISPOSE = "Cancel";
     public static final String PLACEHOLDER_TEXT_LAST_NAME = "Last Name";
-  
+    
+    public static final String MATRICULE_FISCALE ="00000000/H/N/C/000";
+    public static final String REF_PRODUIT = "00000/TY/FA";
 
     public static final int ROUNDNESS = 8;
 

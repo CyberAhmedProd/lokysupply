@@ -22,7 +22,9 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import Toaster.Toaster;
 import Utils.JSearchBar;
+import Utils.UIUtils;
 import models.Adress;
 import models.Client;
 import models.CompteBancaire;
@@ -41,6 +43,8 @@ import javax.swing.JTextField;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -61,7 +65,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.DropMode;
 
-public class ClientUi extends JFrame implements ActionListener,MouseListener,CaretListener {
+public class ClientUi extends JFrame implements ActionListener,MouseListener,CaretListener,FocusListener {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -83,7 +87,10 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 	JEditorPane editorPaneDescription;
 	private JButton addClientbtn,modifyClientBtn,deleteClientBtn,btnBackToDash;
 	private JTextField fieldIdClient,fieldIdBanque,fieldIdAdress,fieldIdSocial;
-
+	private final Toaster toaster;
+	DefaultTableModel model;
+	
+	private Boolean a=true,b=true,c=true,d=true,ee=true,f=true,g=true,h=true,j=true,k=true, mm = true;
 	JCheckBox checkBoxTva;
 	
 	Dashboard dash;
@@ -109,6 +116,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 	 */
 	public ClientUi(Dashboard dash) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClientUi.class.getResource("/Gambar/dragon.png")));
+		
 		setTitle("LokyErp - Client");
 		this.dash = dash;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -118,7 +126,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		
+		this.toaster = new Toaster(contentPane);
 		JPanel topPanel = new JPanel();
 		topPanel.setBackground(new Color(0, 139, 139));
 		contentPane.add(topPanel, BorderLayout.NORTH);
@@ -143,7 +151,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		vuePanel.add(scrollPane);
-		DefaultTableModel model = new DefaultTableModel();
+		model = new DefaultTableModel();
         model.addColumn("nom");
         model.addColumn("prenom");
         model.addColumn("matricule");
@@ -210,62 +218,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setModel(model);
 		table.addMouseListener(this);
-			/*new Object[][] {
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"nom", "prenom", "matricule", "mobile", "email", "tel", "adress"
-			}
-		));*/
+			
 		scrollPane.setViewportView(table);
 		
 		JPanel buttonPanel = new JPanel();
@@ -278,11 +231,13 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 		addClientbtn.addActionListener(this);
 		
 		modifyClientBtn = new JButton("");
+		modifyClientBtn.setEnabled(false);
 		modifyClientBtn.setIcon(new ImageIcon(ClientUi.class.getResource("/Gambar/files.png")));
 		modifyClientBtn.addActionListener(this);
 		buttonPanel.add(modifyClientBtn);
 		
 		deleteClientBtn = new JButton("");
+		deleteClientBtn.setEnabled(false);
 		deleteClientBtn.setIcon(new ImageIcon(ClientUi.class.getResource("/Gambar/delete.png")));
 		deleteClientBtn.addActionListener(this);
 		buttonPanel.add(deleteClientBtn);
@@ -323,7 +278,8 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 		gbc_labelMatricule.gridy = 1;
 		panel.add(labelMatricule, gbc_labelMatricule);
 		
-		fieldMatricule = new JTextField();
+		fieldMatricule = new JTextField("00000000/H/N/C/000");
+		fieldMatricule.addFocusListener(this);
 		GridBagConstraints gbc_fieldMatricule = new GridBagConstraints();
 		gbc_fieldMatricule.anchor = GridBagConstraints.WEST;
 		gbc_fieldMatricule.insets = new Insets(0, 0, 5, 5);
@@ -742,58 +698,96 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(addClientbtn)) {
 			
+			if(a && b && c && d && ee && f && g && h && j && k) {
+			//je suis la 
+				ClientServiceImpl clientImpl = new ClientServiceImpl();
+				Client client = new Client();
+				Adress address = new Adress();
+				CompteBancaire compte = new CompteBancaire();
+				RaisonSocial social = new RaisonSocial();
+				ArrayList<CompteBancaire> listCompte = new ArrayList();
+				listCompte.add(compte);
+				
+				// -----------Address info
+				address.setNumRue(Integer.parseInt(fieldNumRue.getText()));
+				address.setLibelleRue( fieldRue.getText());
+				address.setNomVille(comboVille.getSelectedItem().toString());
+				address.setCodePostale(Integer.parseInt(fieldCode.getText()));
+				address.setGouvernat(fieldGouvernat.getText());
+				address.setPays(comboPays.getSelectedItem().toString());
+				// -----------------------------------------
+				// --------------------------CompteBancaire info 
+				
+				compte.setNameBanque(fieldNameBanque.getText());
+				compte.setAgence(fieldNameAgence.getText());
+				compte.setNumRib(Integer.parseInt(fieldRib.getText()));
+				
+				/// --------------------------------------------------
+				// ------------------info Social
+				//-----------------------------------------------
+				social.setNom(fieldLastName.getText());
+				social.setPrenom(fieldName.getText());
+				social.setSexe("homme");
+				
+				//
+				client.setMatricule(fieldMatricule.getText());
+				if(String.valueOf(comboBoxType.getSelectedItem().toString())== TypeEntreprise.PHYSIQUE.toString()) {
+					client.setType(TypeEntreprise.PHYSIQUE);
+				}
+				else {
+					client.setType(TypeEntreprise.MORALE);
+				}
 		
-			ClientServiceImpl clientImpl = new ClientServiceImpl();
-			Client client = new Client();
-			Adress address = new Adress();
-			CompteBancaire compte = new CompteBancaire();
-			RaisonSocial social = new RaisonSocial();
-			ArrayList<CompteBancaire> listCompte = new ArrayList();
-			listCompte.add(compte);
-			
-			// -----------Address info
-			address.setNumRue(Integer.parseInt(fieldNumRue.getText()));
-			address.setLibelleRue( fieldRue.getText());
-			address.setNomVille(comboVille.getSelectedItem().toString());
-			address.setCodePostale(Integer.parseInt(fieldCode.getText()));
-			address.setGouvernat(fieldGouvernat.getText());
-			address.setPays(comboPays.getSelectedItem().toString());
-			// -----------------------------------------
-			// --------------------------CompteBancaire info 
-			
-			compte.setNameBanque(fieldNameBanque.getText());
-			compte.setAgence(fieldNameAgence.getText());
-			compte.setNumRib(Integer.parseInt(fieldRib.getText()));
-			
-			/// --------------------------------------------------
-			// ------------------info Social
-			//-----------------------------------------------
-			social.setNom(fieldLastName.getText());
-			social.setPrenom(fieldName.getText());
-			social.setSexe("homme");
-			
-			//
-			client.setMatricule(fieldMatricule.getText());
-			if(String.valueOf(comboBoxType.getSelectedItem().toString())== TypeEntreprise.PHYSIQUE.toString()) {
-				client.setType(TypeEntreprise.PHYSIQUE);
+				client.setDescription(editorPaneDescription.getText());
+				client.setTelFix(Integer.parseInt(fielTel.getText()));
+				client.setTelMobile(Integer.parseInt(fieldMobile.getText()));
+				client.setEmail(fieldEmail.getText());
+				client.setWebSite(fieldWebSIte.getText());
+				client.setAdresse(address);
+				client.setCompteBancaires(listCompte);
+				client.setRaisonSocial(social);
+				client.setTva_assuj(checkBoxTva.isSelected());
+				clientImpl.save(client);
+				
+				((DefaultTableModel)table.getModel()).setNumRows(0);
+				ClientServiceImpl clientServ = new ClientServiceImpl();
+		        for(int i =0 ; i<clientServ.getAll().size(); i++) {
+		        	 model.addRow(new String[] {
+		        			 clientServ.getAll().get(i).getRaisonSocial().getNom(),
+		        			 clientServ.getAll().get(i).getRaisonSocial().getPrenom(),
+		        			 clientServ.getAll().get(i).getMatricule(),
+		        			 Integer.toString(clientServ.getAll().get(i).getTelMobile()),
+		        			 clientServ.getAll().get(i).getEmail(),
+		        			 Integer.toString(clientServ.getAll().get(i).getTelFix()),
+		        			 clientServ.getAll().get(i).getAdresse().getPays(),
+		        			 clientServ.getAll().get(i).getAdresse().getLibelleRue(),
+		        			 Integer.toString(clientServ.getAll().get(i).getAdresse().getNumRue()),
+		        			 clientServ.getAll().get(i).getAdresse().getNomVille(),
+		        			 clientServ.getAll().get(i).getAdresse().getGouvernat(),
+		        			 Integer.toString(clientServ.getAll().get(i).getAdresse().getCodePostale()),
+		        			 clientServ.getAll().get(i).getType().toString(),
+		        			 Integer.toString(clientServ.getAll().get(i).getCompteBancaires().get(0).getNumRib()),
+		        			 clientServ.getAll().get(i).getCompteBancaires().get(0).getNameBanque(),
+		        			 clientServ.getAll().get(i).getCompteBancaires().get(0).getAgence(),
+		        			 clientServ.getAll().get(i).getRaisonSocial().getSexe(),
+		        			 clientServ.getAll().get(i).getWebSite(),
+		        			 clientServ.getAll().get(i).getDescription(),
+		        			 Integer.toString(clientServ.getAll().get(i).getId()),
+		        			 Integer.toString(clientServ.getAll().get(i).getCompteBancaires().get(0).getId()),
+		        			 Integer.toString(clientServ.getAll().get(i).getRaisonSocial().getId()),
+		        			 Integer.toString(clientServ.getAll().get(i).getAdresse().getId()),
+		        			 Boolean.toString(clientServ.getAll().get(i).isTva_assuj())
+		        			 
+		        			 });
+		        }
+				model.fireTableDataChanged();
+				toaster.success("client added sucessfully");
 			}
-			else {
-				client.setType(TypeEntreprise.MORALE);
+			else
+			{
+				toaster.error("verifier les cases rouge");
 			}
-	
-			client.setDescription(editorPaneDescription.getText());
-			client.setTelFix(Integer.parseInt(fielTel.getText()));
-			client.setTelMobile(Integer.parseInt(fieldMobile.getText()));
-			client.setEmail(fieldEmail.getText());
-			client.setWebSite(fieldWebSIte.getText());
-			client.setAdresse(address);
-			client.setCompteBancaires(listCompte);
-			client.setRaisonSocial(social);
-			client.setTva_assuj(checkBoxTva.isSelected());
 			
-			
-			
-			clientImpl.save(client);
 			
 			
 		
@@ -801,6 +795,7 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 		}
 		
 		if(e.getSource().equals(modifyClientBtn)){
+			if(a && b && c && d && ee && f && g && h && j && k) {
 			
 			ClientServiceImpl clientImpl = new ClientServiceImpl();
 			Client client = new Client();
@@ -854,6 +849,43 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			client.setId(Integer.parseInt(fieldIdClient.getText()));
 			client.setTva_assuj(checkBoxTva.isSelected());
 			clientImpl.update(client);
+			((DefaultTableModel)table.getModel()).setNumRows(0);
+			ClientServiceImpl clientServ = new ClientServiceImpl();
+	        for(int i =0 ; i<clientServ.getAll().size(); i++) {
+	        	 model.addRow(new String[] {
+	        			 clientServ.getAll().get(i).getRaisonSocial().getNom(),
+	        			 clientServ.getAll().get(i).getRaisonSocial().getPrenom(),
+	        			 clientServ.getAll().get(i).getMatricule(),
+	        			 Integer.toString(clientServ.getAll().get(i).getTelMobile()),
+	        			 clientServ.getAll().get(i).getEmail(),
+	        			 Integer.toString(clientServ.getAll().get(i).getTelFix()),
+	        			 clientServ.getAll().get(i).getAdresse().getPays(),
+	        			 clientServ.getAll().get(i).getAdresse().getLibelleRue(),
+	        			 Integer.toString(clientServ.getAll().get(i).getAdresse().getNumRue()),
+	        			 clientServ.getAll().get(i).getAdresse().getNomVille(),
+	        			 clientServ.getAll().get(i).getAdresse().getGouvernat(),
+	        			 Integer.toString(clientServ.getAll().get(i).getAdresse().getCodePostale()),
+	        			 clientServ.getAll().get(i).getType().toString(),
+	        			 Integer.toString(clientServ.getAll().get(i).getCompteBancaires().get(0).getNumRib()),
+	        			 clientServ.getAll().get(i).getCompteBancaires().get(0).getNameBanque(),
+	        			 clientServ.getAll().get(i).getCompteBancaires().get(0).getAgence(),
+	        			 clientServ.getAll().get(i).getRaisonSocial().getSexe(),
+	        			 clientServ.getAll().get(i).getWebSite(),
+	        			 clientServ.getAll().get(i).getDescription(),
+	        			 Integer.toString(clientServ.getAll().get(i).getId()),
+	        			 Integer.toString(clientServ.getAll().get(i).getCompteBancaires().get(0).getId()),
+	        			 Integer.toString(clientServ.getAll().get(i).getRaisonSocial().getId()),
+	        			 Integer.toString(clientServ.getAll().get(i).getAdresse().getId()),
+	        			 Boolean.toString(clientServ.getAll().get(i).isTva_assuj())
+	        			 
+	        			 });
+	        }
+			model.fireTableDataChanged();
+			toaster.success("inormation client modifié");
+			}
+			else {
+				toaster.error("verifier les cases rouge");
+			}
 		}
 		if(e.getSource().equals(deleteClientBtn)) {
 			ClientServiceImpl clientService = new ClientServiceImpl();
@@ -875,8 +907,10 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			int a=confirmPan.showConfirmDialog(this,"Are you sure deleting this client?");
 			if(a==confirmPan.YES_OPTION){  
 				clientService.delete(client);
+				toaster.error("client deleted");
 			}  
-			
+			deleteClientBtn.setEnabled(false);
+	        modifyClientBtn.setEnabled(false);
 		
 		}
 		if(e.getSource().equals(btnBackToDash)) {
@@ -888,48 +922,57 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		int row = table.getSelectedRow();
-        int column = table.getColumnCount();
-        Object[] val = new Object[column];
-        for(int i = 0; i < column; i++) {
-            val[i]=table.getValueAt(row, i);
-        }
-        
-        fieldLastName.setText((String) val[0]);
-        fieldName.setText((String) val[1]);
-        fieldMatricule.setText((String) val[2]);
-        fieldMobile.setText((String) val[3]);
-        fieldEmail.setText((String) val[4]);
-        fielTel.setText((String) val[5]);
-        fieldRue.setText((String) val[7]);
-        fieldNumRue.setText((String) val[8]);
-        fieldGouvernat.setText((String) val[10]);
-        fieldCode.setText((String) val[11]);
-        fieldRib.setText((String) val[13]);
-        fieldNameBanque.setText((String) val[14]);
-        fieldNameAgence.setText((String) val[15]);
-        
-        fieldWebSIte.setText((String) val[17]);
-        editorPaneDescription.setText((String) val[18]);
-        
-        fieldIdClient.setText((String) val[19]);
-        fieldIdBanque.setText((String) val[20]);
-        fieldIdSocial.setText((String) val[21]);
-        fieldIdAdress.setText((String) val[22]);
-        if(((String) val[23]) == "true") {
-        	checkBoxTva.setSelected(true);
-        }
-        else
-        {
-        	checkBoxTva.setSelected(false);
-        }
+	public void mouseClicked(MouseEvent e) {
+		if(e.getSource().equals(table)) {
+			
+			int row = table.getSelectedRow();
+	        int column = table.getColumnCount();
+	        Object[] val = new Object[column];
+	        for(int i = 0; i < column; i++) {
+	            val[i]=table.getValueAt(row, i);
+	        }
+	        
+	        fieldLastName.setText((String) val[0]);
+	        fieldName.setText((String) val[1]);
+	        fieldMatricule.setText((String) val[2]);
+	        fieldMobile.setText((String) val[3]);
+	        fieldEmail.setText((String) val[4]);
+	        fielTel.setText((String) val[5]);
+	        fieldRue.setText((String) val[7]);
+	        fieldNumRue.setText((String) val[8]);
+	        fieldGouvernat.setText((String) val[10]);
+	        fieldCode.setText((String) val[11]);
+	        fieldRib.setText((String) val[13]);
+	        fieldNameBanque.setText((String) val[14]);
+	        fieldNameAgence.setText((String) val[15]);
+	        
+	        fieldWebSIte.setText((String) val[17]);
+	        editorPaneDescription.setText((String) val[18]);
+	        
+	        fieldIdClient.setText((String) val[19]);
+	        fieldIdBanque.setText((String) val[20]);
+	        fieldIdSocial.setText((String) val[21]);
+	        fieldIdAdress.setText((String) val[22]);
+	        if(((String) val[23]) == "true") {
+	        	checkBoxTva.setSelected(true);
+	        	deleteClientBtn.setEnabled(true);
+	 	        modifyClientBtn.setEnabled(true);
+	        }
+	        else
+	        {
+	        	checkBoxTva.setSelected(false);
+	        }
+	       
+		}
+	
+		
+		
        
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseEntered(MouseEvent e) {
+		
 		
 	}
 
@@ -959,10 +1002,12 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			Matcher matcher = pattern.matcher(fieldEmail.getText());
 			if(matcher.matches()) {
 				fieldEmail.setBorder(new LineBorder(Color.green,1));
+				a = true;
 			}
 			else
 			{
 				fieldEmail.setBorder(new LineBorder(Color.red,1));
+				a = false;
 			}
 		}
 		if(e.getSource().equals(fieldMobile)){
@@ -971,10 +1016,12 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			Matcher matcher = pattern.matcher(fieldMobile.getText());
 			if(matcher.matches()) {
 				fieldMobile.setBorder(new LineBorder(Color.green,1));
+				b = true;
 			}
 			else
 			{
-				fieldMobile.setBorder(new LineBorder(Color.red,1));
+				fieldMobile.setBorder( new LineBorder(Color.red,1));
+				b=false;
 			}
 		}
 		if(e.getSource().equals(fielTel)){
@@ -983,10 +1030,12 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			Matcher matcher = pattern.matcher(fielTel.getText());
 			if(matcher.matches()) {
 				fielTel.setBorder(new LineBorder(Color.green,1));
+				c = true;
 			}
 			else
 			{
 				fielTel.setBorder(new LineBorder(Color.red,1));
+				c=false;
 			}
 		}
 		if(e.getSource().equals(fieldWebSIte)){
@@ -995,10 +1044,12 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			Matcher matcher = pattern.matcher(fieldWebSIte.getText());
 			if(matcher.matches()) {
 				fieldWebSIte.setBorder(new LineBorder(Color.green,1));
+				d  = true;
 			}
 			else
 			{
 				fieldWebSIte.setBorder(new LineBorder(Color.red,1));
+				d = false;
 			}
 		}
 		
@@ -1008,10 +1059,12 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			Matcher matcher = pattern.matcher(fieldName.getText());
 			if(matcher.matches()) {
 				fieldName.setBorder(new LineBorder(Color.green,1));
+				ee =  true;
 			}
 			else
 			{
 				fieldName.setBorder(new LineBorder(Color.red,1));
+				ee = false;
 			}
 		}
 		
@@ -1021,10 +1074,12 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			Matcher matcher = pattern.matcher(fieldLastName.getText());
 			if(matcher.matches()) {
 				fieldLastName.setBorder(new LineBorder(Color.green,1));
+				f = true;
 			}
 			else
 			{
 				fieldLastName.setBorder(new LineBorder(Color.red,1));
+				f = false;
 			}
 		}
 		
@@ -1034,10 +1089,12 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			Matcher matcher = pattern.matcher(fieldNameBanque.getText());
 			if(matcher.matches()) {
 				fieldNameBanque.setBorder(new LineBorder(Color.green,1));
+				g = true;
 			}
 			else
 			{
 				fieldNameBanque.setBorder(new LineBorder(Color.red,1));
+				g  = false;
 			}
 		}
 		
@@ -1047,37 +1104,78 @@ public class ClientUi extends JFrame implements ActionListener,MouseListener,Car
 			Matcher matcher = pattern.matcher(fieldNameAgence.getText());
 			if(matcher.matches()) {
 				fieldNameAgence.setBorder(new LineBorder(Color.green,1));
+				h = true;
 			}
 			else
 			{
 				fieldNameAgence.setBorder(new LineBorder(Color.red,1));
+				h 	 = false;
 			}
 		}
-		if(e.getSource().equals(fieldNameAgence)){
+		if(e.getSource().equals(fieldRue)){
 			String regex = "([a-zA-Z]{3,20}\s*)+";
 			Pattern pattern = Pattern.compile(regex);
-			Matcher matcher = pattern.matcher(fieldNameAgence.getText());
+			Matcher matcher = pattern.matcher(fieldRue.getText());
 			if(matcher.matches()) {
-				fieldNameAgence.setBorder(new LineBorder(Color.green,1));
+				fieldRue.setBorder(new LineBorder(Color.green,1));
+				j = true;
 			}
 			else
 			{
-				fieldNameAgence.setBorder(new LineBorder(Color.red,1));
+				fieldMatricule.setBorder(new LineBorder(Color.red,1));
+				j = false;
 			}
 		}
 		
 		if(e.getSource().equals(fieldRib)){
-			String regex = "^(0[1-9]|[1-8])([0-9]{18}\s*)$";
+			String regex = "^(0[1-9]|[1-8])([0-9]{9}\s*)$";
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(fieldRib.getText());
 			if(matcher.matches()) {
 				fieldRib.setBorder(new LineBorder(Color.green,1));
+				k = true;
 			}
 			else
 			{
 				fieldRib.setBorder(new LineBorder(Color.red,1));
+				k = false;
 			}
 		}
 	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		if(e.getSource().equals(fieldMatricule)) {
+			if (fieldMatricule.getText().equals(UIUtils.MATRICULE_FISCALE)) {
+	            fieldMatricule.setText("");
+	        }
+
+	
+		}
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		if(e.getSource().equals(fieldMatricule)) {
+			
+			String regex = "[0-9]{8}[/]{1}[A-Z]{1}[/]{1}[A-Z]{1}[/]{1}[A-Z]{1}[/]{1}[0-9]{3}$";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(fieldMatricule.getText());
+			if (matcher.matches()) {
+				fieldMatricule.setBorder(new LineBorder(Color.green,1));
+				mm = true;
+	        }
+			else {
+				fieldMatricule.setBorder(new LineBorder(Color.red,1));
+				mm = false;
+			}
+
+			
+		}
+			
+      }
+		
+		
+	
 
 }

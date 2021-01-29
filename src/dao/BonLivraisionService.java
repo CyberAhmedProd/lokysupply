@@ -19,4 +19,5 @@ public interface BonLivraisionService {
 	public Boolean printBonLivraison(BonLivraison bonLivraison);
 	public BonLivraison getBonLivraison(int id);
 	public ArrayList<BonLivraison> getAllBonLivraison();
+	public ArrayList<BonLivraison> getAllBonLivraisonSeekByCode(String code);
 }
